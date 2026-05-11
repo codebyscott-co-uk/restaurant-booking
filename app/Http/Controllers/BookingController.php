@@ -18,9 +18,9 @@ use Illuminate\View\View;
 
 class BookingController extends Controller
 {
-    public function create(Request $request): View
+    public function create(Request $request, ?Venue $venue = null): View
     {
-        $venue = Venue::with('services')->firstOrFail();
+        $venue = ($venue ?: Venue::query()->firstOrFail())->load('services');
         $date = Carbon::parse($request->query('date', today($venue->timezone)->toDateString()), $venue->timezone);
         $partySize = max(1, min($venue->maximum_party_size, (int) $request->query('party_size', 2)));
         $service = Service::where('venue_id', $venue->id)
@@ -36,12 +36,15 @@ class BookingController extends Controller
             'selectedDate' => $date,
             'partySize' => $partySize,
             'slots' => $slots,
+            'bookingStoreRoute' => $request->route('venue')
+                ? route('tenant.bookings.store', $venue)
+                : route('bookings.store'),
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ?Venue $venue = null): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $venue ?: Venue::firstOrFail();
 
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],

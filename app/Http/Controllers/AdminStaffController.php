@@ -14,16 +14,18 @@ class AdminStaffController extends Controller
 {
     public function index(): View
     {
+        $venue = $this->currentVenue();
+
         return view('admin.staff.index', [
-            'venue' => Venue::firstOrFail(),
-            'staff' => User::orderByDesc('is_active')->orderBy('name')->get(),
+            'venue' => $venue,
+            'staff' => $venue->users()->orderByDesc('is_active')->orderBy('name')->get(),
         ]);
     }
 
     public function create(): View
     {
         return view('admin.staff.create', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $this->currentVenue(),
             'user' => new User(['role' => 'staff', 'is_active' => true]),
         ]);
     }
@@ -31,6 +33,7 @@ class AdminStaffController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validateUser($request);
+        $validated['venue_id'] = $this->currentVenue($request)->id;
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = $request->boolean('is_active');
 
@@ -41,14 +44,19 @@ class AdminStaffController extends Controller
 
     public function edit(User $user): View
     {
+        $venue = $this->currentVenue();
+        $this->ensureVenue($user, $venue);
+
         return view('admin.staff.edit', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $venue,
             'user' => $user,
         ]);
     }
 
     public function update(Request $request, User $user): RedirectResponse
     {
+        $this->ensureVenue($user, $this->currentVenue($request));
+
         $validated = $this->validateUser($request, $user);
 
         if (($validated['is_active'] ?? false) === false && $request->user()->is($user)) {
@@ -69,6 +77,8 @@ class AdminStaffController extends Controller
 
     public function destroy(Request $request, User $user): RedirectResponse
     {
+        $this->ensureVenue($user, $this->currentVenue($request));
+
         if ($request->user()->is($user)) {
             return back()->withErrors(['user' => 'You cannot delete your own staff account.']);
         }

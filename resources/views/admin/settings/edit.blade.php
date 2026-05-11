@@ -224,7 +224,7 @@
                 <div class="field full">
                     <label for="embed_script">Example embed script</label>
                     <textarea id="embed_script" readonly><div data-restaurant-booking-widget></div>
-<script src="{{ route('widget.script') }}" async></script></textarea>
+<script src="{{ route('tenant.widget.script', $venue) }}" async></script></textarea>
                 </div>
             </div>
         </section>

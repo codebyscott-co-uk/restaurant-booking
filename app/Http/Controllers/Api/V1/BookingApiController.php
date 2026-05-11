@@ -18,9 +18,9 @@ use Illuminate\Support\Str;
 
 class BookingApiController extends Controller
 {
-    public function venue(): JsonResponse
+    public function venue(?Venue $venue = null): JsonResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $venue ?: Venue::firstOrFail();
 
         return response()->json([
             'data' => [
@@ -41,9 +41,9 @@ class BookingApiController extends Controller
         ]);
     }
 
-    public function services(): JsonResponse
+    public function services(?Venue $venue = null): JsonResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $venue ?: Venue::firstOrFail();
 
         return response()->json([
             'data' => $venue->services()
@@ -64,9 +64,9 @@ class BookingApiController extends Controller
         ]);
     }
 
-    public function availability(Request $request, BookingAvailability $availability): JsonResponse
+    public function availability(Request $request, BookingAvailability $availability, ?Venue $venue = null): JsonResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $venue ?: Venue::firstOrFail();
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],
             'date' => ['required', 'date'],
@@ -91,9 +91,9 @@ class BookingApiController extends Controller
         ]);
     }
 
-    public function store(Request $request, BookingAvailability $availability): JsonResponse
+    public function store(Request $request, BookingAvailability $availability, ?Venue $venue = null): JsonResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $venue ?: Venue::firstOrFail();
 
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],

@@ -8,18 +8,21 @@ use Illuminate\View\View;
 
 class WidgetController extends Controller
 {
-    public function show(): View
+    public function show(?Venue $venue = null): View
     {
-        $venue = Venue::firstOrFail();
+        $venue = $venue ?: Venue::firstOrFail();
 
         abort_unless($venue->widget_enabled, 404);
 
-        return view('widget.bookings', ['venue' => $venue]);
+        return view('widget.bookings', [
+            'venue' => $venue,
+            'apiBase' => request()->route('venue') ? url('/api/v1/'.$venue->slug) : url('/api/v1'),
+        ]);
     }
 
-    public function script(): Response
+    public function script(?Venue $venue = null): Response
     {
-        $url = route('widget.bookings');
+        $url = $venue ? route('tenant.widget.bookings', $venue) : route('widget.bookings');
         $script = <<<JS
 (function () {
   var currentScript = document.currentScript;

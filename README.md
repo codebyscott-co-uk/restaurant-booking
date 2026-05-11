@@ -1,12 +1,14 @@
 # Restaurant Booking
 
-A Laravel restaurant booking system with a mobile-friendly customer booking form, staff-only booking diary, configurable availability rules, business settings, branding, logo upload, and staff user management.
+A Laravel multi-tenant restaurant booking system with a mobile-friendly customer booking form, staff-only booking diary, configurable availability rules, business settings, branding, logo upload, and staff user management.
 
 Built by [Code by Scott](https://codebyscott.co.uk).
 
 ## Current Features
 
 - Mobile-friendly public booking form
+- Multi-tenant venue model with staff scoped to their own restaurant
+- Tenant-specific public booking, widget and API URLs by restaurant slug
 - Live table availability checks
 - Booking confirmation page with reference number
 - Public booking lookup, modify and cancellation flow
@@ -165,6 +167,8 @@ All admin routes require staff login.
 /manage-booking
 /manage-booking/{booking_reference}/{customer_manage_token}
 /manage-booking/{booking_reference}/{customer_manage_token}/edit
+/r/{restaurant-slug}
+/r/{restaurant-slug}/manage-booking
 ```
 
 Customers can use their booking reference and email address to open a private management link. Online changes and cancellations are blocked once the booking is inside the configured notice period.
@@ -175,13 +179,14 @@ Widget iframe route:
 
 ```text
 /widget/bookings
+/r/{restaurant-slug}/widget/bookings
 ```
 
 Example embed snippet:
 
 ```html
 <div data-restaurant-booking-widget></div>
-<script src="http://restaurant-booking.test/widget/embed.js" async></script>
+<script src="http://restaurant-booking.test/r/the-demo-table/widget/embed.js" async></script>
 ```
 
 The widget runs inside an iframe and uses the public API endpoints for services, availability and booking creation.
@@ -195,6 +200,10 @@ GET /api/v1/venue
 GET /api/v1/services
 GET /api/v1/availability?service_id=1&date=2026-05-18&party_size=2
 POST /api/v1/bookings
+GET /api/v1/{restaurant-slug}/venue
+GET /api/v1/{restaurant-slug}/services
+GET /api/v1/{restaurant-slug}/availability?service_id=1&date=2026-05-18&party_size=2
+POST /api/v1/{restaurant-slug}/bookings
 ```
 
 API booking responses include a `manage_url` that can be used by a mobile app or headless frontend for customer self-service.

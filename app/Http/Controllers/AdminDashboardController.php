@@ -11,7 +11,7 @@ class AdminDashboardController extends Controller
 {
     public function __invoke(): View
     {
-        $venue = Venue::with(['services', 'diningAreas.tables', 'tables'])->firstOrFail();
+        $venue = $this->currentVenue()->load(['services', 'diningAreas.tables', 'tables']);
         $today = today($venue->timezone);
         $tomorrow = $today->copy()->addDay();
 

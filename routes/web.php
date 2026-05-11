@@ -27,6 +27,15 @@ Route::patch('/manage-booking/{booking}/{token}/cancel', [CustomerBookingControl
 Route::get('/widget/bookings', [WidgetController::class, 'show'])->name('widget.bookings');
 Route::get('/widget/embed.js', [WidgetController::class, 'script'])->name('widget.script');
 
+Route::prefix('r/{venue:slug}')->name('tenant.')->group(function () {
+    Route::get('/', [BookingController::class, 'create'])->name('bookings.create');
+    Route::post('/book', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/manage-booking', [CustomerBookingController::class, 'lookup'])->name('bookings.lookup');
+    Route::post('/manage-booking', [CustomerBookingController::class, 'find'])->name('bookings.lookup.find');
+    Route::get('/widget/bookings', [WidgetController::class, 'show'])->name('widget.bookings');
+    Route::get('/widget/embed.js', [WidgetController::class, 'script'])->name('widget.script');
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/staff/login', [AuthController::class, 'create'])->name('login');
     Route::post('/staff/login', [AuthController::class, 'store'])->name('login.store');

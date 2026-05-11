@@ -12,7 +12,7 @@ class AdminDiningAreaController extends Controller
 {
     public function index(): View
     {
-        $venue = Venue::with(['diningAreas.tables'])->firstOrFail();
+        $venue = $this->currentVenue()->load(['diningAreas.tables']);
 
         return view('admin.areas.index', [
             'venue' => $venue,
@@ -24,14 +24,14 @@ class AdminDiningAreaController extends Controller
     public function create(): View
     {
         return view('admin.areas.create', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $this->currentVenue(),
             'area' => new DiningArea(['is_active' => true, 'sort_order' => 0]),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue($request);
         $validated = $this->validateArea($request);
         $validated['venue_id'] = $venue->id;
         $validated['is_active'] = $request->boolean('is_active');
@@ -43,14 +43,19 @@ class AdminDiningAreaController extends Controller
 
     public function edit(DiningArea $area): View
     {
+        $venue = $this->currentVenue();
+        $this->ensureVenue($area, $venue);
+
         return view('admin.areas.edit', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $venue,
             'area' => $area,
         ]);
     }
 
     public function update(Request $request, DiningArea $area): RedirectResponse
     {
+        $this->ensureVenue($area, $this->currentVenue($request));
+
         $validated = $this->validateArea($request);
         $validated['is_active'] = $request->boolean('is_active');
 
@@ -61,6 +66,8 @@ class AdminDiningAreaController extends Controller
 
     public function destroy(DiningArea $area): RedirectResponse
     {
+        $this->ensureVenue($area, $this->currentVenue());
+
         if ($area->tables()->exists()) {
             return back()->withErrors(['area' => 'Dining areas with tables cannot be deleted. Move or delete the tables first.']);
         }
@@ -80,4 +87,3 @@ class AdminDiningAreaController extends Controller
         ]);
     }
 }
-

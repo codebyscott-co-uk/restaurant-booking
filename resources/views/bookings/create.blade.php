@@ -35,7 +35,7 @@
         </div>
     </form>
 
-    <form class="panel" method="post" action="{{ route('bookings.store') }}">
+    <form class="panel" method="post" action="{{ $bookingStoreRoute ?? route('bookings.store') }}">
         @csrf
         <h2>Your booking</h2>
 

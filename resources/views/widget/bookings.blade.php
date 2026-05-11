@@ -94,7 +94,8 @@
             const serviceSelect = form.querySelector('[name="service_id"]');
             const slots = document.querySelector('[data-slots]');
             const message = document.querySelector('[data-message]');
-            const api = (path, options = {}) => fetch('/api/v1' + path, Object.assign({
+            const apiBase = @json($apiBase ?? url('/api/v1'));
+            const api = (path, options = {}) => fetch(apiBase + path, Object.assign({
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
             }, options)).then(async (response) => {
                 const data = await response.json();

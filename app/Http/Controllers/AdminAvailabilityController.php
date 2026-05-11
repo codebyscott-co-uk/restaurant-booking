@@ -14,7 +14,7 @@ class AdminAvailabilityController extends Controller
 {
     public function index(): View
     {
-        $venue = Venue::with(['services.openingHours', 'closures.service'])->firstOrFail();
+        $venue = $this->currentVenue()->load(['services.openingHours', 'closures.service']);
 
         foreach ($venue->services as $service) {
             for ($day = 0; $day <= 6; $day++) {
@@ -38,6 +38,8 @@ class AdminAvailabilityController extends Controller
 
     public function updateHours(Request $request): RedirectResponse
     {
+        $venue = $this->currentVenue($request);
+
         $validated = $request->validate([
             'hours' => ['required', 'array'],
             'hours.*.*.id' => ['required', 'exists:opening_hours,id'],
@@ -50,11 +52,13 @@ class AdminAvailabilityController extends Controller
             foreach ($serviceHours as $hourData) {
                 $isClosed = (bool) ($hourData['is_closed'] ?? false);
 
-                OpeningHour::whereKey($hourData['id'])->update([
+                OpeningHour::whereKey($hourData['id'])
+                    ->where('venue_id', $venue->id)
+                    ->update([
                     'opens_at' => $isClosed ? null : $hourData['opens_at'],
                     'closes_at' => $isClosed ? null : $hourData['closes_at'],
                     'is_closed' => $isClosed,
-                ]);
+                    ]);
             }
         }
 
@@ -63,7 +67,7 @@ class AdminAvailabilityController extends Controller
 
     public function storeClosure(Request $request): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue($request);
 
         $validated = $request->validate([
             'service_id' => ['nullable', 'exists:services,id'],
@@ -71,6 +75,10 @@ class AdminAvailabilityController extends Controller
             'ends_at' => ['required', 'date_format:Y-m-d\TH:i', 'after:starts_at'],
             'reason' => ['nullable', 'string', 'max:255'],
         ]);
+
+        if (! empty($validated['service_id'])) {
+            abort_unless($venue->services()->whereKey($validated['service_id'])->exists(), 404);
+        }
 
         Closure::create([
             'venue_id' => $venue->id,
@@ -85,6 +93,8 @@ class AdminAvailabilityController extends Controller
 
     public function destroyClosure(Closure $closure): RedirectResponse
     {
+        $this->ensureVenue($closure, $this->currentVenue());
+
         $closure->delete();
 
         return redirect()->route('admin.availability.index')->with('status', 'Closure removed.');
@@ -103,4 +113,3 @@ class AdminAvailabilityController extends Controller
         ];
     }
 }
-

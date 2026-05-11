@@ -13,7 +13,7 @@ class AdminRestaurantTableController extends Controller
 {
     public function create(): View
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue();
 
         return view('admin.tables.create', [
             'venue' => $venue,
@@ -29,8 +29,9 @@ class AdminRestaurantTableController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue($request);
         $validated = $this->validateTable($request);
+        abort_unless($venue->diningAreas()->whereKey($validated['dining_area_id'])->exists(), 404);
         $validated['venue_id'] = $venue->id;
         $validated['is_joinable'] = $request->boolean('is_joinable');
         $validated['is_active'] = $request->boolean('is_active');
@@ -42,7 +43,8 @@ class AdminRestaurantTableController extends Controller
 
     public function edit(RestaurantTable $table): View
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue();
+        $this->ensureVenue($table, $venue);
 
         return view('admin.tables.edit', [
             'venue' => $venue,
@@ -53,7 +55,10 @@ class AdminRestaurantTableController extends Controller
 
     public function update(Request $request, RestaurantTable $table): RedirectResponse
     {
+        $venue = $this->currentVenue($request);
+        $this->ensureVenue($table, $venue);
         $validated = $this->validateTable($request);
+        abort_unless($venue->diningAreas()->whereKey($validated['dining_area_id'])->exists(), 404);
         $validated['is_joinable'] = $request->boolean('is_joinable');
         $validated['is_active'] = $request->boolean('is_active');
 
@@ -64,6 +69,8 @@ class AdminRestaurantTableController extends Controller
 
     public function destroy(RestaurantTable $table): RedirectResponse
     {
+        $this->ensureVenue($table, $this->currentVenue());
+
         if ($table->bookings()->exists()) {
             return back()->withErrors(['table' => 'Tables with bookings cannot be deleted. Set the table inactive instead.']);
         }
@@ -85,4 +92,3 @@ class AdminRestaurantTableController extends Controller
         ]);
     }
 }
-

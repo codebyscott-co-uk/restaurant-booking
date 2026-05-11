@@ -12,7 +12,7 @@ class AdminDiaryController extends Controller
 {
     public function __invoke(Request $request): View
     {
-        $venue = Venue::with(['services', 'diningAreas.tables'])->firstOrFail();
+        $venue = $this->currentVenue($request)->load(['services', 'diningAreas.tables']);
         $date = Carbon::parse($request->query('date', today($venue->timezone)->toDateString()), $venue->timezone);
         $view = $request->query('view') === 'week' ? 'week' : 'day';
         $serviceId = $request->integer('service_id') ?: null;

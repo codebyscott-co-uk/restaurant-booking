@@ -13,7 +13,7 @@ class AdminServiceController extends Controller
 {
     public function index(): View
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue();
 
         return view('admin.services.index', [
             'venue' => $venue,
@@ -24,7 +24,7 @@ class AdminServiceController extends Controller
     public function create(): View
     {
         return view('admin.services.create', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $this->currentVenue(),
             'service' => new Service([
                 'slot_interval_minutes' => 30,
                 'default_duration_minutes' => 120,
@@ -37,7 +37,7 @@ class AdminServiceController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue($request);
         $validated = $this->validateService($request);
         $validated['venue_id'] = $venue->id;
         $validated['requires_deposit'] = $request->boolean('requires_deposit');
@@ -50,14 +50,19 @@ class AdminServiceController extends Controller
 
     public function edit(Service $service): View
     {
+        $venue = $this->currentVenue();
+        $this->ensureVenue($service, $venue);
+
         return view('admin.services.edit', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $venue,
             'service' => $service,
         ]);
     }
 
     public function update(Request $request, Service $service): RedirectResponse
     {
+        $this->ensureVenue($service, $this->currentVenue($request));
+
         $validated = $this->validateService($request);
         $validated['requires_deposit'] = $request->boolean('requires_deposit');
         $validated['is_active'] = $request->boolean('is_active');
@@ -69,6 +74,8 @@ class AdminServiceController extends Controller
 
     public function destroy(Service $service): RedirectResponse
     {
+        $this->ensureVenue($service, $this->currentVenue());
+
         if ($service->bookings()->exists()) {
             return back()->withErrors(['service' => 'Services with bookings cannot be deleted. Set it inactive instead.']);
         }

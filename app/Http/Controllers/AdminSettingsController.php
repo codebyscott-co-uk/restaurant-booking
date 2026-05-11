@@ -14,13 +14,13 @@ class AdminSettingsController extends Controller
     public function edit(): View
     {
         return view('admin.settings.edit', [
-            'venue' => Venue::firstOrFail(),
+            'venue' => $this->currentVenue(),
         ]);
     }
 
     public function update(Request $request): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue($request);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],

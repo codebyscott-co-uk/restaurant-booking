@@ -23,7 +23,7 @@ class BookingWidgetTest extends TestCase
             ->assertOk()
             ->assertSee('Reserve online')
             ->assertSee('Book directly from our website.')
-            ->assertSee('/api/v1', false);
+            ->assertSee('apiBase', false);
     }
 
     public function test_public_widget_script_renders_iframe_embed(): void

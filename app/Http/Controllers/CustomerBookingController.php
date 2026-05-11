@@ -23,7 +23,7 @@ class CustomerBookingController extends Controller
         ]);
     }
 
-    public function find(Request $request): RedirectResponse
+    public function find(Request $request, ?Venue $venue = null): RedirectResponse
     {
         $validated = $request->validate([
             'booking_reference' => ['required', 'string', 'max:255'],
@@ -32,6 +32,7 @@ class CustomerBookingController extends Controller
 
         $booking = Booking::with('customer')
             ->where('booking_reference', strtoupper($validated['booking_reference']))
+            ->when($venue, fn ($query) => $query->where('venue_id', $venue->id))
             ->whereHas('customer', fn ($query) => $query->whereRaw('lower(email) = ?', [strtolower($validated['email'])]))
             ->first();
 

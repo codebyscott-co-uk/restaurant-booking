@@ -20,7 +20,7 @@ class AdminBookingController extends Controller
 {
     public function create(Request $request, BookingAvailability $availability): View
     {
-        $venue = Venue::with('services')->firstOrFail();
+        $venue = $this->currentVenue($request)->load('services');
         $date = Carbon::parse($request->query('date', today($venue->timezone)->toDateString()), $venue->timezone);
         $partySize = max(1, min(99, (int) $request->query('party_size', 2)));
         $service = Service::where('venue_id', $venue->id)
@@ -39,7 +39,7 @@ class AdminBookingController extends Controller
 
     public function store(Request $request, BookingAvailability $availability): RedirectResponse
     {
-        $venue = Venue::firstOrFail();
+        $venue = $this->currentVenue($request);
 
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],
@@ -104,6 +104,8 @@ class AdminBookingController extends Controller
 
     public function updateStatus(Request $request, Booking $booking): RedirectResponse
     {
+        $this->ensureVenue($booking, $this->currentVenue($request));
+
         $validated = $request->validate([
             'status' => ['required', Rule::in(Booking::STATUSES)],
         ]);

@@ -21,16 +21,6 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Restaurant Admin',
-            'email' => 'hello@codebyscott.co.uk',
-            'password' => Hash::make('Letmein.123@'),
-            'role' => 'owner',
-            'phone' => '07700 900123',
-            'job_title' => 'Owner',
-            'is_active' => true,
-        ]);
-
         $venue = Venue::create([
             'name' => 'The Demo Table',
             'slug' => 'the-demo-table',
@@ -52,6 +42,17 @@ class DatabaseSeeder extends Seeder
             'accent_colour' => '#d97706',
             'booking_terms' => 'Please let us know about allergies before arrival. Tables are held for 15 minutes.',
             'cancellation_policy' => 'Bookings can be changed or cancelled up to 24 hours before arrival.',
+        ]);
+
+        User::factory()->create([
+            'venue_id' => $venue->id,
+            'name' => 'Restaurant Admin',
+            'email' => 'hello@codebyscott.co.uk',
+            'password' => Hash::make('Letmein.123@'),
+            'role' => 'owner',
+            'phone' => '07700 900123',
+            'job_title' => 'Owner',
+            'is_active' => true,
         ]);
 
         $main = DiningArea::create([

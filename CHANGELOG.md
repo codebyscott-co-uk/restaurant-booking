@@ -9,6 +9,8 @@ This project follows a simple changelog style while it is in early development.
 ### Added
 
 - Mobile-friendly public booking form.
+- Multi-tenant venue ownership for staff accounts and admin data isolation.
+- Tenant-specific public booking, widget and API routes by restaurant slug.
 - Booking confirmation page with customer reference.
 - Public booking lookup, modify and cancellation pages for customers.
 - Token-protected customer booking management links.
@@ -52,6 +54,7 @@ This project follows a simple changelog style while it is in early development.
 
 ### Security
 
+- Scoped staff management and admin resources to the logged-in user's venue.
 - Protected public booking details behind customer management tokens.
 - Restricted admin diary, settings, staff, services and table management to authenticated staff users.
 - Prevented staff users from deleting their own account.
