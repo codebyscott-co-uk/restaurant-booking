@@ -29,7 +29,7 @@
         @endif
 
         <div class="staff-list">
-            @foreach ($tables as $table)
+            @forelse ($tables as $table)
                 <article class="staff-card">
                     <div>
                         <h3>{{ $table->name }}</h3>
@@ -44,19 +44,26 @@
                         <form method="post" action="{{ route('admin.tables.destroy', $table) }}" onsubmit="return confirm('Delete this table?');">
                             @csrf
                             @method('delete')
-                            <button type="submit">Delete</button>
+                            <button class="danger" type="submit">Delete</button>
                         </form>
                     </div>
                 </article>
-            @endforeach
+            @empty
+                <div class="empty-state">
+                    <strong>No tables yet.</strong>
+                    <p style="margin: 0;">Add tables so the availability engine can allocate bookings.</p>
+                    <a class="button primary" href="{{ route('admin.tables.create') }}">Add table</a>
+                </div>
+            @endforelse
         </div>
     </div>
 
     <aside class="panel">
         <h2>Dining areas</h2>
         <div class="staff-list">
-            @foreach ($areas as $area)
-                <article class="panel">
+            @forelse ($areas as $area)
+                <article class="staff-card">
+                    <div>
                     <h3>{{ $area->name }}</h3>
                     <p style="margin: 0;">{{ $area->description ?: 'No description' }}</p>
                     <div class="table-list">
@@ -64,18 +71,24 @@
                         <span class="badge">{{ $area->is_active ? 'Active' : 'Inactive' }}</span>
                         <span class="badge">Sort {{ $area->sort_order }}</span>
                     </div>
+                    </div>
                     <div class="actions" style="margin-top: 12px;">
                         <a class="button" href="{{ route('admin.areas.edit', $area) }}">Edit</a>
                         <form method="post" action="{{ route('admin.areas.destroy', $area) }}" onsubmit="return confirm('Delete this dining area?');">
                             @csrf
                             @method('delete')
-                            <button type="submit">Delete</button>
+                            <button class="danger" type="submit">Delete</button>
                         </form>
                     </div>
                 </article>
-            @endforeach
+            @empty
+                <div class="empty-state">
+                    <strong>No dining areas yet.</strong>
+                    <p style="margin: 0;">Create an area before adding tables to the booking layout.</p>
+                    <a class="button primary" href="{{ route('admin.areas.create') }}">Add dining area</a>
+                </div>
+            @endforelse
         </div>
     </aside>
 </section>
 @endsection
-

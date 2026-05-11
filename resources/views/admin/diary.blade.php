@@ -68,9 +68,10 @@
                         </div>
                     </article>
                 @empty
-                    <div class="notice">
+                    <div class="empty-state">
                         <strong>No bookings yet.</strong>
-                        <p style="margin-bottom: 0;">New web bookings will appear here as soon as guests confirm.</p>
+                        <p style="margin: 0;">New web bookings will appear here as soon as guests confirm, or staff can add one manually.</p>
+                        <a class="button primary" href="{{ route('admin.bookings.create', ['date' => $date->toDateString()]) }}">Add booking</a>
                     </div>
                 @endforelse
             </div>
@@ -79,7 +80,7 @@
         <aside class="panel">
             <h2>Setup</h2>
             @foreach ($services as $service)
-                <div class="panel" style="margin-bottom: 12px;">
+                <div style="margin-bottom: 12px;">
                     <h3>{{ $service->name }}</h3>
                     <p style="margin: 0;">{{ substr($service->starts_at, 0, 5) }} to {{ substr($service->ends_at, 0, 5) }} · {{ $service->default_duration_minutes }} mins</p>
                 </div>

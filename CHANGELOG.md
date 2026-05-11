@@ -14,6 +14,9 @@ This project follows a simple changelog style while it is in early development.
 - Staff alert emails for new online bookings.
 - JSON API endpoints for venue details, services, availability lookup and booking creation.
 - Staff authentication and protected admin routes.
+- Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.
+- Responsive admin navigation with active states and improved mobile behaviour.
+- Shared UI polish for admin metrics, empty states, success states and compact staff pages.
 - Admin booking diary with daily booking overview.
 - Business settings panel for restaurant details, address, brand colours and policies.
 - Configurable booking rules for lead time, advance booking window, maximum party size, maximum slot covers and joined-table allocation.
@@ -28,7 +31,7 @@ This project follows a simple changelog style while it is in early development.
 - Delete safeguards for services, tables and dining areas that are already in use.
 - Code by Scott footer branding.
 - Local SQLite seed data for demo restaurant, staff account, services, tables and bookings.
-- Feature test coverage for bookings, authentication, settings, staff, services, availability, dining areas, tables, booking rules and API endpoints.
+- Feature test coverage for bookings, authentication, dashboard, settings, staff, services, availability, dining areas, tables, booking rules and API endpoints.
 
 ### Changed
 

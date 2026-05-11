@@ -62,7 +62,13 @@ class BookingFlowTest extends TestCase
         $this->post('/staff/login', [
             'email' => 'hello@codebyscott.co.uk',
             'password' => 'Letmein.123@',
-        ])->assertRedirect('/admin/diary');
+        ])->assertRedirect('/admin');
+
+        $this->get('/admin')
+            ->assertOk()
+            ->assertSee('Staff dashboard')
+            ->assertSee('Today bookings')
+            ->assertSee('Log out');
 
         $this->get('/admin/diary')
             ->assertOk()

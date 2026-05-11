@@ -24,7 +24,7 @@
     @endif
 
     <div class="staff-list">
-        @foreach ($services as $service)
+        @forelse ($services as $service)
             <article class="staff-card">
                 <div>
                     <h3>{{ $service->name }}</h3>
@@ -44,11 +44,17 @@
                     <form method="post" action="{{ route('admin.services.destroy', $service) }}" onsubmit="return confirm('Delete this service?');">
                         @csrf
                         @method('delete')
-                        <button type="submit">Delete</button>
+                        <button class="danger" type="submit">Delete</button>
                     </form>
                 </div>
             </article>
-        @endforeach
+        @empty
+            <div class="empty-state">
+                <strong>No services yet.</strong>
+                <p style="margin: 0;">Add lunch, dinner or event services so guests can book online.</p>
+                <a class="button primary" href="{{ route('admin.services.create') }}">Add service</a>
+            </div>
+        @endforelse
     </div>
 </section>
 @endsection

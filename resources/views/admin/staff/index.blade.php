@@ -24,7 +24,7 @@
     @endif
 
     <div class="staff-list">
-        @foreach ($staff as $member)
+        @forelse ($staff as $member)
             <article class="staff-card">
                 <div>
                     <h3>{{ $member->name }}</h3>
@@ -40,11 +40,17 @@
                     <form method="post" action="{{ route('admin.staff.destroy', $member) }}" onsubmit="return confirm('Delete this staff user?');">
                         @csrf
                         @method('delete')
-                        <button type="submit">Delete</button>
+                        <button class="danger" type="submit">Delete</button>
                     </form>
                 </div>
             </article>
-        @endforeach
+        @empty
+            <div class="empty-state">
+                <strong>No staff users yet.</strong>
+                <p style="margin: 0;">Create a staff user so your team can manage bookings securely.</p>
+                <a class="button primary" href="{{ route('admin.staff.create') }}">Add staff user</a>
+            </div>
+        @endforelse
     </div>
 </section>
 @endsection

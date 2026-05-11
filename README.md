@@ -13,6 +13,8 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Staff alert emails for new online bookings
 - JSON API endpoints for venue details, services, availability and booking creation
 - Staff-only login area
+- Polished staff dashboard with daily metrics, quick actions and setup health
+- Responsive admin navigation with active states and mobile scrolling
 - Admin booking diary
 - Business settings panel
 - Restaurant logo upload and brand colour controls
@@ -137,6 +139,7 @@ npm run build
 ## Admin Routes
 
 ```text
+/admin
 /admin/diary
 /admin/bookings/create
 /admin/services
