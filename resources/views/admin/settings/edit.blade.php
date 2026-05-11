@@ -31,6 +31,7 @@
             <button class="settings-tab" type="button" data-settings-tab="location" role="tab" aria-selected="false">Location</button>
             <button class="settings-tab" type="button" data-settings-tab="policies" role="tab" aria-selected="false">Booking policies</button>
             <button class="settings-tab" type="button" data-settings-tab="emails" role="tab" aria-selected="false">Email templates</button>
+            <button class="settings-tab" type="button" data-settings-tab="widget" role="tab" aria-selected="false">Widget</button>
         </div>
 
         <section class="panel settings-panel" data-settings-panel="identity" role="tabpanel">
@@ -195,6 +196,39 @@
             </div>
         </section>
 
+        <section class="panel settings-panel" data-settings-panel="widget" role="tabpanel" hidden>
+            <div class="settings-panel-header">
+                <div>
+                    <h2>Public booking widget</h2>
+                    <p>Brand the embeddable iframe widget restaurants can place on their own website.</p>
+                </div>
+                <span class="badge">Embed</span>
+            </div>
+            <div class="form-grid">
+                <label class="full" style="display: flex; gap: 10px; align-items: center; font-weight: 700;">
+                    <input type="checkbox" name="widget_enabled" value="1" @checked(old('widget_enabled', $venue->widget_enabled)) style="width: 18px; min-height: 18px;">
+                    Enable public booking widget
+                </label>
+                <div class="field full">
+                    <label for="widget_title">Widget title</label>
+                    <input id="widget_title" name="widget_title" value="{{ old('widget_title', $venue->widget_title ?: 'Book a table') }}">
+                </div>
+                <div class="field full">
+                    <label for="widget_intro">Widget intro</label>
+                    <textarea id="widget_intro" name="widget_intro">{{ old('widget_intro', $venue->widget_intro ?: 'Choose a date, party size and service to reserve your table online.') }}</textarea>
+                </div>
+                <div class="field full">
+                    <label for="widget_button_text">Button text</label>
+                    <input id="widget_button_text" name="widget_button_text" value="{{ old('widget_button_text', $venue->widget_button_text ?: 'Book a table') }}" required>
+                </div>
+                <div class="field full">
+                    <label for="embed_script">Example embed script</label>
+                    <textarea id="embed_script" readonly><div data-restaurant-booking-widget></div>
+<script src="{{ route('widget.script') }}" async></script></textarea>
+                </div>
+            </div>
+        </section>
+
         <div class="settings-save">
             <button class="primary" type="submit">Save settings</button>
         </div>
@@ -222,6 +256,7 @@
                 <span class="badge">{{ $venue->contact_email ? 'Email set' : 'Email missing' }}</span>
                 <span class="badge">{{ $venue->logo_url ? 'Logo set' : 'No logo' }}</span>
                 <span class="badge">{{ $venue->cancellation_notice_hours }}h notice</span>
+                <span class="badge">{{ $venue->widget_enabled ? 'Widget on' : 'Widget off' }}</span>
             </div>
             <p style="margin-bottom: 0;">Use the tabs to focus on one area at a time, then save all changes together.</p>
         </div>

@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerBookingController;
+use App\Http\Controllers\WidgetController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [BookingController::class, 'create'])->name('bookings.create');
@@ -23,6 +24,8 @@ Route::get('/manage-booking/{booking}/{token}', [CustomerBookingController::clas
 Route::get('/manage-booking/{booking}/{token}/edit', [CustomerBookingController::class, 'edit'])->name('bookings.manage.edit');
 Route::put('/manage-booking/{booking}/{token}', [CustomerBookingController::class, 'update'])->name('bookings.manage.update');
 Route::patch('/manage-booking/{booking}/{token}/cancel', [CustomerBookingController::class, 'cancel'])->name('bookings.manage.cancel');
+Route::get('/widget/bookings', [WidgetController::class, 'show'])->name('widget.bookings');
+Route::get('/widget/embed.js', [WidgetController::class, 'script'])->name('widget.script');
 
 Route::middleware('guest')->group(function () {
     Route::get('/staff/login', [AuthController::class, 'create'])->name('login');

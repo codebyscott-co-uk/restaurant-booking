@@ -98,7 +98,7 @@
         .booking-grid { grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); align-items: start; }
         .settings-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, .45fr); align-items: start; }
         .settings-form { display: grid; gap: 18px; }
-        .settings-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 8px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.72); box-shadow: var(--shadow-sm); backdrop-filter: blur(14px); }
+        .settings-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding: 8px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.72); box-shadow: var(--shadow-sm); backdrop-filter: blur(14px); }
         .settings-tab { min-height: 46px; background: transparent; box-shadow: none; }
         .settings-tab.active { border-color: color-mix(in srgb, var(--primary) 34%, white); background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 12%, white), rgba(255,255,255,.9)); color: var(--primary); box-shadow: 0 12px 28px color-mix(in srgb, var(--primary) 12%, transparent); }
         .settings-panel[hidden] { display: none; }

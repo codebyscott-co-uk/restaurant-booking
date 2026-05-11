@@ -42,6 +42,10 @@ class AdminManagementTest extends TestCase
                 'email_reminder_content' => '<p>Custom reminder</p>',
                 'email_staff_alert_content' => '<p>Custom staff alert</p>',
                 'email_footer_content' => '<p>Custom footer</p>',
+                'widget_enabled' => '1',
+                'widget_title' => 'Reserve online',
+                'widget_intro' => 'Book directly from our website.',
+                'widget_button_text' => 'Reserve now',
             ])
             ->assertRedirect();
 
@@ -53,6 +57,8 @@ class AdminManagementTest extends TestCase
             'allow_joined_tables' => true,
             'cancellation_notice_hours' => 12,
             'email_confirmation_content' => '<p><strong>Custom confirmation</strong></p>alert("bad")',
+            'widget_title' => 'Reserve online',
+            'widget_button_text' => 'Reserve now',
         ]);
     }
 
@@ -65,8 +71,10 @@ class AdminManagementTest extends TestCase
             ->assertOk()
             ->assertSee('data-settings-tab="identity"', false)
             ->assertSee('data-settings-tab="emails"', false)
+            ->assertSee('data-settings-tab="widget"', false)
             ->assertSee('Settings health')
             ->assertSee('Email templates')
+            ->assertSee('Example embed script')
             ->assertSee('contenteditable="true"', false)
             ->assertSee('email_confirmation_content');
     }

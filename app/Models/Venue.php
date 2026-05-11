@@ -38,12 +38,17 @@ class Venue extends Model
         'email_reminder_content',
         'email_staff_alert_content',
         'email_footer_content',
+        'widget_enabled',
+        'widget_title',
+        'widget_intro',
+        'widget_button_text',
     ];
 
     protected function casts(): array
     {
         return [
             'allow_joined_tables' => 'boolean',
+            'widget_enabled' => 'boolean',
         ];
     }
 

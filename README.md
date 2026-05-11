@@ -11,6 +11,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Booking confirmation page with reference number
 - Public booking lookup, modify and cancellation flow
 - Secure customer booking management links with private tokens
+- Embeddable public booking widget with iframe script and API-backed booking flow
 - Branded customer emails for confirmation, modification, cancellation and reminders
 - Branded staff alert emails for new online bookings
 - JSON API endpoints for venue details, services, availability and booking creation
@@ -24,6 +25,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Restaurant logo upload and brand colour controls
 - Booking terms and cancellation policy settings
 - WYSIWYG-style email template editing for branded customer and staff emails
+- Brandable public widget settings and example embed snippet
 - Configurable online change and cancellation notice period
 - Staff user create, edit, activate/deactivate and delete
 - Service management for lunch, dinner and other bookable sessions
@@ -166,6 +168,23 @@ All admin routes require staff login.
 ```
 
 Customers can use their booking reference and email address to open a private management link. Online changes and cancellations are blocked once the booking is inside the configured notice period.
+
+## Public Booking Widget
+
+Widget iframe route:
+
+```text
+/widget/bookings
+```
+
+Example embed snippet:
+
+```html
+<div data-restaurant-booking-widget></div>
+<script src="http://restaurant-booking.test/widget/embed.js" async></script>
+```
+
+The widget runs inside an iframe and uses the public API endpoints for services, availability and booking creation.
 
 ## Public API Routes
 

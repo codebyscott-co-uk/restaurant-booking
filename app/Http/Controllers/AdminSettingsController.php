@@ -50,12 +50,17 @@ class AdminSettingsController extends Controller
             'email_reminder_content' => ['nullable', 'string', 'max:6000'],
             'email_staff_alert_content' => ['nullable', 'string', 'max:6000'],
             'email_footer_content' => ['nullable', 'string', 'max:6000'],
+            'widget_enabled' => ['nullable', 'boolean'],
+            'widget_title' => ['nullable', 'string', 'max:255'],
+            'widget_intro' => ['nullable', 'string', 'max:1000'],
+            'widget_button_text' => ['required', 'string', 'max:80'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'remove_logo' => ['nullable', 'boolean'],
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
         $validated['allow_joined_tables'] = $request->boolean('allow_joined_tables');
+        $validated['widget_enabled'] = $request->boolean('widget_enabled');
 
         foreach ([
             'email_confirmation_content',
