@@ -48,6 +48,16 @@ class Venue extends Model
         return $this->hasMany(Service::class);
     }
 
+    public function openingHours(): HasMany
+    {
+        return $this->hasMany(OpeningHour::class);
+    }
+
+    public function closures(): HasMany
+    {
+        return $this->hasMany(Closure::class);
+    }
+
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);

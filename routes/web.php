@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminAvailabilityController;
 use App\Http\Controllers\AdminDiaryController;
 use App\Http\Controllers\AdminDiningAreaController;
 use App\Http\Controllers\AdminRestaurantTableController;
@@ -28,6 +29,10 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
     Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);
+    Route::get('/availability', [AdminAvailabilityController::class, 'index'])->name('availability.index');
+    Route::put('/availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');
+    Route::post('/availability/closures', [AdminAvailabilityController::class, 'storeClosure'])->name('availability.closures.store');
+    Route::delete('/availability/closures/{closure}', [AdminAvailabilityController::class, 'destroyClosure'])->name('availability.closures.destroy');
     Route::get('/settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
     Route::resource('staff', AdminStaffController::class)

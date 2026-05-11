@@ -38,4 +38,14 @@ class Service extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function openingHours(): HasMany
+    {
+        return $this->hasMany(OpeningHour::class);
+    }
+
+    public function closures(): HasMany
+    {
+        return $this->hasMany(Closure::class);
+    }
 }

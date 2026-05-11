@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\DiningArea;
+use App\Models\OpeningHour;
 use App\Models\RestaurantTable;
 use App\Models\Service;
 use App\Models\User;
@@ -101,6 +102,19 @@ class DatabaseSeeder extends Seeder
             'min_covers' => 1,
             'max_covers' => 8,
         ]);
+
+        foreach ([$lunch, $dinner] as $service) {
+            for ($day = 0; $day <= 6; $day++) {
+                OpeningHour::create([
+                    'venue_id' => $venue->id,
+                    'service_id' => $service->id,
+                    'day_of_week' => $day,
+                    'opens_at' => in_array($day, [0, 6], true) ? null : $service->starts_at,
+                    'closes_at' => in_array($day, [0, 6], true) ? null : $service->ends_at,
+                    'is_closed' => in_array($day, [0, 6], true),
+                ]);
+            }
+        }
 
         $customer = Customer::create([
             'first_name' => 'Amelia',
