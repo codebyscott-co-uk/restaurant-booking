@@ -20,7 +20,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Responsive admin navigation with active states and mobile scrolling
 - Staff-only sidebar navigation with grouped admin workspace sections
 - Premium theme layer with animated cards, refined buttons, focus states and modal confirmations
-- Admin booking diary
+- Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Sectioned business settings workspace
 - Restaurant logo upload and brand colour controls
 - Booking terms and cancellation policy settings

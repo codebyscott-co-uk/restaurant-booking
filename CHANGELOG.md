@@ -26,7 +26,7 @@ This project follows a simple changelog style while it is in early development.
 - Staff-only sidebar navigation with grouped admin workspace sections and mobile menu toggle.
 - Shared UI polish for admin metrics, empty states, success states and compact staff pages.
 - Premium theme styling with animated surfaces, refined controls, better focus states and modal confirmations for destructive actions.
-- Admin booking diary with daily booking overview.
+- Modern staff diary with day/week views, service filters and mobile-friendly booking cards.
 - Business settings panel for restaurant details, address, brand colours and policies.
 - Configurable booking rules for lead time, advance booking window, maximum party size, maximum slot covers and joined-table allocation.
 - Restaurant logo upload and removal.

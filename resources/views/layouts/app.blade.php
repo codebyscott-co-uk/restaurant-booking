@@ -133,6 +133,19 @@
         .metric strong { display: block; font-size: 30px; letter-spacing: 0; }
         .metric span { color: var(--muted); font-weight: 700; font-size: 13px; }
         .diary { display: grid; gap: 12px; }
+        .diary-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: end; margin-bottom: 18px; }
+        .view-switch { display: flex; gap: 8px; flex-wrap: wrap; }
+        .week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+        .day-tile { min-height: 96px; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.82); text-decoration: none; box-shadow: var(--shadow-sm); }
+        .day-tile.active { border-color: color-mix(in srgb, var(--primary) 36%, white); background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 10%, white), #fff); }
+        .day-tile strong { display: block; font-size: 20px; }
+        .day-tile span { color: var(--muted); font-size: 12px; font-weight: 800; }
+        .day-count { margin-top: 10px; color: var(--primary); font-weight: 900; }
+        .timeline-section { display: grid; gap: 12px; }
+        .timeline-day { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 6px; }
+        .booking-time { display: grid; gap: 4px; }
+        .booking-time strong { font-size: 24px; }
+        .booking-meta { display: flex; flex-wrap: wrap; gap: 6px; }
         .booking-card { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 14px; align-items: start; background: rgba(255,255,255,.92); border: 1px solid var(--line); border-left: 6px solid var(--primary); border-radius: var(--radius); padding: 14px; box-shadow: 0 10px 26px rgba(17, 24, 39, .055); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; animation: riseIn .42s ease both; }
         .booking-card:hover, .staff-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: color-mix(in srgb, var(--primary) 24%, var(--line)); }
         .badge { display: inline-flex; align-items: center; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--line) 82%, white); padding: 5px 9px; font-size: 12px; font-weight: 800; color: var(--muted); background: rgba(255,255,255,.86); box-shadow: 0 4px 12px rgba(17, 24, 39, .04); }
@@ -179,8 +192,9 @@
             .topbar-inner { align-items: flex-start; flex-direction: column; padding: 12px 0; }
             .nav { width: 100%; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
             .nav a, .nav form, .nav button { flex: 0 0 auto; text-align: center; white-space: nowrap; }
-            .booking-grid, .dashboard-grid, .settings-grid, .settings-tabs, .form-grid, .metric-row, .staff-card, .quick-actions { grid-template-columns: 1fr; }
+            .booking-grid, .dashboard-grid, .settings-grid, .settings-tabs, .form-grid, .metric-row, .staff-card, .quick-actions, .diary-toolbar, .week-strip { grid-template-columns: 1fr; }
             .booking-card { grid-template-columns: 1fr; }
+            .day-tile { min-height: auto; }
             .site-footer-inner { align-items: flex-start; flex-direction: column; }
             .powered-by img { height: 30px; max-width: 160px; }
             h1 { font-size: 42px; }

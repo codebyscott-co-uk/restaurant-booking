@@ -14,18 +14,33 @@ class AdminDiaryController extends Controller
     {
         $venue = Venue::with(['services', 'diningAreas.tables'])->firstOrFail();
         $date = Carbon::parse($request->query('date', today($venue->timezone)->toDateString()), $venue->timezone);
+        $view = $request->query('view') === 'week' ? 'week' : 'day';
+        $serviceId = $request->integer('service_id') ?: null;
+        $services = $venue->services()->orderBy('starts_at')->get();
+        $periodStart = $view === 'week' ? $date->copy()->startOfWeek() : $date->copy()->startOfDay();
+        $periodEnd = $view === 'week' ? $date->copy()->endOfWeek() : $date->copy()->endOfDay();
 
         $bookings = Booking::with(['customer', 'service', 'tables.diningArea'])
             ->where('venue_id', $venue->id)
-            ->whereBetween('starts_at', [$date->copy()->startOfDay(), $date->copy()->endOfDay()])
+            ->whereBetween('starts_at', [$periodStart, $periodEnd])
+            ->when($serviceId, fn ($query) => $query->where('service_id', $serviceId))
             ->orderBy('starts_at')
             ->get();
+
+        $days = collect(range(0, $view === 'week' ? 6 : 0))
+            ->map(fn ($offset) => $periodStart->copy()->addDays($offset));
 
         return view('admin.diary', [
             'venue' => $venue,
             'date' => $date,
+            'view' => $view,
+            'serviceId' => $serviceId,
+            'periodStart' => $periodStart,
+            'periodEnd' => $periodEnd,
+            'days' => $days,
             'bookings' => $bookings,
-            'services' => $venue->services()->orderBy('starts_at')->get(),
+            'bookingsByDay' => $bookings->groupBy(fn (Booking $booking) => $booking->starts_at->toDateString()),
+            'services' => $services,
             'statusCounts' => $bookings->countBy('status'),
         ]);
     }

@@ -110,7 +110,22 @@ class AdminBookingsTest extends TestCase
         $this->actingAs(User::first())
             ->get('/admin/diary')
             ->assertOk()
-            ->assertSee('Add booking');
+            ->assertSee('Add booking')
+            ->assertSee('Day timeline')
+            ->assertSee('All services');
+    }
+
+    public function test_staff_can_view_week_diary_and_filter_by_service(): void
+    {
+        $this->seed();
+        $service = Service::where('name', 'Lunch')->firstOrFail();
+
+        $this->actingAs(User::first())
+            ->get('/admin/diary?view=week&service_id='.$service->id)
+            ->assertOk()
+            ->assertSee('Week timeline')
+            ->assertSee('Lunch')
+            ->assertDontSee('Dinner ·');
     }
 
     public function test_guest_cannot_update_booking_status(): void
