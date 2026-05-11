@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAvailabilityController;
+use App\Http\Controllers\AdminBillingController;
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDiaryController;
@@ -60,6 +61,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::delete('/availability/closures/{closure}', [AdminAvailabilityController::class, 'destroyClosure'])->name('availability.closures.destroy');
     Route::get('/settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
+    Route::get('/billing', [AdminBillingController::class, 'index'])->name('billing.index');
+    Route::post('/billing/checkout', [AdminBillingController::class, 'checkout'])->name('billing.checkout');
     Route::resource('staff', AdminStaffController::class)
         ->parameters(['staff' => 'user'])
         ->except(['show']);
