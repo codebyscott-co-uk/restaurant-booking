@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDiaryController;
 use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\AdminServiceController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
@@ -22,6 +23,7 @@ Route::post('/staff/logout', [AuthController::class, 'destroy'])
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/diary', AdminDiaryController::class)->name('diary');
+    Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::get('/settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
     Route::resource('staff', AdminStaffController::class)
