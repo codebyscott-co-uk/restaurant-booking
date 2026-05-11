@@ -136,7 +136,7 @@ class BookingController extends Controller
     private function reference(): string
     {
         do {
-            $reference = 'HH'.Str::upper(Str::random(6));
+            $reference = 'CBR'.Str::upper(Str::random(6));
         } while (Booking::where('booking_reference', $reference)->exists());
 
         return $reference;
