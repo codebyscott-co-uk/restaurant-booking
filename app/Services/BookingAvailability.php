@@ -57,6 +57,10 @@ class BookingAvailability
             return collect();
         }
 
+        if ($service && ! $this->isWithinOpeningHours($venue, $service, $startsAt, $endsAt)) {
+            return collect();
+        }
+
         if (! $this->isPartySizeAllowed($venue, $service, $partySize)) {
             return collect();
         }
@@ -135,6 +139,22 @@ class BookingAvailability
         }
 
         return true;
+    }
+
+    public function isWithinOpeningHours(Venue $venue, Service $service, Carbon $startsAt, Carbon $endsAt): bool
+    {
+        $hours = OpeningHour::where('service_id', $service->id)
+            ->where('day_of_week', $startsAt->dayOfWeek)
+            ->first();
+
+        if (! $hours || $hours->is_closed || ! $hours->opens_at || ! $hours->closes_at) {
+            return false;
+        }
+
+        $opensAt = Carbon::parse($startsAt->toDateString().' '.$hours->opens_at, $venue->timezone);
+        $closesAt = Carbon::parse($startsAt->toDateString().' '.$hours->closes_at, $venue->timezone);
+
+        return $startsAt->greaterThanOrEqualTo($opensAt) && $endsAt->lessThanOrEqualTo($closesAt);
     }
 
     public function isWithinBookingWindow(Venue $venue, Carbon $startsAt, bool $allowPastForStaff = false): bool

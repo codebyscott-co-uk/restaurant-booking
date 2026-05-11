@@ -11,6 +11,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Booking confirmation page with reference number
 - Customer booking confirmation emails
 - Staff alert emails for new online bookings
+- JSON API endpoints for venue details, services, availability and booking creation
 - Staff-only login area
 - Admin booking diary
 - Business settings panel
@@ -147,12 +148,38 @@ npm run build
 
 All admin routes require staff login.
 
+## Public API Routes
+
+These endpoints are intended as the starting point for a future mobile app or headless booking frontend.
+
+```text
+GET /api/v1/venue
+GET /api/v1/services
+GET /api/v1/availability?service_id=1&date=2026-05-18&party_size=2
+POST /api/v1/bookings
+```
+
+Example booking payload:
+
+```json
+{
+  "service_id": 1,
+  "party_size": 2,
+  "date": "2026-05-18",
+  "time": "12:00",
+  "first_name": "Grace",
+  "last_name": "Taylor",
+  "email": "grace@example.com",
+  "phone": "07111 222333",
+  "special_requests": "Window seat if possible."
+}
+```
+
 ## Roadmap
 
 Planned next steps:
 
 - Add SMS notifications
-- Add API endpoints for future mobile app use
 - Prepare deployment configuration
 
 ## Notes

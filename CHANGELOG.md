@@ -12,6 +12,7 @@ This project follows a simple changelog style while it is in early development.
 - Booking confirmation page with customer reference.
 - Customer booking confirmation emails.
 - Staff alert emails for new online bookings.
+- JSON API endpoints for venue details, services, availability lookup and booking creation.
 - Staff authentication and protected admin routes.
 - Admin booking diary with daily booking overview.
 - Business settings panel for restaurant details, address, brand colours and policies.
@@ -27,7 +28,7 @@ This project follows a simple changelog style while it is in early development.
 - Delete safeguards for services, tables and dining areas that are already in use.
 - Code by Scott footer branding.
 - Local SQLite seed data for demo restaurant, staff account, services, tables and bookings.
-- Feature test coverage for bookings, authentication, settings, staff, services, availability, dining areas, tables and booking rules.
+- Feature test coverage for bookings, authentication, settings, staff, services, availability, dining areas, tables, booking rules and API endpoints.
 
 ### Changed
 
