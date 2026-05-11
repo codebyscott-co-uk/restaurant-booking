@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Mail\BookingConfirmationMail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class BookingFlowTest extends TestCase
@@ -13,6 +15,7 @@ class BookingFlowTest extends TestCase
     public function test_guest_can_create_a_booking(): void
     {
         $this->seed();
+        Mail::fake();
 
         $response = $this->post('/book', [
             'service_id' => 1,
@@ -29,6 +32,7 @@ class BookingFlowTest extends TestCase
         $response->assertRedirect();
         $this->assertDatabaseHas('customers', ['email' => 'grace@example.test']);
         $this->assertDatabaseHas('bookings', ['party_size' => 2, 'status' => 'confirmed']);
+        Mail::assertSent(BookingConfirmationMail::class, fn (BookingConfirmationMail $mail) => $mail->hasTo('grace@example.test'));
     }
 
     public function test_public_booking_page_does_not_show_diary_link(): void

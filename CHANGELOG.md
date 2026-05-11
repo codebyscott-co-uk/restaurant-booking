@@ -10,6 +10,7 @@ This project follows a simple changelog style while it is in early development.
 
 - Mobile-friendly public booking form.
 - Booking confirmation page with customer reference.
+- Customer booking confirmation emails.
 - Staff authentication and protected admin routes.
 - Admin booking diary with daily booking overview.
 - Business settings panel for restaurant details, address, brand colours and policies.

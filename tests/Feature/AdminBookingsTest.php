@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Mail\BookingConfirmationMail;
 use App\Models\Booking;
 use App\Models\Service;
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class AdminBookingsTest extends TestCase
@@ -23,6 +25,7 @@ class AdminBookingsTest extends TestCase
     public function test_staff_can_create_manual_phone_booking(): void
     {
         $this->seed();
+        Mail::fake();
         $service = Service::where('name', 'Lunch')->firstOrFail();
         $nextMonday = now()->next('Monday')->toDateString();
 
@@ -51,6 +54,7 @@ class AdminBookingsTest extends TestCase
             'status' => 'confirmed',
             'internal_notes' => 'Regular guest.',
         ]);
+        Mail::assertSent(BookingConfirmationMail::class, fn (BookingConfirmationMail $mail) => $mail->hasTo('clara@example.test'));
     }
 
     public function test_manual_booking_cannot_double_book_a_table(): void

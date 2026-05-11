@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingConfirmationMail;
 use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\Service;
@@ -10,6 +11,7 @@ use App\Services\BookingAvailability;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -88,6 +90,7 @@ class BookingController extends Controller
         ]);
 
         $booking->tables()->attach($tables->pluck('id'));
+        Mail::to($customer->email)->send(new BookingConfirmationMail($booking));
 
         return redirect()->route('bookings.show', $booking)->with('status', 'Your table is booked.');
     }
