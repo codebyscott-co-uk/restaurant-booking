@@ -16,6 +16,7 @@ This project follows a simple changelog style while it is in early development.
 - Branded customer emails for confirmation, modification, cancellation and reminder flows.
 - Branded staff alert emails for new online bookings.
 - Reusable email layout components for booking messages.
+- WYSIWYG-style settings editor for customising customer and staff email copy.
 - JSON API endpoints for venue details, services, availability lookup and booking creation with customer manage URLs.
 - Staff authentication and protected admin routes.
 - Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.
@@ -44,6 +45,7 @@ This project follows a simple changelog style while it is in early development.
 - Replaced the default Laravel README with project documentation.
 - Polished the demo restaurant seed data.
 - Updated booking references to use the `CBR` prefix.
+- Kept the Code by Scott footer pinned to the bottom on short pages.
 
 ### Security
 

@@ -44,12 +44,29 @@ class AdminSettingsController extends Controller
             'accent_colour' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'booking_terms' => ['nullable', 'string', 'max:4000'],
             'cancellation_policy' => ['nullable', 'string', 'max:4000'],
+            'email_confirmation_content' => ['nullable', 'string', 'max:6000'],
+            'email_modification_content' => ['nullable', 'string', 'max:6000'],
+            'email_cancellation_content' => ['nullable', 'string', 'max:6000'],
+            'email_reminder_content' => ['nullable', 'string', 'max:6000'],
+            'email_staff_alert_content' => ['nullable', 'string', 'max:6000'],
+            'email_footer_content' => ['nullable', 'string', 'max:6000'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'remove_logo' => ['nullable', 'boolean'],
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
         $validated['allow_joined_tables'] = $request->boolean('allow_joined_tables');
+
+        foreach ([
+            'email_confirmation_content',
+            'email_modification_content',
+            'email_cancellation_content',
+            'email_reminder_content',
+            'email_staff_alert_content',
+            'email_footer_content',
+        ] as $field) {
+            $validated[$field] = $this->cleanEmailHtml($validated[$field] ?? null);
+        }
 
         if ($request->boolean('remove_logo') && $venue->logo_path) {
             Storage::disk('public')->delete($venue->logo_path);
@@ -69,5 +86,19 @@ class AdminSettingsController extends Controller
         $venue->update($validated);
 
         return back()->with('status', 'Business settings updated.');
+    }
+
+    private function cleanEmailHtml(?string $html): ?string
+    {
+        if (! $html) {
+            return null;
+        }
+
+        $html = strip_tags($html, '<p><br><strong><b><em><i><ul><ol><li><a>');
+        $html = preg_replace('/\s*on\w+="[^"]*"/i', '', $html);
+        $html = preg_replace("/\s*on\w+='[^']*'/i", '', $html);
+        $html = preg_replace('/href=("|\')javascript:[^"\']*("|\')/i', 'href="#"', $html);
+
+        return trim($html) ?: null;
     }
 }

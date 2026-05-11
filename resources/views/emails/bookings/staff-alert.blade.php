@@ -1,6 +1,8 @@
 <x-email.layout :venue="$booking->venue" title="New booking" eyebrow="Staff alert">
     <h1 style="margin: 0 0 14px; font-size: 30px; line-height: 1.12;">New booking: {{ $booking->customer->full_name }}</h1>
-    <p style="margin: 0; color: #62706d;">{{ $booking->party_size }} guests for {{ $booking->service->name }}.</p>
+    <div style="color: #62706d;">
+        {!! $booking->venue->email_staff_alert_content ?: '<p style="margin: 0;">A new booking has arrived. Review the guest details and allocated tables below.</p>' !!}
+    </div>
 
     <x-email.booking-details :booking="$booking" />
 

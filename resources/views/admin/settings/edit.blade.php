@@ -130,6 +130,31 @@
                 <label for="cancellation_policy">Cancellation policy</label>
                 <textarea id="cancellation_policy" name="cancellation_policy">{{ old('cancellation_policy', $venue->cancellation_policy) }}</textarea>
             </div>
+        </div>
+
+        <h2 style="margin-top: 28px;">Email templates</h2>
+        <p class="muted">Customise the main message in each branded email. Booking details, buttons and footer branding are added automatically.</p>
+        <div class="form-grid">
+            @foreach ([
+                'email_confirmation_content' => ['Confirmation email', '<p>Thanks for booking with us. We have your reservation and look forward to welcoming you.</p>'],
+                'email_modification_content' => ['Modification email', '<p>Your booking has been updated. Please check the latest details below.</p>'],
+                'email_cancellation_content' => ['Cancellation email', '<p>Your booking has been cancelled. We hope to welcome you another time.</p>'],
+                'email_reminder_content' => ['Reminder email', '<p>This is a friendly reminder about your upcoming reservation. We look forward to seeing you soon.</p>'],
+                'email_staff_alert_content' => ['Staff alert email', '<p>A new booking has arrived. Review the guest details and allocated tables below.</p>'],
+                'email_footer_content' => ['Email footer note', '<p>Online changes and cancellations close before arrival according to your booking policy.</p>'],
+            ] as $field => [$label, $fallback])
+                @php($value = old($field, $venue->{$field} ?: $fallback))
+                <div class="field full">
+                    <label for="{{ $field }}">{{ $label }}</label>
+                    <div class="editor-toolbar" aria-label="{{ $label }} formatting">
+                        <button type="button" data-editor-command="bold"><strong>B</strong></button>
+                        <button type="button" data-editor-command="italic"><em>I</em></button>
+                        <button type="button" data-editor-command="insertUnorderedList">List</button>
+                    </div>
+                    <div class="wysiwyg-editor" contenteditable="true" data-editor="#{{ $field }}">{!! $value !!}</div>
+                    <textarea id="{{ $field }}" name="{{ $field }}" hidden>{{ $value }}</textarea>
+                </div>
+            @endforeach
             <button class="primary full" type="submit">Save settings</button>
         </div>
     </form>
@@ -147,6 +172,8 @@
             <span class="badge" style="border-color: var(--primary); color: var(--primary);">Primary</span>
             <span class="badge" style="border-color: var(--accent); color: var(--accent);">Accent</span>
         </div>
+        <h2 style="margin-top: 28px;">Email branding</h2>
+        <p>Customer emails use your logo, brand colours, policy text and the editable template copy.</p>
     </aside>
 </section>
 @endsection

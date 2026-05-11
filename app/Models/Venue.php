@@ -32,6 +32,12 @@ class Venue extends Model
         'accent_colour',
         'booking_terms',
         'cancellation_policy',
+        'email_confirmation_content',
+        'email_modification_content',
+        'email_cancellation_content',
+        'email_reminder_content',
+        'email_staff_alert_content',
+        'email_footer_content',
     ];
 
     protected function casts(): array

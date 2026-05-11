@@ -36,6 +36,8 @@
                 linear-gradient(180deg, #ffffff 0%, var(--paper) 42%, #f3f6f4 100%);
             min-height: 100vh;
             text-rendering: optimizeLegibility;
+            display: flex;
+            flex-direction: column;
         }
         body::before {
             content: "";
@@ -68,7 +70,7 @@
         .button.danger:hover, button.danger:hover { background: #fff7f7; box-shadow: 0 14px 34px rgba(220, 38, 38, .11); }
         .admin-menu-button { display: none; }
         .logout-form { margin: 0; }
-        .admin-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 0; min-height: calc(100vh - 68px); }
+        .admin-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 0; min-height: calc(100vh - 68px); flex: 1; }
         .admin-sidebar { position: sticky; top: 68px; align-self: start; height: calc(100vh - 68px); padding: 18px; border-right: 1px solid rgba(223, 231, 228, .9); background: rgba(255,255,255,.72); backdrop-filter: blur(18px) saturate(1.16); box-shadow: 18px 0 48px rgba(17, 24, 39, .05); overflow-y: auto; }
         .admin-sidebar-head { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 9%, white), rgba(255,255,255,.92)); box-shadow: var(--shadow-sm); }
         .admin-sidebar-head strong { display: block; font-size: 16px; }
@@ -81,9 +83,9 @@
         .admin-nav a:hover { color: var(--ink); background: rgba(255,255,255,.76); border-color: var(--line); transform: translateX(2px); box-shadow: var(--shadow-sm); }
         .admin-nav a.active { color: var(--primary); background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 12%, white), rgba(255,255,255,.92)); border-color: color-mix(in srgb, var(--primary) 28%, white); box-shadow: 0 14px 34px color-mix(in srgb, var(--primary) 13%, transparent); }
         .admin-nav a.active::after { background: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent); }
-        .admin-main { min-width: 0; }
+        .admin-main { min-width: 0; display: flex; flex-direction: column; }
         .admin-backdrop { display: none; }
-        main { animation: pageIn .42s ease both; }
+        main { animation: pageIn .42s ease both; flex: 1 0 auto; }
         .hero { padding: 44px 0 28px; position: relative; }
         .hero.compact { padding-bottom: 12px; }
         .eyebrow { color: var(--primary); font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
@@ -134,7 +136,7 @@
         .quick-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
         .quick-actions a { min-height: 64px; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(180deg, #fff, color-mix(in srgb, var(--paper) 56%, white)); }
         .logo-preview { width: 160px; max-width: 100%; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; padding: 12px; box-shadow: var(--shadow-sm); }
-        .site-footer { border-top: 1px solid rgba(223, 231, 228, .84); background: rgba(255,255,255,.78); margin-top: 28px; backdrop-filter: blur(14px); }
+        .site-footer { border-top: 1px solid rgba(223, 231, 228, .84); background: rgba(255,255,255,.78); margin-top: auto; backdrop-filter: blur(14px); }
         .site-footer-inner { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; }
         .powered-by { display: flex; align-items: center; gap: 12px; color: var(--muted); text-decoration: none; font-weight: 700; }
         .powered-by img { display: block; height: 34px; width: auto; max-width: 180px; object-fit: contain; }
@@ -145,6 +147,12 @@
         .modal-backdrop.is-open .modal { transform: translateY(0) scale(1); }
         .modal h2 { margin-bottom: 8px; }
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+        .editor-toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 1px solid var(--line); border-bottom: 0; border-radius: var(--radius) var(--radius) 0 0; background: rgba(255,255,255,.74); }
+        .editor-toolbar button { min-height: 36px; padding: 7px 10px; }
+        .wysiwyg-editor { min-height: 130px; border: 1px solid var(--line); border-radius: 0 0 var(--radius) var(--radius); background: rgba(255,255,255,.92); padding: 12px; line-height: 1.55; overflow: auto; }
+        .wysiwyg-editor:focus { outline: 0; box-shadow: var(--focus); border-color: var(--primary); }
+        .wysiwyg-editor p:first-child { margin-top: 0; }
+        .wysiwyg-editor p:last-child { margin-bottom: 0; }
         @keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @media (prefers-reduced-motion: reduce) {
@@ -291,6 +299,25 @@
             adminBackdrop?.addEventListener('click', closeAdminMenu);
             document.querySelectorAll('.admin-nav a').forEach((link) => {
                 link.addEventListener('click', closeAdminMenu);
+            });
+
+            document.querySelectorAll('[data-editor]').forEach((editor) => {
+                const textarea = document.querySelector(editor.dataset.editor);
+                const toolbar = editor.previousElementSibling;
+                const sync = () => {
+                    textarea.value = editor.innerHTML.trim();
+                };
+
+                toolbar?.querySelectorAll('[data-editor-command]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        document.execCommand(button.dataset.editorCommand, false, null);
+                        editor.focus();
+                        sync();
+                    });
+                });
+
+                editor.addEventListener('input', sync);
+                editor.closest('form')?.addEventListener('submit', sync);
             });
 
             const closeModal = () => {

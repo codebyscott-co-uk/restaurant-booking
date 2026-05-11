@@ -23,6 +23,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Business settings panel
 - Restaurant logo upload and brand colour controls
 - Booking terms and cancellation policy settings
+- WYSIWYG-style email template editing for branded customer and staff emails
 - Configurable online change and cancellation notice period
 - Staff user create, edit, activate/deactivate and delete
 - Service management for lunch, dinner and other bookable sessions

@@ -1,6 +1,8 @@
 <x-email.layout :venue="$booking->venue" title="Booking reminder" eyebrow="Booking reminder">
     <h1 style="margin: 0 0 14px; font-size: 30px; line-height: 1.12;">We’ll see you soon</h1>
-    <p style="margin: 0; color: #62706d;">Hi {{ $booking->customer->first_name }}, this is a reminder for your upcoming reservation at {{ $booking->venue->name }}.</p>
+    <div style="color: #62706d;">
+        {!! $booking->venue->email_reminder_content ?: '<p style="margin: 0;">This is a friendly reminder about your upcoming reservation. We look forward to seeing you soon.</p>' !!}
+    </div>
 
     <x-email.booking-details :booking="$booking" />
 
@@ -8,5 +10,7 @@
         View booking
     </x-email.button>
 
-    <p style="margin: 18px 0 0; color: #62706d;">Tables are held for 15 minutes. Please contact us if you are running late.</p>
+    <div style="margin-top: 12px; color: #62706d;">
+        {!! $booking->venue->email_footer_content ?: '<p style="margin: 0;">Online changes and cancellations close before arrival according to your booking policy.</p>' !!}
+    </div>
 </x-email.layout>

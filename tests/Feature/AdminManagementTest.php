@@ -36,6 +36,12 @@ class AdminManagementTest extends TestCase
                 'accent_colour' => '#abcdef',
                 'booking_terms' => 'Updated booking terms.',
                 'cancellation_policy' => 'Updated cancellation policy.',
+                'email_confirmation_content' => '<p><strong>Custom confirmation</strong></p><script>alert("bad")</script>',
+                'email_modification_content' => '<p>Custom modification</p>',
+                'email_cancellation_content' => '<p>Custom cancellation</p>',
+                'email_reminder_content' => '<p>Custom reminder</p>',
+                'email_staff_alert_content' => '<p>Custom staff alert</p>',
+                'email_footer_content' => '<p>Custom footer</p>',
             ])
             ->assertRedirect();
 
@@ -46,7 +52,20 @@ class AdminManagementTest extends TestCase
             'maximum_party_size' => 12,
             'allow_joined_tables' => true,
             'cancellation_notice_hours' => 12,
+            'email_confirmation_content' => '<p><strong>Custom confirmation</strong></p>alert("bad")',
         ]);
+    }
+
+    public function test_settings_page_has_email_template_editor(): void
+    {
+        $this->seed();
+
+        $this->actingAs(User::first())
+            ->get('/admin/settings')
+            ->assertOk()
+            ->assertSee('Email templates')
+            ->assertSee('contenteditable="true"', false)
+            ->assertSee('email_confirmation_content');
     }
 
     public function test_staff_can_create_update_and_delete_staff_users(): void

@@ -34,4 +34,19 @@ class BookingEmailTest extends TestCase
             $this->assertStringContainsString('Restaurant booking software by Code by Scott.', $html);
         }
     }
+
+    public function test_customer_email_uses_custom_template_copy(): void
+    {
+        $this->seed();
+        $booking = Booking::with('venue', 'customer', 'service', 'tables.diningArea')->firstOrFail();
+        $booking->venue->update([
+            'email_confirmation_content' => '<p><strong>Custom welcome</strong> from the team.</p>',
+            'email_footer_content' => '<p>Custom footer note.</p>',
+        ]);
+
+        $html = (new BookingConfirmationMail($booking->fresh(['venue', 'customer', 'service', 'tables.diningArea'])))->render();
+
+        $this->assertStringContainsString('Custom welcome', $html);
+        $this->assertStringContainsString('Custom footer note.', $html);
+    }
 }
