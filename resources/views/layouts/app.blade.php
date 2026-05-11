@@ -1542,30 +1542,85 @@
                 0 14px 30px color-mix(in srgb, var(--gold) 13%, transparent),
                 inset 0 1px var(--glass-highlight);
         }
+        .admin-topbar {
+            overflow: visible;
+        }
+        .admin-topbar .admin-dropdown {
+            position: relative;
+            flex: 0 0 auto;
+        }
+        .admin-topbar .admin-dropdown-panel {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            z-index: 80;
+            width: min(320px, calc(100vw - 28px));
+            transform-origin: top right;
+            animation: dropdownFloatIn .16s ease both;
+        }
+        .admin-topbar .admin-dropdown-panel.profile {
+            width: min(340px, calc(100vw - 28px));
+        }
+        @keyframes dropdownFloatIn {
+            from {
+                opacity: 0;
+                transform: translate3d(0, -4px, 0) scale(.98);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
         .is-public::after,
         .admin-shell::after {
             content: "";
             position: fixed;
-            inset: -22% -18%;
+            inset: -34% -28%;
             z-index: 0;
             pointer-events: none;
-            opacity: .42;
+            opacity: .88;
             background:
-                radial-gradient(42% 34% at 18% 20%, rgba(255,255,255,.68), transparent 62%),
-                radial-gradient(34% 28% at 74% 14%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 68%),
-                radial-gradient(32% 36% at 58% 76%, rgba(255,255,255,.48), transparent 66%),
-                radial-gradient(30% 26% at 16% 84%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 68%);
-            filter: blur(28px) saturate(1.05);
+                linear-gradient(118deg, transparent 0 16%, rgba(255,255,255,.82) 21%, rgba(245, 222, 181, .5) 27%, transparent 35% 100%),
+                linear-gradient(132deg, transparent 0 30%, rgba(223, 184, 116, .46) 36%, rgba(255, 248, 232, .72) 43%, transparent 54% 100%),
+                linear-gradient(104deg, transparent 0 52%, rgba(237, 206, 156, .44) 58%, rgba(255,255,255,.58) 64%, transparent 74% 100%),
+                radial-gradient(38% 32% at 14% 18%, rgba(255,255,255,.9), transparent 68%),
+                radial-gradient(32% 30% at 76% 12%, color-mix(in srgb, var(--gold) 34%, transparent), transparent 70%),
+                conic-gradient(from 132deg at 52% 45%, transparent 0 20%, rgba(255,255,255,.42) 32%, color-mix(in srgb, var(--gold) 24%, transparent) 48%, transparent 66% 100%);
+            background-size: 120% 120%, 132% 132%, 116% 116%, 100% 100%, 100% 100%, 100% 100%;
+            filter: blur(22px) saturate(1.14);
             transform: translate3d(0,0,0);
-            animation: ambientGlass 28s ease-in-out infinite alternate;
+            animation: ambientGlass 18s ease-in-out infinite alternate;
+        }
+        .is-public {
+            background:
+                radial-gradient(circle at 10% 8%, rgba(255,255,255,.9), transparent 30%),
+                radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 34%),
+                radial-gradient(circle at 48% 92%, rgba(230, 199, 151, .28), transparent 36%),
+                linear-gradient(180deg, #fff9ef 0%, #f7f1e8 48%, #efe4d2 100%);
+        }
+        .admin-shell {
+            background:
+                radial-gradient(circle at 12% 10%, rgba(255,255,255,.82), transparent 28%),
+                radial-gradient(circle at 78% 16%, rgba(196, 154, 83, .28), transparent 34%),
+                radial-gradient(circle at 44% 86%, rgba(231, 194, 139, .24), transparent 38%),
+                linear-gradient(180deg, #fff9ef 0%, #f6efe3 48%, #efe4d2 100%);
         }
         html.dark .admin-shell::after {
-            opacity: .24;
+            opacity: .46;
             background:
-                radial-gradient(42% 34% at 18% 20%, rgba(255,255,255,.08), transparent 62%),
-                radial-gradient(34% 28% at 74% 14%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 68%),
-                radial-gradient(32% 36% at 58% 76%, rgba(255,255,255,.06), transparent 66%),
-                radial-gradient(30% 26% at 16% 84%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 68%);
+                linear-gradient(118deg, transparent 0 16%, rgba(255,255,255,.12) 21%, rgba(245, 222, 181, .12) 27%, transparent 35% 100%),
+                linear-gradient(132deg, transparent 0 30%, rgba(223, 184, 116, .2) 36%, rgba(255, 248, 232, .12) 43%, transparent 54% 100%),
+                linear-gradient(104deg, transparent 0 52%, rgba(237, 206, 156, .16) 58%, rgba(255,255,255,.1) 64%, transparent 74% 100%),
+                radial-gradient(38% 32% at 14% 18%, rgba(255,255,255,.12), transparent 68%),
+                radial-gradient(32% 30% at 76% 12%, color-mix(in srgb, var(--gold) 24%, transparent), transparent 70%),
+                conic-gradient(from 132deg at 52% 45%, transparent 0 20%, rgba(255,255,255,.08) 32%, color-mix(in srgb, var(--gold) 14%, transparent) 48%, transparent 66% 100%);
+        }
+        html.dark .admin-shell {
+            background:
+                radial-gradient(circle at 10% 8%, rgba(216, 181, 109, .16), transparent 30%),
+                radial-gradient(circle at 78% 18%, rgba(255,255,255,.06), transparent 34%),
+                radial-gradient(circle at 46% 88%, rgba(196, 154, 83, .12), transparent 38%),
+                linear-gradient(180deg, #15110d 0%, #1d1710 48%, #110e0a 100%);
         }
         .is-public > :not(.modal-backdrop),
         .admin-shell > * {
@@ -1577,18 +1632,22 @@
         }
         @keyframes ambientGlass {
             0% {
-                transform: translate3d(-1.5%, -1%, 0) rotate(-2deg) scale(1);
+                background-position: 0% 12%, 100% 0%, 18% 100%, 0 0, 0 0, 0 0;
+                transform: translate3d(-3%, -2%, 0) rotate(-4deg) scale(1.02);
             }
             50% {
-                transform: translate3d(1.5%, 1%, 0) rotate(2deg) scale(1.025);
+                background-position: 28% 4%, 72% 18%, 44% 78%, 0 0, 0 0, 0 0;
+                transform: translate3d(2.5%, 2%, 0) rotate(3deg) scale(1.07);
             }
             100% {
-                transform: translate3d(2.5%, -1.5%, 0) rotate(-1deg) scale(1.04);
+                background-position: 46% 18%, 48% 34%, 72% 58%, 0 0, 0 0, 0 0;
+                transform: translate3d(4%, -2.5%, 0) rotate(-2deg) scale(1.1);
             }
         }
         @media (prefers-reduced-motion: reduce) {
             .is-public::after,
-            .admin-shell::after {
+            .admin-shell::after,
+            .admin-topbar .admin-dropdown-panel {
                 animation: none;
             }
         }

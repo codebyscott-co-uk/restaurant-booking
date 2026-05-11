@@ -21,9 +21,9 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Staff-only login area
 - Polished staff dashboard with daily metrics, quick actions and setup health
 - Premium staff admin shell with sticky top bar, quick actions, notifications placeholder, profile menu and persistent light/dark mode
-- Premium cream-and-gold customer experience with liquid-glass cards, buttons, booking controls and subtle abstract ambient backgrounds
+- Premium cream-and-gold customer experience with liquid-glass cards, buttons, booking controls and animated abstract ribbon backgrounds
 - Responsive collapsible admin sidebar with grouped dropdown navigation sections
-- Refined hospitality SaaS admin theme with lighter typography, cream-and-gold accents, liquid-glass panels, polished buttons, subtle focus states and soft animated background light fields
+- Refined hospitality SaaS admin theme with lighter typography, cream-and-gold accents, liquid-glass panels, polished buttons, subtle focus states and soft animated ribbon backgrounds
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Sectioned business settings workspace
 - Restaurant logo upload and brand colour controls
