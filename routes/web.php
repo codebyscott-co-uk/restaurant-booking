@@ -11,11 +11,18 @@ use App\Http\Controllers\AdminServiceController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CustomerBookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [BookingController::class, 'create'])->name('bookings.create');
 Route::post('/book', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+Route::get('/manage-booking', [CustomerBookingController::class, 'lookup'])->name('bookings.lookup');
+Route::post('/manage-booking', [CustomerBookingController::class, 'find'])->name('bookings.lookup.find');
+Route::get('/manage-booking/{booking}/{token}', [CustomerBookingController::class, 'show'])->name('bookings.manage.show');
+Route::get('/manage-booking/{booking}/{token}/edit', [CustomerBookingController::class, 'edit'])->name('bookings.manage.edit');
+Route::put('/manage-booking/{booking}/{token}', [CustomerBookingController::class, 'update'])->name('bookings.manage.update');
+Route::patch('/manage-booking/{booking}/{token}/cancel', [CustomerBookingController::class, 'cancel'])->name('bookings.manage.cancel');
 
 Route::middleware('guest')->group(function () {
     Route::get('/staff/login', [AuthController::class, 'create'])->name('login');

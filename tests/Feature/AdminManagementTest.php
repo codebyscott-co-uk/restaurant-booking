@@ -30,6 +30,7 @@ class AdminManagementTest extends TestCase
                 'maximum_party_size' => 12,
                 'maximum_covers_per_slot' => 40,
                 'allow_joined_tables' => '1',
+                'cancellation_notice_hours' => 12,
                 'timezone' => 'Europe/London',
                 'primary_colour' => '#123456',
                 'accent_colour' => '#abcdef',
@@ -44,6 +45,7 @@ class AdminManagementTest extends TestCase
             'primary_colour' => '#123456',
             'maximum_party_size' => 12,
             'allow_joined_tables' => true,
+            'cancellation_notice_hours' => 12,
         ]);
     }
 

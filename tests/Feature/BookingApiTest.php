@@ -20,7 +20,8 @@ class BookingApiTest extends TestCase
         $this->getJson('/api/v1/venue')
             ->assertOk()
             ->assertJsonPath('data.name', 'The Demo Table')
-            ->assertJsonPath('data.maximum_party_size', 10);
+            ->assertJsonPath('data.maximum_party_size', 10)
+            ->assertJsonPath('data.cancellation_notice_hours', 24);
     }
 
     public function test_api_returns_services(): void
@@ -62,9 +63,11 @@ class BookingApiTest extends TestCase
         ])
             ->assertCreated()
             ->assertJsonPath('data.status', 'confirmed')
-            ->assertJsonPath('data.service', 'Lunch');
+            ->assertJsonPath('data.service', 'Lunch')
+            ->assertJsonStructure(['data' => ['manage_url']]);
 
         $this->assertDatabaseHas('bookings', ['source' => 'api', 'party_size' => 2]);
+        $this->assertNotNull(\App\Models\Booking::where('source', 'api')->firstOrFail()->customer_manage_token);
         Mail::assertSent(BookingConfirmationMail::class, fn (BookingConfirmationMail $mail) => $mail->hasTo('api@example.test'));
         Mail::assertSent(NewBookingStaffAlertMail::class, fn (NewBookingStaffAlertMail $mail) => $mail->hasTo('bookings@demo-restaurant.test'));
     }

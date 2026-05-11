@@ -18,11 +18,15 @@
         @if ($booking->special_requests)
             <p>{{ $booking->special_requests }}</p>
         @endif
-        <a class="button primary" href="{{ route('bookings.create') }}">Make another booking</a>
+        <div class="actions">
+            <a class="button primary" href="{{ route('bookings.manage.show', ['booking' => $booking, 'token' => $booking->customer_manage_token]) }}">Manage booking</a>
+            <a class="button subtle" href="{{ route('bookings.create') }}">Make another booking</a>
+        </div>
     </div>
     <div class="panel">
         <h2>Restaurant policy</h2>
         <p>{{ $booking->venue->cancellation_policy }}</p>
+        <p class="muted">Online changes and cancellations close {{ $booking->venue->cancellation_notice_hours }} hours before arrival.</p>
         <p class="muted">Allocated table: {{ $booking->tables->pluck('name')->join(', ') ?: 'To be assigned' }}</p>
     </div>
 </section>

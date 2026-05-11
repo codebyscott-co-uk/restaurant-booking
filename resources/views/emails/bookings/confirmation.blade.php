@@ -42,8 +42,11 @@
                                 <p style="margin: 18px 0 0;"><strong>Requests:</strong> {{ $booking->special_requests }}</p>
                             @endif
 
+                            <p style="margin: 22px 0 0;">
+                                <a href="{{ route('bookings.manage.show', ['booking' => $booking, 'token' => $booking->customer_manage_token]) }}" style="display: inline-block; background: {{ $booking->venue->primary_colour }}; color: #ffffff; text-decoration: none; padding: 12px 18px; border-radius: 8px; font-weight: bold;">Manage booking</a>
+                            </p>
                             <p style="margin: 18px 0 0; color: #5f6f6b;">{{ $booking->venue->cancellation_policy }}</p>
-                            <p style="margin: 18px 0 0; color: #5f6f6b;">If you need to change anything, please contact {{ $booking->venue->phone ?: $booking->venue->contact_email }}.</p>
+                            <p style="margin: 18px 0 0; color: #5f6f6b;">Online changes and cancellations close {{ $booking->venue->cancellation_notice_hours }} hours before arrival. If you need help after that, please contact {{ $booking->venue->phone ?: $booking->venue->contact_email }}.</p>
                         </td>
                     </tr>
                 </table>
@@ -53,4 +56,3 @@
     </table>
 </body>
 </html>
-

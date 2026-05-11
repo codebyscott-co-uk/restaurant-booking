@@ -9,6 +9,8 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Mobile-friendly public booking form
 - Live table availability checks
 - Booking confirmation page with reference number
+- Public booking lookup, modify and cancellation flow
+- Secure customer booking management links with private tokens
 - Customer booking confirmation emails
 - Staff alert emails for new online bookings
 - JSON API endpoints for venue details, services, availability and booking creation
@@ -20,6 +22,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Business settings panel
 - Restaurant logo upload and brand colour controls
 - Booking terms and cancellation policy settings
+- Configurable online change and cancellation notice period
 - Staff user create, edit, activate/deactivate and delete
 - Service management for lunch, dinner and other bookable sessions
 - Dining area and table management
@@ -152,6 +155,16 @@ npm run build
 
 All admin routes require staff login.
 
+## Public Customer Routes
+
+```text
+/manage-booking
+/manage-booking/{booking_reference}/{customer_manage_token}
+/manage-booking/{booking_reference}/{customer_manage_token}/edit
+```
+
+Customers can use their booking reference and email address to open a private management link. Online changes and cancellations are blocked once the booking is inside the configured notice period.
+
 ## Public API Routes
 
 These endpoints are intended as the starting point for a future mobile app or headless booking frontend.
@@ -162,6 +175,8 @@ GET /api/v1/services
 GET /api/v1/availability?service_id=1&date=2026-05-18&party_size=2
 POST /api/v1/bookings
 ```
+
+API booking responses include a `manage_url` that can be used by a mobile app or headless frontend for customer self-service.
 
 Example booking payload:
 

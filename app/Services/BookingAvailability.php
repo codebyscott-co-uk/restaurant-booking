@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class BookingAvailability
 {
-    public function slots(Venue $venue, Service $service, Carbon $date, int $partySize, bool $includePast = false)
+    public function slots(Venue $venue, Service $service, Carbon $date, int $partySize, bool $includePast = false, ?int $excludeBookingId = null)
     {
         $hours = OpeningHour::where('service_id', $service->id)
             ->where('day_of_week', $date->dayOfWeek)
@@ -34,14 +34,15 @@ class BookingAvailability
             ->map(fn ($step) => $start->copy()->addMinutes($step * $service->slot_interval_minutes))
             ->takeWhile(fn (Carbon $slot) => $slot->lessThanOrEqualTo($lastStart))
             ->filter(fn (Carbon $slot) => $includePast || $this->isWithinBookingWindow($venue, $slot))
-            ->filter(fn (Carbon $slot) => ! $this->exceedsSlotCapacity($venue, $slot, $slot->copy()->addMinutes($service->default_duration_minutes), $partySize))
+            ->filter(fn (Carbon $slot) => ! $this->exceedsSlotCapacity($venue, $slot, $slot->copy()->addMinutes($service->default_duration_minutes), $partySize, $excludeBookingId))
             ->filter(fn (Carbon $slot) => ! $this->isClosed($venue, $service, $slot, $slot->copy()->addMinutes($service->default_duration_minutes)))
             ->filter(fn (Carbon $slot) => $this->availableTables(
                 $venue,
                 $slot,
                 $slot->copy()->addMinutes($service->default_duration_minutes),
                 $partySize,
-                $service
+                $service,
+                $excludeBookingId
             ))
             ->values();
     }
@@ -51,7 +52,7 @@ class BookingAvailability
         return $this->availableTables($venue, $startsAt, $endsAt, $partySize, $service)->first();
     }
 
-    public function availableTables(Venue $venue, Carbon $startsAt, Carbon $endsAt, int $partySize, ?Service $service = null)
+    public function availableTables(Venue $venue, Carbon $startsAt, Carbon $endsAt, int $partySize, ?Service $service = null, ?int $excludeBookingId = null)
     {
         if ($this->isClosed($venue, $service, $startsAt, $endsAt)) {
             return collect();
@@ -69,15 +70,16 @@ class BookingAvailability
             return collect();
         }
 
-        if ($this->exceedsSlotCapacity($venue, $startsAt, $endsAt, $partySize)) {
+        if ($this->exceedsSlotCapacity($venue, $startsAt, $endsAt, $partySize, $excludeBookingId)) {
             return collect();
         }
 
         $tables = RestaurantTable::query()
             ->where('venue_id', $venue->id)
             ->where('is_active', true)
-            ->whereDoesntHave('bookings', function ($query) use ($startsAt, $endsAt) {
+            ->whereDoesntHave('bookings', function ($query) use ($startsAt, $endsAt, $excludeBookingId) {
                 $query->whereNotIn('status', ['cancelled', 'no_show'])
+                    ->when($excludeBookingId, fn ($query) => $query->whereKeyNot($excludeBookingId))
                     ->where('starts_at', '<', $endsAt)
                     ->where('ends_at', '>', $startsAt);
             })
@@ -166,7 +168,7 @@ class BookingAvailability
         return $startsAt->lessThanOrEqualTo(now($venue->timezone)->addDays($venue->maximum_advance_booking_days));
     }
 
-    private function exceedsSlotCapacity(Venue $venue, Carbon $startsAt, Carbon $endsAt, int $partySize): bool
+    private function exceedsSlotCapacity(Venue $venue, Carbon $startsAt, Carbon $endsAt, int $partySize, ?int $excludeBookingId = null): bool
     {
         if (! $venue->maximum_covers_per_slot) {
             return false;
@@ -174,6 +176,7 @@ class BookingAvailability
 
         $existingCovers = $venue->bookings()
             ->whereNotIn('status', ['cancelled', 'no_show'])
+            ->when($excludeBookingId, fn ($query) => $query->whereKeyNot($excludeBookingId))
             ->where('starts_at', '<', $endsAt)
             ->where('ends_at', '>', $startsAt)
             ->sum('party_size');

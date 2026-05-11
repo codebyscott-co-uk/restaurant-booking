@@ -38,6 +38,7 @@ class AdminSettingsController extends Controller
             'maximum_party_size' => ['required', 'integer', 'min:1', 'max:99'],
             'maximum_covers_per_slot' => ['nullable', 'integer', 'min:1', 'max:999'],
             'allow_joined_tables' => ['nullable', 'boolean'],
+            'cancellation_notice_hours' => ['required', 'integer', 'min:0', 'max:720'],
             'timezone' => ['required', 'string', 'max:255'],
             'primary_colour' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'accent_colour' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],

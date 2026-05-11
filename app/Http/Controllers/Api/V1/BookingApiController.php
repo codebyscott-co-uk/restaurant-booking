@@ -34,6 +34,7 @@ class BookingApiController extends Controller
                 'accent_colour' => $venue->accent_colour,
                 'booking_terms' => $venue->booking_terms,
                 'cancellation_policy' => $venue->cancellation_policy,
+                'cancellation_notice_hours' => $venue->cancellation_notice_hours,
                 'maximum_party_size' => $venue->maximum_party_size,
                 'maximum_advance_booking_days' => $venue->maximum_advance_booking_days,
             ],
@@ -134,6 +135,7 @@ class BookingApiController extends Controller
             'customer_id' => $customer->id,
             'service_id' => $service->id,
             'booking_reference' => $this->reference(),
+            'customer_manage_token' => Str::random(48),
             'party_size' => $validated['party_size'],
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
@@ -158,6 +160,10 @@ class BookingApiController extends Controller
                 'ends_at' => $booking->ends_at->toIso8601String(),
                 'party_size' => $booking->party_size,
                 'service' => $service->name,
+                'manage_url' => route('bookings.manage.show', [
+                    'booking' => $booking,
+                    'token' => $booking->customer_manage_token,
+                ]),
             ],
         ], 201);
     }
@@ -171,4 +177,3 @@ class BookingApiController extends Controller
         return $reference;
     }
 }
-

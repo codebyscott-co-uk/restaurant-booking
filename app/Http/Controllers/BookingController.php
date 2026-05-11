@@ -81,6 +81,7 @@ class BookingController extends Controller
             'customer_id' => $customer->id,
             'service_id' => $service->id,
             'booking_reference' => $this->reference(),
+            'customer_manage_token' => Str::random(48),
             'party_size' => $validated['party_size'],
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
@@ -97,11 +98,16 @@ class BookingController extends Controller
             Mail::to($venue->contact_email)->send(new NewBookingStaffAlertMail($booking));
         }
 
-        return redirect()->route('bookings.show', $booking)->with('status', 'Your table is booked.');
+        return redirect()->route('bookings.show', [
+            'booking' => $booking,
+            'token' => $booking->customer_manage_token,
+        ])->with('status', 'Your table is booked.');
     }
 
-    public function show(Booking $booking): View
+    public function show(Request $request, Booking $booking): View
     {
+        abort_unless(hash_equals((string) $booking->customer_manage_token, (string) $request->query('token')), 404);
+
         return view('bookings.show', ['booking' => $booking->load('venue', 'customer', 'service', 'tables.diningArea')]);
     }
 

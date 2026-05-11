@@ -163,6 +163,7 @@
             </a>
             <nav class="nav">
                 <a href="{{ route('bookings.create') }}">Book</a>
+                <a href="{{ route('bookings.lookup') }}">Manage booking</a>
                 @auth
                     <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard</a>
                     <a class="{{ request()->routeIs('admin.diary') || request()->routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.diary') }}">Diary</a>

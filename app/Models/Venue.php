@@ -25,6 +25,7 @@ class Venue extends Model
         'maximum_party_size',
         'maximum_covers_per_slot',
         'allow_joined_tables',
+        'cancellation_notice_hours',
         'timezone',
         'logo_path',
         'primary_colour',

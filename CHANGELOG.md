@@ -10,9 +10,12 @@ This project follows a simple changelog style while it is in early development.
 
 - Mobile-friendly public booking form.
 - Booking confirmation page with customer reference.
+- Public booking lookup, modify and cancellation pages for customers.
+- Token-protected customer booking management links.
+- Configurable online change and cancellation notice period.
 - Customer booking confirmation emails.
 - Staff alert emails for new online bookings.
-- JSON API endpoints for venue details, services, availability lookup and booking creation.
+- JSON API endpoints for venue details, services, availability lookup and booking creation with customer manage URLs.
 - Staff authentication and protected admin routes.
 - Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.
 - Responsive admin navigation with active states and improved mobile behaviour.
@@ -32,7 +35,7 @@ This project follows a simple changelog style while it is in early development.
 - Delete safeguards for services, tables and dining areas that are already in use.
 - Code by Scott footer branding.
 - Local SQLite seed data for demo restaurant, staff account, services, tables and bookings.
-- Feature test coverage for bookings, authentication, dashboard, settings, staff, services, availability, dining areas, tables, booking rules and API endpoints.
+- Feature test coverage for bookings, customer booking management, authentication, dashboard, settings, staff, services, availability, dining areas, tables, booking rules and API endpoints.
 
 ### Changed
 
@@ -42,6 +45,7 @@ This project follows a simple changelog style while it is in early development.
 
 ### Security
 
+- Protected public booking details behind customer management tokens.
 - Restricted admin diary, settings, staff, services and table management to authenticated staff users.
 - Prevented staff users from deleting their own account.
 - Prevented inactive staff accounts from logging in.

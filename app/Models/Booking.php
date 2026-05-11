@@ -15,6 +15,7 @@ class Booking extends Model
         'customer_id',
         'service_id',
         'booking_reference',
+        'customer_manage_token',
         'party_size',
         'starts_at',
         'ends_at',
@@ -62,5 +63,23 @@ class Booking extends Model
     public function tables(): BelongsToMany
     {
         return $this->belongsToMany(RestaurantTable::class)->withTimestamps();
+    }
+
+    public function canCustomerManage(): bool
+    {
+        return ! in_array($this->status, ['cancelled', 'completed', 'no_show', 'seated'], true)
+            && $this->customer_manage_token
+            && $this->starts_at->isFuture();
+    }
+
+    public function canCustomerCancel(): bool
+    {
+        if (! $this->canCustomerManage()) {
+            return false;
+        }
+
+        $noticeHours = $this->venue?->cancellation_notice_hours ?? 24;
+
+        return $this->starts_at->greaterThanOrEqualTo(now($this->venue->timezone)->addHours($noticeHours));
     }
 }

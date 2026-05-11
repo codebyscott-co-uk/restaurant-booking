@@ -114,6 +114,10 @@
                 <label for="maximum_covers_per_slot">Maximum covers per slot</label>
                 <input id="maximum_covers_per_slot" name="maximum_covers_per_slot" type="number" min="1" max="999" value="{{ old('maximum_covers_per_slot', $venue->maximum_covers_per_slot) }}">
             </div>
+            <div class="field">
+                <label for="cancellation_notice_hours">Online change/cancel notice</label>
+                <input id="cancellation_notice_hours" name="cancellation_notice_hours" type="number" min="0" max="720" value="{{ old('cancellation_notice_hours', $venue->cancellation_notice_hours) }}" required>
+            </div>
             <label class="full" style="display: flex; gap: 10px; align-items: center; font-weight: 700;">
                 <input type="checkbox" name="allow_joined_tables" value="1" @checked(old('allow_joined_tables', $venue->allow_joined_tables)) style="width: 18px; min-height: 18px;">
                 Allow joined tables for larger parties
