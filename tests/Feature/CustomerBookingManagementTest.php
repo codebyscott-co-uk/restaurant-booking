@@ -59,12 +59,17 @@ class CustomerBookingManagementTest extends TestCase
     {
         $this->seed();
         Mail::fake();
+        
+        // Freeze time to ensure the test is predictable
+        $now = Carbon::parse('2026-05-11 09:00:00', 'Europe/London');
+        Carbon::setTestNow($now);
+        
         $booking = $this->createManageableBooking();
         $venue = $booking->venue;
         $service = Service::where('name', 'Dinner')->firstOrFail();
         $date = now($venue->timezone)->next('Tuesday')->toDateString();
 
-        $this->put(route('bookings.manage.update', [
+        $response = $this->put(route('bookings.manage.update', [
             'booking' => $booking,
             'token' => $booking->customer_manage_token,
         ]), [
@@ -77,7 +82,9 @@ class CustomerBookingManagementTest extends TestCase
             'email' => 'updated@example.test',
             'phone' => '07000 444555',
             'special_requests' => 'Near the window.',
-        ])->assertRedirect(route('bookings.manage.show', [
+        ]);
+
+        $response->assertRedirect(route('bookings.manage.show', [
             'booking' => $booking,
             'token' => $booking->customer_manage_token,
         ]));

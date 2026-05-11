@@ -43,7 +43,7 @@ class BookingAvailability
                 $partySize,
                 $service,
                 $excludeBookingId
-            ))
+            )->isNotEmpty())
             ->values();
     }
 

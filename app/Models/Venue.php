@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Cashier\Billable;
 
 class Venue extends Model
 {
+    use Billable;
+
     protected $fillable = [
         'name',
         'slug',
@@ -42,6 +45,15 @@ class Venue extends Model
         'widget_title',
         'widget_intro',
         'widget_button_text',
+        'stripe_id',
+        'stripe_status',
+        'pm_type',
+        'pm_last_four',
+        'stripe_price_id',
+        'stripe_price_name',
+        'stripe_current_period_start',
+        'stripe_current_period_end',
+        'trial_ends_at',
     ];
 
     protected function casts(): array
@@ -49,6 +61,9 @@ class Venue extends Model
         return [
             'allow_joined_tables' => 'boolean',
             'widget_enabled' => 'boolean',
+            'stripe_current_period_start' => 'datetime',
+            'stripe_current_period_end' => 'datetime',
+            'trial_ends_at' => 'datetime',
         ];
     }
 
