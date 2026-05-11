@@ -55,6 +55,7 @@ This project follows a simple changelog style while it is in early development.
 ### Changed
 
 - Replaced the default Laravel README with project documentation.
+- Stabilised customer booking management tests by freezing time around policy cutoff checks.
 - Polished the demo restaurant seed data.
 - Updated booking references to use the `CBR` prefix.
 - Kept the Code by Scott footer pinned to the bottom on short pages.

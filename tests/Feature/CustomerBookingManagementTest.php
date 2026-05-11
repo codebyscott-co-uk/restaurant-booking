@@ -19,6 +19,20 @@ class CustomerBookingManagementTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Carbon::setTestNow(Carbon::parse('2026-05-11 09:00:00', 'Europe/London'));
+    }
+
+    protected function tearDown(): void
+    {
+        Carbon::setTestNow();
+
+        parent::tearDown();
+    }
+
     public function test_customer_can_lookup_booking_with_reference_and_email(): void
     {
         $this->seed();
