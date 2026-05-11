@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAvailabilityController;
+use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminDiaryController;
 use App\Http\Controllers\AdminDiningAreaController;
 use App\Http\Controllers\AdminRestaurantTableController;
@@ -26,6 +27,8 @@ Route::post('/staff/logout', [AuthController::class, 'destroy'])
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/diary', AdminDiaryController::class)->name('diary');
+    Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
+    Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
     Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
     Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);

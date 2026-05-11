@@ -5,6 +5,9 @@
     <div class="shell">
         <div class="eyebrow">Admin diary</div>
         <h1>{{ $date->format('l j F') }}</h1>
+        @if (session('status'))
+            <div class="panel success" style="max-width: 460px; margin-bottom: 14px;"><p style="margin: 0;">{{ session('status') }}</p></div>
+        @endif
         <form method="get" action="{{ route('admin.diary') }}" class="panel" style="max-width: 460px;">
             <div class="form-grid">
                 <div class="field">
@@ -14,6 +17,7 @@
                 <button class="primary" type="submit">Open diary</button>
             </div>
         </form>
+        <a class="button primary" href="{{ route('admin.bookings.create', ['date' => $date->toDateString()]) }}" style="margin-top: 12px;">Add booking</a>
     </div>
 </section>
 
