@@ -54,6 +54,7 @@ class AdminBookingsTest extends TestCase
             'status' => 'confirmed',
             'internal_notes' => 'Regular guest.',
         ]);
+        $this->assertNotNull(Booking::whereHas('customer', fn ($query) => $query->where('email', 'clara@example.test'))->firstOrFail()->customer_manage_token);
         Mail::assertSent(BookingConfirmationMail::class, fn (BookingConfirmationMail $mail) => $mail->hasTo('clara@example.test'));
     }
 

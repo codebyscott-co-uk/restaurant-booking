@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\BookingConfirmationMail;
+use App\Mail\BookingCancelledMail;
+use App\Mail\BookingModifiedMail;
 use App\Models\Booking;
 use App\Models\Service;
 use App\Models\Venue;
@@ -148,7 +149,7 @@ class CustomerBookingController extends Controller
         ]);
 
         $booking->tables()->sync($tables->pluck('id'));
-        Mail::to($booking->customer->email)->send(new BookingConfirmationMail($booking->fresh()));
+        Mail::to($booking->customer->email)->send(new BookingModifiedMail($booking->fresh()));
 
         return redirect()
             ->route('bookings.manage.show', ['booking' => $booking, 'token' => $token])
@@ -167,6 +168,8 @@ class CustomerBookingController extends Controller
             'status' => 'cancelled',
             'cancelled_at' => now(),
         ]);
+
+        Mail::to($booking->customer->email)->send(new BookingCancelledMail($booking->fresh()));
 
         return redirect()
             ->route('bookings.manage.show', ['booking' => $booking, 'token' => $token])

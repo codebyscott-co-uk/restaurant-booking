@@ -2,7 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Mail\BookingConfirmationMail;
+use App\Mail\BookingCancelledMail;
+use App\Mail\BookingModifiedMail;
 use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\RestaurantTable;
@@ -87,12 +88,13 @@ class CustomerBookingManagementTest extends TestCase
             'special_requests' => 'Near the window.',
         ]);
         $this->assertDatabaseHas('customers', ['email' => 'updated@example.test']);
-        Mail::assertSent(BookingConfirmationMail::class);
+        Mail::assertSent(BookingModifiedMail::class, fn (BookingModifiedMail $mail) => $mail->hasTo('updated@example.test'));
     }
 
     public function test_customer_can_cancel_booking_before_policy_cutoff(): void
     {
         $this->seed();
+        Mail::fake();
         $booking = $this->createManageableBooking();
 
         $this->patch(route('bookings.manage.cancel', [
@@ -108,6 +110,7 @@ class CustomerBookingManagementTest extends TestCase
             'status' => 'cancelled',
         ]);
         $this->assertNotNull($booking->fresh()->cancelled_at);
+        Mail::assertSent(BookingCancelledMail::class, fn (BookingCancelledMail $mail) => $mail->hasTo('manage@example.test'));
     }
 
     public function test_customer_cannot_cancel_inside_policy_cutoff(): void

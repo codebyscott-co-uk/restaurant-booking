@@ -13,8 +13,9 @@ This project follows a simple changelog style while it is in early development.
 - Public booking lookup, modify and cancellation pages for customers.
 - Token-protected customer booking management links.
 - Configurable online change and cancellation notice period.
-- Customer booking confirmation emails.
-- Staff alert emails for new online bookings.
+- Branded customer emails for confirmation, modification, cancellation and reminder flows.
+- Branded staff alert emails for new online bookings.
+- Reusable email layout components for booking messages.
 - JSON API endpoints for venue details, services, availability lookup and booking creation with customer manage URLs.
 - Staff authentication and protected admin routes.
 - Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.

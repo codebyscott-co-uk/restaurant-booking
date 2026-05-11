@@ -11,8 +11,8 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Booking confirmation page with reference number
 - Public booking lookup, modify and cancellation flow
 - Secure customer booking management links with private tokens
-- Customer booking confirmation emails
-- Staff alert emails for new online bookings
+- Branded customer emails for confirmation, modification, cancellation and reminders
+- Branded staff alert emails for new online bookings
 - JSON API endpoints for venue details, services, availability and booking creation
 - Staff-only login area
 - Polished staff dashboard with daily metrics, quick actions and setup health

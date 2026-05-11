@@ -80,6 +80,7 @@ class AdminBookingController extends Controller
             'customer_id' => $customer->id,
             'service_id' => $service->id,
             'booking_reference' => $this->reference(),
+            'customer_manage_token' => Str::random(48),
             'party_size' => $validated['party_size'],
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
