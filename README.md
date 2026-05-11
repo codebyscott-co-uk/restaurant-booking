@@ -10,6 +10,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Live table availability checks
 - Booking confirmation page with reference number
 - Customer booking confirmation emails
+- Staff alert emails for new online bookings
 - Staff-only login area
 - Admin booking diary
 - Business settings panel
@@ -150,7 +151,7 @@ All admin routes require staff login.
 
 Planned next steps:
 
-- Add staff alert emails for new bookings
+- Add SMS notifications
 - Add API endpoints for future mobile app use
 - Prepare deployment configuration
 

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Mail\BookingConfirmationMail;
+use App\Mail\NewBookingStaffAlertMail;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -33,6 +34,7 @@ class BookingFlowTest extends TestCase
         $this->assertDatabaseHas('customers', ['email' => 'grace@example.test']);
         $this->assertDatabaseHas('bookings', ['party_size' => 2, 'status' => 'confirmed']);
         Mail::assertSent(BookingConfirmationMail::class, fn (BookingConfirmationMail $mail) => $mail->hasTo('grace@example.test'));
+        Mail::assertSent(NewBookingStaffAlertMail::class, fn (NewBookingStaffAlertMail $mail) => $mail->hasTo('bookings@demo-restaurant.test'));
     }
 
     public function test_public_booking_page_does_not_show_diary_link(): void
