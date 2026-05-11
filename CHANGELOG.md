@@ -19,6 +19,7 @@ This project follows a simple changelog style while it is in early development.
 - Staff authentication and protected admin routes.
 - Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.
 - Responsive admin navigation with active states and improved mobile behaviour.
+- Staff-only sidebar navigation with grouped admin workspace sections and mobile menu toggle.
 - Shared UI polish for admin metrics, empty states, success states and compact staff pages.
 - Premium theme styling with animated surfaces, refined controls, better focus states and modal confirmations for destructive actions.
 - Admin booking diary with daily booking overview.

@@ -17,6 +17,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Staff-only login area
 - Polished staff dashboard with daily metrics, quick actions and setup health
 - Responsive admin navigation with active states and mobile scrolling
+- Staff-only sidebar navigation with grouped admin workspace sections
 - Premium theme layer with animated cards, refined buttons, focus states and modal confirmations
 - Admin booking diary
 - Business settings panel

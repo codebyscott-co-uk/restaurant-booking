@@ -27,6 +27,8 @@ class AdminDashboardTest extends TestCase
             ->assertOk()
             ->assertSee('Staff dashboard')
             ->assertSee('Today bookings')
+            ->assertSee('Staff workspace')
+            ->assertSee('Booking diary')
             ->assertSee('Quick actions')
             ->assertSee('Setup health');
     }

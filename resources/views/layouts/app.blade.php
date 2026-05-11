@@ -66,7 +66,23 @@
         .button.subtle, button.subtle { background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 8%, white), white); border-color: color-mix(in srgb, var(--primary) 24%, white); color: var(--primary); }
         .button.danger, button.danger { border-color: color-mix(in srgb, var(--danger) 35%, white); color: var(--danger); background: #fff; }
         .button.danger:hover, button.danger:hover { background: #fff7f7; box-shadow: 0 14px 34px rgba(220, 38, 38, .11); }
+        .admin-menu-button { display: none; }
         .logout-form { margin: 0; }
+        .admin-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 0; min-height: calc(100vh - 68px); }
+        .admin-sidebar { position: sticky; top: 68px; align-self: start; height: calc(100vh - 68px); padding: 18px; border-right: 1px solid rgba(223, 231, 228, .9); background: rgba(255,255,255,.72); backdrop-filter: blur(18px) saturate(1.16); box-shadow: 18px 0 48px rgba(17, 24, 39, .05); overflow-y: auto; }
+        .admin-sidebar-head { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 9%, white), rgba(255,255,255,.92)); box-shadow: var(--shadow-sm); }
+        .admin-sidebar-head strong { display: block; font-size: 16px; }
+        .admin-sidebar-head span { color: var(--muted); font-size: 13px; }
+        .admin-nav { display: grid; gap: 18px; margin-top: 18px; }
+        .admin-nav-group { display: grid; gap: 7px; }
+        .admin-nav-label { color: var(--soft); font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; padding: 0 10px; }
+        .admin-nav a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 46px; padding: 11px 12px; border: 1px solid transparent; border-radius: var(--radius); color: var(--muted); text-decoration: none; font-weight: 850; }
+        .admin-nav a::after { content: ""; width: 7px; height: 7px; border-radius: 999px; background: transparent; }
+        .admin-nav a:hover { color: var(--ink); background: rgba(255,255,255,.76); border-color: var(--line); transform: translateX(2px); box-shadow: var(--shadow-sm); }
+        .admin-nav a.active { color: var(--primary); background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 12%, white), rgba(255,255,255,.92)); border-color: color-mix(in srgb, var(--primary) 28%, white); box-shadow: 0 14px 34px color-mix(in srgb, var(--primary) 13%, transparent); }
+        .admin-nav a.active::after { background: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 14%, transparent); }
+        .admin-main { min-width: 0; }
+        .admin-backdrop { display: none; }
         main { animation: pageIn .42s ease both; }
         .hero { padding: 44px 0 28px; position: relative; }
         .hero.compact { padding-bottom: 12px; }
@@ -134,6 +150,14 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: .001ms !important; scroll-behavior: auto !important; transition-duration: .001ms !important; }
         }
+        @media (max-width: 1080px) {
+            .admin-menu-button { display: inline-flex; align-items: center; justify-content: center; }
+            .admin-layout { display: block; }
+            .admin-sidebar { position: fixed; z-index: 30; top: 68px; left: 0; width: min(320px, calc(100vw - 28px)); transform: translateX(-104%); transition: transform .22s ease; }
+            body.admin-open .admin-sidebar { transform: translateX(0); }
+            .admin-backdrop { position: fixed; inset: 68px 0 0; z-index: 20; background: rgba(17, 24, 39, .28); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .18s ease; display: block; }
+            body.admin-open .admin-backdrop { opacity: 1; pointer-events: auto; }
+        }
         @media (max-width: 780px) {
             .shell { width: min(100% - 24px, 1120px); }
             .topbar-inner { align-items: flex-start; flex-direction: column; padding: 12px 0; }
@@ -146,6 +170,8 @@
             h1 { font-size: 42px; }
             .actions, .modal-actions { align-items: stretch; flex-direction: column; }
             .actions > *, .modal-actions > * { width: 100%; justify-content: center; }
+            .admin-sidebar { top: 123px; height: calc(100vh - 123px); }
+            .admin-backdrop { inset: 123px 0 0; }
         }
     </style>
 </head>
@@ -165,13 +191,7 @@
                 <a href="{{ route('bookings.create') }}">Book</a>
                 <a href="{{ route('bookings.lookup') }}">Manage booking</a>
                 @auth
-                    <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard</a>
-                    <a class="{{ request()->routeIs('admin.diary') || request()->routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.diary') }}">Diary</a>
-                    <a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" href="{{ route('admin.services.index') }}">Services</a>
-                    <a class="{{ request()->routeIs('admin.availability.*') ? 'active' : '' }}" href="{{ route('admin.availability.index') }}">Availability</a>
-                    <a class="{{ request()->routeIs('admin.areas.*') || request()->routeIs('admin.tables.*') ? 'active' : '' }}" href="{{ route('admin.areas.index') }}">Tables</a>
-                    <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}">Settings</a>
-                    <a class="{{ request()->routeIs('admin.staff.*') ? 'active' : '' }}" href="{{ route('admin.staff.index') }}">Staff</a>
+                    <button class="admin-menu-button subtle" type="button" data-admin-menu aria-expanded="false">Admin menu</button>
                     <form class="logout-form" method="post" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit">Log out</button>
@@ -182,18 +202,62 @@
             </nav>
         </div>
     </header>
-    <main>
-        @yield('content')
-    </main>
-    <footer class="site-footer">
-        <div class="shell site-footer-inner">
-            <a class="powered-by" href="https://codebyscott.co.uk" target="_blank" rel="noopener noreferrer">
-                <span>Powered by</span>
-                <img src="{{ asset('images/code-by-scott-logo.png') }}" alt="Code by Scott">
-            </a>
-            <small>Restaurant booking software by Code by Scott.</small>
+    @auth
+        <div class="admin-backdrop" data-admin-backdrop></div>
+        <div class="admin-layout">
+            <aside class="admin-sidebar" data-admin-sidebar>
+                <div class="admin-sidebar-head">
+                    <strong>Staff workspace</strong>
+                    <span>{{ auth()->user()->name }} · {{ ucfirst(auth()->user()->role) }}</span>
+                </div>
+                <nav class="admin-nav" aria-label="Admin navigation">
+                    <div class="admin-nav-group">
+                        <div class="admin-nav-label">Operations</div>
+                        <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                        <a class="{{ request()->routeIs('admin.diary') || request()->routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.diary') }}">Booking diary</a>
+                    </div>
+                    <div class="admin-nav-group">
+                        <div class="admin-nav-label">Setup</div>
+                        <a class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}" href="{{ route('admin.services.index') }}">Services</a>
+                        <a class="{{ request()->routeIs('admin.availability.*') ? 'active' : '' }}" href="{{ route('admin.availability.index') }}">Availability</a>
+                        <a class="{{ request()->routeIs('admin.areas.*') || request()->routeIs('admin.tables.*') ? 'active' : '' }}" href="{{ route('admin.areas.index') }}">Tables and areas</a>
+                    </div>
+                    <div class="admin-nav-group">
+                        <div class="admin-nav-label">Business</div>
+                        <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}">Settings</a>
+                        <a class="{{ request()->routeIs('admin.staff.*') ? 'active' : '' }}" href="{{ route('admin.staff.index') }}">Staff users</a>
+                    </div>
+                </nav>
+            </aside>
+            <div class="admin-main">
+                <main>
+                    @yield('content')
+                </main>
+                <footer class="site-footer">
+                    <div class="shell site-footer-inner">
+                        <a class="powered-by" href="https://codebyscott.co.uk" target="_blank" rel="noopener noreferrer">
+                            <span>Powered by</span>
+                            <img src="{{ asset('images/code-by-scott-logo.png') }}" alt="Code by Scott">
+                        </a>
+                        <small>Restaurant booking software by Code by Scott.</small>
+                    </div>
+                </footer>
+            </div>
         </div>
-    </footer>
+    @else
+        <main>
+            @yield('content')
+        </main>
+        <footer class="site-footer">
+            <div class="shell site-footer-inner">
+                <a class="powered-by" href="https://codebyscott.co.uk" target="_blank" rel="noopener noreferrer">
+                    <span>Powered by</span>
+                    <img src="{{ asset('images/code-by-scott-logo.png') }}" alt="Code by Scott">
+                </a>
+                <small>Restaurant booking software by Code by Scott.</small>
+            </div>
+        </footer>
+    @endauth
     <div class="modal-backdrop" data-confirm-modal hidden>
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
             <div class="eyebrow">Please confirm</div>
@@ -207,11 +271,27 @@
     </div>
     <script>
         (() => {
+            const adminMenuButton = document.querySelector('[data-admin-menu]');
+            const adminBackdrop = document.querySelector('[data-admin-backdrop]');
             const modal = document.querySelector('[data-confirm-modal]');
             const message = document.querySelector('#confirm-message');
             const cancelButton = document.querySelector('[data-modal-cancel]');
             const confirmButton = document.querySelector('[data-modal-confirm]');
             let pendingForm = null;
+
+            const closeAdminMenu = () => {
+                document.body.classList.remove('admin-open');
+                adminMenuButton?.setAttribute('aria-expanded', 'false');
+            };
+
+            adminMenuButton?.addEventListener('click', () => {
+                const isOpen = document.body.classList.toggle('admin-open');
+                adminMenuButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+            adminBackdrop?.addEventListener('click', closeAdminMenu);
+            document.querySelectorAll('.admin-nav a').forEach((link) => {
+                link.addEventListener('click', closeAdminMenu);
+            });
 
             const closeModal = () => {
                 modal.classList.remove('is-open');
@@ -241,6 +321,9 @@
                 }
             });
             document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeAdminMenu();
+                }
                 if (event.key === 'Escape' && modal.classList.contains('is-open')) {
                     closeModal();
                 }
