@@ -46,6 +46,7 @@ This project follows a simple changelog style while it is in early development.
 - Polished the demo restaurant seed data.
 - Updated booking references to use the `CBR` prefix.
 - Kept the Code by Scott footer pinned to the bottom on short pages.
+- Reworked business settings into focused tabbed panels with a persistent save action.
 
 ### Security
 

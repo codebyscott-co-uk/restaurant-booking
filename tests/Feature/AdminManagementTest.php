@@ -63,6 +63,9 @@ class AdminManagementTest extends TestCase
         $this->actingAs(User::first())
             ->get('/admin/settings')
             ->assertOk()
+            ->assertSee('data-settings-tab="identity"', false)
+            ->assertSee('data-settings-tab="emails"', false)
+            ->assertSee('Settings health')
             ->assertSee('Email templates')
             ->assertSee('contenteditable="true"', false)
             ->assertSee('email_confirmation_content');
