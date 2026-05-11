@@ -25,6 +25,11 @@ class AdminManagementTest extends TestCase
                 'postcode' => 'G1 1AA',
                 'country' => 'United Kingdom',
                 'website_url' => 'https://codebyscott.co.uk',
+                'minimum_lead_time_minutes' => 30,
+                'maximum_advance_booking_days' => 90,
+                'maximum_party_size' => 12,
+                'maximum_covers_per_slot' => 40,
+                'allow_joined_tables' => '1',
                 'timezone' => 'Europe/London',
                 'primary_colour' => '#123456',
                 'accent_colour' => '#abcdef',
@@ -37,6 +42,8 @@ class AdminManagementTest extends TestCase
             'name' => 'Code by Scott Bistro',
             'city' => 'Glasgow',
             'primary_colour' => '#123456',
+            'maximum_party_size' => 12,
+            'allow_joined_tables' => true,
         ]);
     }
 

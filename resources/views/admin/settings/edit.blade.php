@@ -98,6 +98,26 @@
 
         <h2 style="margin-top: 28px;">Booking policies</h2>
         <div class="form-grid">
+            <div class="field">
+                <label for="minimum_lead_time_minutes">Minimum lead time</label>
+                <input id="minimum_lead_time_minutes" name="minimum_lead_time_minutes" type="number" min="0" max="10080" value="{{ old('minimum_lead_time_minutes', $venue->minimum_lead_time_minutes) }}" required>
+            </div>
+            <div class="field">
+                <label for="maximum_advance_booking_days">Advance booking window</label>
+                <input id="maximum_advance_booking_days" name="maximum_advance_booking_days" type="number" min="1" max="730" value="{{ old('maximum_advance_booking_days', $venue->maximum_advance_booking_days) }}" required>
+            </div>
+            <div class="field">
+                <label for="maximum_party_size">Maximum party size</label>
+                <input id="maximum_party_size" name="maximum_party_size" type="number" min="1" max="99" value="{{ old('maximum_party_size', $venue->maximum_party_size) }}" required>
+            </div>
+            <div class="field">
+                <label for="maximum_covers_per_slot">Maximum covers per slot</label>
+                <input id="maximum_covers_per_slot" name="maximum_covers_per_slot" type="number" min="1" max="999" value="{{ old('maximum_covers_per_slot', $venue->maximum_covers_per_slot) }}">
+            </div>
+            <label class="full" style="display: flex; gap: 10px; align-items: center; font-weight: 700;">
+                <input type="checkbox" name="allow_joined_tables" value="1" @checked(old('allow_joined_tables', $venue->allow_joined_tables)) style="width: 18px; min-height: 18px;">
+                Allow joined tables for larger parties
+            </label>
             <div class="field full">
                 <label for="booking_terms">Booking terms</label>
                 <textarea id="booking_terms" name="booking_terms">{{ old('booking_terms', $venue->booking_terms) }}</textarea>

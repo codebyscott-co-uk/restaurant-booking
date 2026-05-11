@@ -33,6 +33,11 @@ class AdminSettingsController extends Controller
             'postcode' => ['nullable', 'string', 'max:255'],
             'country' => ['nullable', 'string', 'max:255'],
             'website_url' => ['nullable', 'url', 'max:255'],
+            'minimum_lead_time_minutes' => ['required', 'integer', 'min:0', 'max:10080'],
+            'maximum_advance_booking_days' => ['required', 'integer', 'min:1', 'max:730'],
+            'maximum_party_size' => ['required', 'integer', 'min:1', 'max:99'],
+            'maximum_covers_per_slot' => ['nullable', 'integer', 'min:1', 'max:999'],
+            'allow_joined_tables' => ['nullable', 'boolean'],
             'timezone' => ['required', 'string', 'max:255'],
             'primary_colour' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'accent_colour' => ['required', 'regex:/^#[0-9A-Fa-f]{6}$/'],
@@ -43,6 +48,7 @@ class AdminSettingsController extends Controller
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
+        $validated['allow_joined_tables'] = $request->boolean('allow_joined_tables');
 
         if ($request->boolean('remove_logo') && $venue->logo_path) {
             Storage::disk('public')->delete($venue->logo_path);

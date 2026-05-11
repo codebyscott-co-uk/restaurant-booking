@@ -20,6 +20,11 @@ class Venue extends Model
         'postcode',
         'country',
         'website_url',
+        'minimum_lead_time_minutes',
+        'maximum_advance_booking_days',
+        'maximum_party_size',
+        'maximum_covers_per_slot',
+        'allow_joined_tables',
         'timezone',
         'logo_path',
         'primary_colour',
@@ -27,6 +32,13 @@ class Venue extends Model
         'booking_terms',
         'cancellation_policy',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'allow_joined_tables' => 'boolean',
+        ];
+    }
 
     public function getLogoUrlAttribute(): ?string
     {

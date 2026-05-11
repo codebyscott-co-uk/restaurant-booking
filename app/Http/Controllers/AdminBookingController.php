@@ -57,9 +57,9 @@ class AdminBookingController extends Controller
         $service = Service::where('venue_id', $venue->id)->findOrFail($validated['service_id']);
         $startsAt = Carbon::parse($validated['date'].' '.$validated['time'], $venue->timezone);
         $endsAt = $startsAt->copy()->addMinutes($service->default_duration_minutes);
-        $table = $availability->availableTable($venue, $startsAt, $endsAt, (int) $validated['party_size'], $service);
+        $tables = $availability->availableTables($venue, $startsAt, $endsAt, (int) $validated['party_size'], $service);
 
-        if (! $table) {
+        if ($tables->isEmpty()) {
             return back()
                 ->withInput()
                 ->withErrors(['time' => 'No table is available for that date, time and party size.']);
@@ -88,7 +88,7 @@ class AdminBookingController extends Controller
             'confirmed_at' => in_array($validated['status'], ['confirmed', 'seated', 'completed'], true) ? now() : null,
         ]);
 
-        $booking->tables()->attach($table);
+        $booking->tables()->attach($tables->pluck('id'));
 
         return redirect()
             ->route('admin.diary', ['date' => $startsAt->toDateString()])

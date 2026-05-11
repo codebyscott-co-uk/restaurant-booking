@@ -59,6 +59,7 @@ class AdminBookingsTest extends TestCase
         $service = Service::where('name', 'Dinner')->firstOrFail();
         $today = now()->toDateString();
         $venue = $service->venue;
+        $venue->update(['allow_joined_tables' => false]);
         $eightTop = $venue->tables()
             ->where('min_covers', '<=', 8)
             ->where('max_covers', '>=', 8)

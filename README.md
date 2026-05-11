@@ -1,6 +1,6 @@
 # Restaurant Booking
 
-A Laravel restaurant booking system with a mobile-friendly customer booking form, staff-only booking diary, business settings, branding, logo upload, and staff user management.
+A Laravel restaurant booking system with a mobile-friendly customer booking form, staff-only booking diary, configurable availability rules, business settings, branding, logo upload, and staff user management.
 
 Built by [Code by Scott](https://codebyscott.co.uk).
 
@@ -15,6 +15,13 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Restaurant logo upload and brand colour controls
 - Booking terms and cancellation policy settings
 - Staff user create, edit, activate/deactivate and delete
+- Service management for lunch, dinner and other bookable sessions
+- Dining area and table management
+- Opening hours and closure management
+- Staff manual booking creation
+- Booking status controls from the diary
+- Booking rules for lead time, advance booking window, max party size and slot capacity
+- Joined-table allocation for larger parties
 - Seeded demo restaurant, tables, services and bookings
 - Code by Scott footer branding
 
@@ -128,6 +135,10 @@ npm run build
 
 ```text
 /admin/diary
+/admin/bookings/create
+/admin/services
+/admin/availability
+/admin/areas
 /admin/settings
 /admin/staff
 ```
@@ -138,13 +149,6 @@ All admin routes require staff login.
 
 Planned next steps:
 
-- Replace or polish demo restaurant content
-- Add services management
-- Add table and dining area management
-- Add opening hours and closure rules
-- Add manual booking creation for staff
-- Add booking status controls from the diary
-- Improve availability rules for joined tables, lead times and capacity limits
 - Add email notifications
 - Add API endpoints for future mobile app use
 - Prepare deployment configuration
@@ -152,4 +156,3 @@ Planned next steps:
 ## Notes
 
 The `.env` file, local SQLite database, dependencies, build output and uploaded storage symlink are intentionally ignored by Git.
-

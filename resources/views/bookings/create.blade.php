@@ -15,7 +15,7 @@
         <div class="form-grid">
             <div class="field">
                 <label for="party_size">Party size</label>
-                <input id="party_size" name="party_size" type="number" min="1" max="12" value="{{ $partySize }}">
+                <input id="party_size" name="party_size" type="number" min="1" max="{{ $venue->maximum_party_size }}" value="{{ $partySize }}">
             </div>
             <div class="field">
                 <label for="date">Date</label>

@@ -19,7 +19,7 @@ class BookingController extends Controller
     {
         $venue = Venue::with('services')->firstOrFail();
         $date = Carbon::parse($request->query('date', today($venue->timezone)->toDateString()), $venue->timezone);
-        $partySize = max(1, min(12, (int) $request->query('party_size', 2)));
+        $partySize = max(1, min($venue->maximum_party_size, (int) $request->query('party_size', 2)));
         $service = Service::where('venue_id', $venue->id)
             ->where('is_active', true)
             ->find($request->query('service_id')) ?: $venue->services()->where('is_active', true)->first();
@@ -42,7 +42,7 @@ class BookingController extends Controller
 
         $validated = $request->validate([
             'service_id' => ['required', 'exists:services,id'],
-            'party_size' => ['required', 'integer', 'min:1', 'max:12'],
+            'party_size' => ['required', 'integer', 'min:1', 'max:'.$venue->maximum_party_size],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
             'first_name' => ['required', 'string', 'max:255'],
@@ -57,9 +57,9 @@ class BookingController extends Controller
         $startsAt = Carbon::parse($validated['date'].' '.$validated['time'], $venue->timezone);
         $endsAt = $startsAt->copy()->addMinutes($service->default_duration_minutes);
 
-        $table = app(BookingAvailability::class)->availableTable($venue, $startsAt, $endsAt, (int) $validated['party_size'], $service);
+        $tables = app(BookingAvailability::class)->availableTables($venue, $startsAt, $endsAt, (int) $validated['party_size'], $service);
 
-        if (! $table) {
+        if ($tables->isEmpty()) {
             return back()
                 ->withInput()
                 ->withErrors(['time' => 'That time has just been taken. Please choose another available slot.']);
@@ -87,7 +87,7 @@ class BookingController extends Controller
             'confirmed_at' => now(),
         ]);
 
-        $booking->tables()->attach($table);
+        $booking->tables()->attach($tables->pluck('id'));
 
         return redirect()->route('bookings.show', $booking)->with('status', 'Your table is booked.');
     }
