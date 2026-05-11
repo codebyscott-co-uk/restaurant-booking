@@ -6,8 +6,9 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 
 ## Current Features
 
-- Mobile-friendly public booking form
+- Mobile-friendly light themed public booking form
 - Multi-tenant venue model with staff scoped to their own restaurant
+- Self-serve restaurant signup that creates a tenant workspace, owner account, starter services, tables and opening hours
 - Tenant-specific public booking, widget and API URLs by restaurant slug
 - Live table availability checks
 - Booking confirmation page with reference number
@@ -20,8 +21,9 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Staff-only login area
 - Polished staff dashboard with daily metrics, quick actions and setup health
 - Premium staff admin shell with sticky top bar, quick actions, notifications placeholder, profile menu and persistent light/dark mode
+- Premium cream-and-gold customer experience with liquid-glass cards, buttons, booking controls and subtle abstract ambient backgrounds
 - Responsive collapsible admin sidebar with grouped dropdown navigation sections
-- Refined hospitality SaaS admin theme with lighter typography, glass-style panels, inline icons, polished buttons and subtle focus states
+- Refined hospitality SaaS admin theme with lighter typography, cream-and-gold accents, liquid-glass panels, polished buttons, subtle focus states and soft animated background light fields
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Sectioned business settings workspace
 - Restaurant logo upload and brand colour controls
@@ -119,6 +121,16 @@ Staff login URL:
 ```text
 http://restaurant-booking.test/staff/login
 ```
+
+## Restaurant Signup
+
+Create a new restaurant workspace:
+
+```text
+http://restaurant-booking.test/signup
+```
+
+The signup flow creates a venue, owner account, default lunch and dinner services, starter tables, weekday opening hours and widget settings.
 
 ## Useful Commands
 

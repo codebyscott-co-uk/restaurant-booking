@@ -9,7 +9,11 @@ This project follows a simple changelog style while it is in early development.
 ### Added
 
 - Mobile-friendly public booking form.
+- Premium light theme for the public booking, signup, login, booking management and embeddable widget experiences.
+- Cream-and-gold liquid-glass interaction polish for public and admin cards, buttons, slots and active states.
+- Subtle animated abstract cream-and-gold background fields for public, widget and admin surfaces, with reduced-motion support.
 - Multi-tenant venue ownership for staff accounts and admin data isolation.
+- Self-serve restaurant signup for creating a tenant venue, owner account, starter services, tables and opening hours.
 - Tenant-specific public booking, widget and API routes by restaurant slug.
 - Booking confirmation page with customer reference.
 - Public booking lookup, modify and cancellation pages for customers.

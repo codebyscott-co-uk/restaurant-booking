@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerBookingController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\WidgetController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,8 @@ Route::prefix('r/{venue:slug}')->name('tenant.')->group(function () {
 Route::middleware('guest')->group(function () {
     Route::get('/staff/login', [AuthController::class, 'create'])->name('login');
     Route::post('/staff/login', [AuthController::class, 'store'])->name('login.store');
+    Route::get('/signup', [OnboardingController::class, 'create'])->name('signup');
+    Route::post('/signup', [OnboardingController::class, 'store'])->name('signup.store');
 });
 
 Route::post('/staff/logout', [AuthController::class, 'destroy'])

@@ -6,37 +6,56 @@
     <title>{{ $venue->widget_title ?: 'Book a table' }}</title>
     <style>
         :root {
-            --ink: #111827;
-            --muted: #62706d;
-            --line: #dfe7e4;
-            --paper: #f7f8f4;
-            --primary: {{ $venue->primary_colour }};
-            --accent: {{ $venue->accent_colour }};
+            --ink: #28231c;
+            --muted: #6e665b;
+            --line: rgba(72, 58, 39, .14);
+            --paper: #f7f1e8;
+            --panel: rgba(255, 251, 244, .84);
+            --primary: color-mix(in srgb, {{ $venue->primary_colour }} 58%, #7a5a32);
+            --accent: color-mix(in srgb, {{ $venue->accent_colour }} 72%, #d0a85f);
+            --gold: #b98a42;
+            --gold-soft: rgba(185, 138, 66, .18);
+            --glass-border: rgba(116, 91, 53, .16);
+            --glass-highlight: rgba(255,255,255,.72);
         }
         * { box-sizing: border-box; }
         body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: var(--paper); }
-        .widget { min-height: 100vh; padding: 18px; background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 8%, white), #fff 44%, color-mix(in srgb, var(--accent) 8%, white)); }
-        .card { max-width: 520px; margin: 0 auto; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.92); box-shadow: 0 20px 55px rgba(17,24,39,.12); overflow: hidden; }
+        .widget { position: relative; min-height: 100vh; padding: 18px; overflow: hidden; background: linear-gradient(180deg, #fffaf1 0%, #f7f1e8 100%); }
+        .widget::before { content: ""; position: fixed; inset: -24% -18%; pointer-events: none; opacity: .44; background: radial-gradient(42% 34% at 18% 18%, rgba(255,255,255,.72), transparent 62%), radial-gradient(34% 28% at 74% 14%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 68%), radial-gradient(32% 36% at 58% 76%, rgba(255,255,255,.52), transparent 66%), radial-gradient(30% 26% at 16% 84%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 68%); filter: blur(26px) saturate(1.05); transform: translate3d(0,0,0); animation: widgetAmbientGlass 28s ease-in-out infinite alternate; }
+        .card { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; border: 1px solid var(--glass-border); border-radius: 16px; background: var(--panel); box-shadow: 0 24px 70px rgba(40,31,20,.14), inset 0 1px var(--glass-highlight); overflow: hidden; backdrop-filter: blur(28px) saturate(1.22); }
+        .card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 18% 0%, rgba(255,255,255,.64), transparent 28%), radial-gradient(circle at 86% 8%, var(--gold-soft), transparent 26%); opacity: .8; }
         .head { padding: 20px; border-bottom: 1px solid var(--line); }
-        .head img { display: block; width: 110px; max-width: 60%; height: auto; margin-bottom: 12px; }
-        .eyebrow { color: var(--primary); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-        h1 { margin: 6px 0 8px; font-size: 30px; line-height: 1; }
+        .head img { display: block; width: 110px; max-width: 60%; height: auto; margin-bottom: 12px; border-radius: 8px; background: #fffaf1; padding: 6px; }
+        .eyebrow { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+        h1 { margin: 6px 0 8px; font-size: 30px; line-height: 1; color: var(--ink); }
         p { color: var(--muted); line-height: 1.5; }
         form, .result { display: grid; gap: 12px; padding: 20px; }
         .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-        label { display: grid; gap: 6px; font-size: 13px; font-weight: 800; }
-        input, select, textarea, button { width: 100%; min-height: 46px; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; font: inherit; }
+        label { display: grid; gap: 6px; color: #4b4033; font-size: 12px; font-weight: 760; }
+        input, select, textarea, button { width: 100%; min-height: 42px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font: inherit; }
+        input, select, textarea { background: rgba(255,255,255,.76); color: var(--ink); box-shadow: inset 0 1px rgba(255,255,255,.76); }
         textarea { min-height: 86px; resize: vertical; }
-        button { border: 0; background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 72%, #2563eb)); color: #fff; font-weight: 900; cursor: pointer; }
+        button { position: relative; overflow: hidden; isolation: isolate; border-color: color-mix(in srgb, var(--gold) 44%, var(--glass-border)); background: color-mix(in srgb, #fff8ea 82%, var(--gold) 18%); color: #312617; font-weight: 850; cursor: pointer; box-shadow: 0 14px 30px color-mix(in srgb, var(--gold) 16%, transparent), inset 0 1px rgba(255,255,255,.84), inset 0 -1px rgba(116,91,53,.08); transition: transform .18s cubic-bezier(.2,.8,.2,1), border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+        button::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 24% 0%, rgba(255,255,255,.78), transparent 32%), radial-gradient(circle at 82% 100%, var(--gold-soft), transparent 34%); opacity: .8; transition: transform .22s ease, opacity .22s ease; }
+        button:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--gold) 54%, var(--glass-border)); background: rgba(255,251,244,.86); box-shadow: 0 16px 34px rgba(40,31,20,.11), inset 0 1px rgba(255,255,255,.86), 0 0 0 3px color-mix(in srgb, var(--gold) 10%, transparent); }
+        button:hover::before { opacity: 1; transform: translate3d(0,-1px,0) scale(1.08); }
+        button:active { transform: translateY(0) scale(.985); box-shadow: 0 8px 18px rgba(40,31,20,.08), inset 0 2px 5px rgba(116,91,53,.12); }
         button:disabled { cursor: not-allowed; opacity: .55; }
         .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(86px, 1fr)); gap: 8px; }
         .slot { position: relative; }
         .slot input { position: absolute; opacity: 0; pointer-events: none; }
-        .slot span { display: flex; min-height: 42px; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-weight: 900; }
-        .slot input:checked + span { border-color: var(--primary); color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, white); }
-        .notice { border: 1px solid color-mix(in srgb, var(--accent) 42%, white); background: color-mix(in srgb, var(--accent) 12%, white); border-radius: 8px; padding: 12px; }
-        .error { border-color: #fecaca; background: #fff7f7; color: #991b1b; }
+        .slot span { display: flex; min-height: 42px; align-items: center; justify-content: center; border: 1px solid var(--glass-border); border-radius: 10px; background: rgba(255,251,244,.68); color: var(--ink); font-weight: 800; box-shadow: inset 0 1px var(--glass-highlight); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+        .slot:hover span { transform: translateY(-1px); border-color: color-mix(in srgb, var(--gold) 34%, var(--glass-border)); background: rgba(255,251,244,.86); box-shadow: 0 12px 28px rgba(40,31,20,.1), inset 0 1px var(--glass-highlight); }
+        .slot input:checked + span { border-color: color-mix(in srgb, var(--gold) 46%, var(--glass-border)); color: color-mix(in srgb, var(--gold) 70%, var(--ink)); background: color-mix(in srgb, var(--gold) 13%, rgba(255,251,244,.86)); box-shadow: 0 14px 30px color-mix(in srgb, var(--gold) 13%, transparent), inset 0 1px var(--glass-highlight); }
+        .notice { border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line)); background: color-mix(in srgb, var(--accent) 12%, white); color: #4b3924; border-radius: 10px; padding: 12px; }
+        .error { border-color: rgba(166, 41, 41, .2); background: #fff7f7; color: #9c2020; }
         .full { grid-column: 1 / -1; }
+        @keyframes widgetAmbientGlass {
+            0% { transform: translate3d(-1.5%, -1%, 0) rotate(-2deg) scale(1); }
+            50% { transform: translate3d(1.5%, 1%, 0) rotate(2deg) scale(1.025); }
+            100% { transform: translate3d(2.5%, -1.5%, 0) rotate(-1deg) scale(1.04); }
+        }
+        @media (prefers-reduced-motion: reduce) { .widget::before { animation: none; } }
         @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .widget { padding: 10px; } }
     </style>
 </head>

@@ -1017,10 +1017,585 @@
                 flex: 0 0 auto;
             }
         }
+        .is-public {
+            --ink: #28231c;
+            --muted: #6e665b;
+            --soft: #918675;
+            --line: rgba(72, 58, 39, .14);
+            --paper: #f7f1e8;
+            --panel: rgba(255, 251, 244, .84);
+            --panel-soft: rgba(255, 251, 244, .72);
+            --primary: color-mix(in srgb, {{ $venue->primary_colour ?? '#8f6935' }} 58%, #7a5a32);
+            --accent: color-mix(in srgb, {{ $venue->accent_colour ?? '#c59b5b' }} 72%, #d0a85f);
+            --shadow-sm: 0 12px 32px rgba(40, 31, 20, .08);
+            --shadow-md: 0 20px 56px rgba(40, 31, 20, .13);
+            --shadow-lg: 0 34px 96px rgba(40, 31, 20, .2);
+            --focus: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+            background:
+                radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 34%),
+                radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 30%),
+                linear-gradient(180deg, #fffaf1 0%, #f7f1e8 48%, #efe5d5 100%);
+        }
+        .is-public::before {
+            opacity: .5;
+            background-image: linear-gradient(rgba(72, 58, 39, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(72, 58, 39, .025) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(180deg, rgba(0,0,0,.55), transparent 74%);
+        }
+        .is-public .topbar {
+            background: rgba(255, 251, 244, .72);
+            border-bottom-color: var(--line);
+            backdrop-filter: blur(26px) saturate(1.24);
+            box-shadow: 0 14px 36px rgba(40,31,20,.07), inset 0 1px rgba(255,255,255,.62);
+        }
+        .is-public .brand strong {
+            color: var(--ink);
+            font-size: 16px;
+            font-weight: 760;
+        }
+        .is-public .brand span {
+            color: var(--muted);
+        }
+        .is-public .brand-logo {
+            border-color: rgba(72,58,39,.12);
+            background: #fffaf1;
+            box-shadow: 0 10px 24px rgba(40,31,20,.09);
+        }
+        .is-public .nav a,
+        .is-public .nav button,
+        .is-public .button,
+        .is-public button {
+            min-height: 40px;
+            border-color: var(--line);
+            border-radius: 10px;
+            background: rgba(255,255,255,.64);
+            color: var(--ink);
+            padding: 9px 13px;
+            font-size: 13px;
+            font-weight: 720;
+            box-shadow: 0 8px 22px rgba(40,31,20,.055), inset 0 1px rgba(255,255,255,.72);
+        }
+        .is-public .nav a:hover,
+        .is-public .nav button:hover,
+        .is-public .button:hover,
+        .is-public button:hover {
+            border-color: color-mix(in srgb, var(--accent) 34%, var(--line));
+            background: rgba(255,255,255,.86);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm), inset 0 1px rgba(255,255,255,.82);
+        }
+        .is-public .button.primary,
+        .is-public button.primary {
+            border-color: color-mix(in srgb, var(--accent) 54%, transparent);
+            background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 88%, white), color-mix(in srgb, var(--primary) 82%, #8a6535));
+            color: #18120b;
+            box-shadow: 0 14px 32px color-mix(in srgb, var(--accent) 24%, transparent), inset 0 1px rgba(255,255,255,.35);
+        }
+        .is-public .button.subtle,
+        .is-public button.subtle {
+            background: rgba(255,255,255,.64);
+            color: var(--primary);
+            border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+        }
+        .is-public .button.danger,
+        .is-public button.danger {
+            background: #fff7f7;
+            color: #a62929;
+            border-color: rgba(166, 41, 41, .2);
+        }
+        .is-public .hero {
+            padding: 54px 0 30px;
+        }
+        .is-public .hero.compact {
+            padding-bottom: 18px;
+        }
+        .is-public .eyebrow {
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 760;
+            letter-spacing: .09em;
+        }
+        .is-public h1 {
+            max-width: 860px;
+            color: var(--ink);
+            font-size: clamp(38px, 6vw, 68px);
+            line-height: .98;
+            font-weight: 780;
+        }
+        .is-public h2 {
+            color: var(--ink);
+            font-size: 20px;
+            font-weight: 760;
+        }
+        .is-public h3 {
+            color: #3a3023;
+            font-size: 15px;
+            font-weight: 740;
+        }
+        .is-public p {
+            color: var(--muted);
+        }
+        .is-public .panel,
+        .is-public .notice,
+        .is-public .empty-state,
+        .is-public .success,
+        .is-public .errors {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--panel-soft);
+            backdrop-filter: blur(26px) saturate(1.22);
+            box-shadow: var(--shadow-sm), inset 0 1px rgba(255,255,255,.68);
+        }
+        .is-public .panel {
+            padding: 22px;
+        }
+        .is-public .panel:hover {
+            box-shadow: var(--shadow-md), inset 0 1px rgba(255,255,255,.78);
+        }
+        .is-public label {
+            color: #4b4033;
+            font-size: 12px;
+            font-weight: 720;
+        }
+        .is-public input,
+        .is-public select,
+        .is-public textarea {
+            min-height: 42px;
+            border-color: var(--line);
+            border-radius: 10px;
+            background: rgba(255,255,255,.76);
+            color: var(--ink);
+            padding: 10px 12px;
+            box-shadow: inset 0 1px rgba(255,255,255,.76);
+        }
+        .is-public input:hover,
+        .is-public select:hover,
+        .is-public textarea:hover {
+            border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+            background: rgba(255,255,255,.92);
+        }
+        .is-public input::placeholder,
+        .is-public textarea::placeholder {
+            color: rgba(40,35,28,.44);
+        }
+        .is-public .slot span {
+            min-height: 42px;
+            border-color: var(--line);
+            border-radius: 10px;
+            background: rgba(255,255,255,.68);
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 760;
+            box-shadow: inset 0 1px rgba(255,255,255,.72);
+        }
+        .is-public .slot:hover span {
+            border-color: color-mix(in srgb, var(--accent) 36%, var(--line));
+            box-shadow: var(--shadow-sm), inset 0 1px rgba(255,255,255,.82);
+        }
+        .is-public .slot input:checked + span {
+            border-color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 18%, white);
+            color: var(--primary);
+            box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 18%, transparent);
+        }
+        .is-public .badge {
+            border-color: var(--line);
+            background: rgba(255,255,255,.7);
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: inset 0 1px rgba(255,255,255,.72);
+        }
+        .is-public .notice {
+            background: color-mix(in srgb, var(--accent) 12%, white);
+            color: #4b3924;
+        }
+        .is-public .notice strong,
+        .is-public .empty-state strong {
+            color: var(--ink);
+        }
+        .is-public .success,
+        .is-public .success p {
+            color: #17633c;
+        }
+        .is-public .errors,
+        .is-public .errors p,
+        .is-public .error {
+            color: #9c2020;
+        }
+        .is-public .site-footer {
+            border-top-color: var(--line);
+            background: rgba(255, 251, 244, .7);
+            backdrop-filter: blur(22px) saturate(1.15);
+        }
+        .is-public .powered-by,
+        .is-public .site-footer small {
+            color: var(--muted);
+        }
+        .is-public .modal {
+            border-color: var(--line);
+            background: rgba(255, 251, 244, .94);
+            color: var(--ink);
+            backdrop-filter: blur(26px) saturate(1.2);
+        }
+        @media (max-width: 780px) {
+            .is-public h1 {
+                font-size: 40px;
+            }
+            .is-public .hero {
+                padding-top: 38px;
+            }
+            .is-public .panel {
+                padding: 18px;
+            }
+        }
+        .is-public,
+        .admin-shell {
+            --gold: #b98a42;
+            --gold-soft: rgba(185, 138, 66, .18);
+            --glass-cream: rgba(255, 251, 244, .7);
+            --glass-cream-strong: rgba(255, 251, 244, .86);
+            --glass-border: rgba(116, 91, 53, .16);
+            --glass-highlight: rgba(255, 255, 255, .72);
+        }
+        html.dark .admin-shell {
+            --gold: #d2ae66;
+            --gold-soft: rgba(210, 174, 102, .18);
+            --glass-cream: rgba(34, 28, 20, .68);
+            --glass-cream-strong: rgba(39, 32, 23, .84);
+            --glass-border: rgba(245, 224, 187, .14);
+            --glass-highlight: rgba(255, 255, 255, .07);
+        }
+        .is-public .panel,
+        .is-public .notice,
+        .is-public .empty-state,
+        .is-public .modal,
+        .admin-shell .panel,
+        .admin-shell .metric,
+        .admin-shell .booking-card,
+        .admin-shell .staff-card,
+        .admin-shell .day-tile,
+        .admin-shell .settings-tabs,
+        .admin-shell .settings-save,
+        .admin-shell .notice,
+        .admin-shell .empty-state,
+        .admin-shell .modal,
+        .admin-dropdown-panel {
+            position: relative;
+            overflow: hidden;
+            border-color: var(--glass-border);
+            background: color-mix(in srgb, var(--glass-cream) 92%, transparent);
+            backdrop-filter: blur(30px) saturate(1.22);
+            box-shadow:
+                0 18px 48px rgba(40, 31, 20, .1),
+                inset 0 1px var(--glass-highlight),
+                inset 0 -1px rgba(116, 91, 53, .055);
+            transition: transform .22s cubic-bezier(.2,.8,.2,1), border-color .22s ease, box-shadow .22s ease, background .22s ease;
+        }
+        html.dark .admin-shell .panel,
+        html.dark .admin-shell .metric,
+        html.dark .admin-shell .booking-card,
+        html.dark .admin-shell .staff-card,
+        html.dark .admin-shell .day-tile,
+        html.dark .admin-shell .settings-tabs,
+        html.dark .admin-shell .settings-save,
+        html.dark .admin-shell .notice,
+        html.dark .admin-shell .empty-state,
+        html.dark .admin-shell .modal,
+        html.dark .admin-dropdown-panel {
+            box-shadow:
+                0 18px 48px rgba(0, 0, 0, .2),
+                inset 0 1px var(--glass-highlight),
+                inset 0 -1px rgba(255, 255, 255, .035);
+        }
+        .is-public .panel::before,
+        .is-public .notice::before,
+        .is-public .empty-state::before,
+        .admin-shell .panel::before,
+        .admin-shell .metric::before,
+        .admin-shell .booking-card::before,
+        .admin-shell .staff-card::before,
+        .admin-shell .day-tile::before,
+        .admin-shell .settings-tabs::before,
+        .admin-shell .notice::before,
+        .admin-shell .empty-state::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 18% 0%, rgba(255,255,255,.64), transparent 28%),
+                radial-gradient(circle at 86% 8%, var(--gold-soft), transparent 26%);
+            opacity: .7;
+            transition: opacity .22s ease, transform .22s ease;
+        }
+        html.dark .admin-shell .panel::before,
+        html.dark .admin-shell .metric::before,
+        html.dark .admin-shell .booking-card::before,
+        html.dark .admin-shell .staff-card::before,
+        html.dark .admin-shell .day-tile::before,
+        html.dark .admin-shell .settings-tabs::before,
+        html.dark .admin-shell .notice::before,
+        html.dark .admin-shell .empty-state::before {
+            background:
+                radial-gradient(circle at 18% 0%, rgba(255,255,255,.08), transparent 28%),
+                radial-gradient(circle at 86% 8%, var(--gold-soft), transparent 26%);
+        }
+        .is-public .panel:hover,
+        .admin-shell .panel:hover,
+        .admin-shell .metric:hover,
+        .admin-shell .booking-card:hover,
+        .admin-shell .staff-card:hover,
+        .admin-shell .day-tile:hover {
+            transform: translateY(-2px);
+            border-color: color-mix(in srgb, var(--gold) 34%, var(--glass-border));
+            background: var(--glass-cream-strong);
+            box-shadow:
+                0 24px 64px rgba(40, 31, 20, .14),
+                0 0 0 1px rgba(255,255,255,.34) inset,
+                inset 0 1px var(--glass-highlight);
+        }
+        html.dark .admin-shell .panel:hover,
+        html.dark .admin-shell .metric:hover,
+        html.dark .admin-shell .booking-card:hover,
+        html.dark .admin-shell .staff-card:hover,
+        html.dark .admin-shell .day-tile:hover {
+            box-shadow:
+                0 24px 64px rgba(0, 0, 0, .3),
+                0 0 0 1px rgba(255,255,255,.05) inset,
+                inset 0 1px var(--glass-highlight);
+        }
+        .is-public .panel:hover::before,
+        .admin-shell .panel:hover::before,
+        .admin-shell .metric:hover::before,
+        .admin-shell .booking-card:hover::before,
+        .admin-shell .staff-card:hover::before,
+        .admin-shell .day-tile:hover::before {
+            opacity: .95;
+            transform: translate3d(0, -2px, 0) scale(1.02);
+        }
+        .is-public .button,
+        .is-public button,
+        .is-public .nav a,
+        .admin-shell .button,
+        .admin-shell button,
+        .admin-shell .admin-icon-button,
+        .admin-shell .admin-profile-summary {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid var(--glass-border);
+            border-radius: 11px;
+            background: rgba(255, 251, 244, .62);
+            color: var(--ink);
+            box-shadow:
+                0 10px 24px rgba(40, 31, 20, .075),
+                inset 0 1px rgba(255,255,255,.74),
+                inset 0 -1px rgba(116, 91, 53, .06);
+            transition: transform .18s cubic-bezier(.2,.8,.2,1), border-color .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+        }
+        html.dark .admin-shell .button,
+        html.dark .admin-shell button,
+        html.dark .admin-shell .admin-icon-button,
+        html.dark .admin-shell .admin-profile-summary {
+            background: rgba(255, 251, 244, .06);
+            color: var(--ink);
+            box-shadow:
+                0 10px 24px rgba(0, 0, 0, .2),
+                inset 0 1px rgba(255,255,255,.055),
+                inset 0 -1px rgba(255,255,255,.025);
+        }
+        .is-public .button::before,
+        .is-public button::before,
+        .is-public .nav a::before,
+        .admin-shell .button::before,
+        .admin-shell button::before,
+        .admin-shell .admin-icon-button::before,
+        .admin-shell .admin-profile-summary::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 24% 0%, rgba(255,255,255,.78), transparent 32%),
+                radial-gradient(circle at 82% 100%, var(--gold-soft), transparent 34%);
+            opacity: .78;
+            transition: transform .22s ease, opacity .22s ease;
+        }
+        html.dark .admin-shell .button::before,
+        html.dark .admin-shell button::before,
+        html.dark .admin-shell .admin-icon-button::before,
+        html.dark .admin-shell .admin-profile-summary::before {
+            background:
+                radial-gradient(circle at 24% 0%, rgba(255,255,255,.09), transparent 32%),
+                radial-gradient(circle at 82% 100%, var(--gold-soft), transparent 34%);
+        }
+        .is-public .button:hover,
+        .is-public button:hover,
+        .is-public .nav a:hover,
+        .admin-shell .button:hover,
+        .admin-shell button:hover,
+        .admin-shell .admin-icon-button:hover,
+        .admin-shell .admin-profile-summary:hover {
+            transform: translateY(-1px);
+            border-color: color-mix(in srgb, var(--gold) 38%, var(--glass-border));
+            background: rgba(255, 251, 244, .82);
+            color: var(--ink);
+            box-shadow:
+                0 16px 34px rgba(40, 31, 20, .11),
+                inset 0 1px rgba(255,255,255,.86),
+                0 0 0 3px color-mix(in srgb, var(--gold) 10%, transparent);
+        }
+        html.dark .admin-shell .button:hover,
+        html.dark .admin-shell button:hover,
+        html.dark .admin-shell .admin-icon-button:hover,
+        html.dark .admin-shell .admin-profile-summary:hover {
+            background: rgba(255, 251, 244, .09);
+            box-shadow:
+                0 16px 34px rgba(0, 0, 0, .28),
+                inset 0 1px rgba(255,255,255,.075),
+                0 0 0 3px color-mix(in srgb, var(--gold) 12%, transparent);
+        }
+        .is-public .button:hover::before,
+        .is-public button:hover::before,
+        .is-public .nav a:hover::before,
+        .admin-shell .button:hover::before,
+        .admin-shell button:hover::before,
+        .admin-shell .admin-icon-button:hover::before,
+        .admin-shell .admin-profile-summary:hover::before {
+            opacity: 1;
+            transform: translate3d(0, -1px, 0) scale(1.08);
+        }
+        .is-public .button:active,
+        .is-public button:active,
+        .is-public .nav a:active,
+        .admin-shell .button:active,
+        .admin-shell button:active,
+        .admin-shell .admin-icon-button:active,
+        .admin-shell .admin-profile-summary:active {
+            transform: translateY(0) scale(.985);
+            box-shadow:
+                0 8px 18px rgba(40, 31, 20, .08),
+                inset 0 2px 5px rgba(116, 91, 53, .12);
+        }
+        .is-public .button.primary,
+        .is-public button.primary,
+        .admin-shell .button.primary,
+        .admin-shell button.primary {
+            border-color: color-mix(in srgb, var(--gold) 44%, var(--glass-border));
+            background: color-mix(in srgb, #fff8ea 82%, var(--gold) 18%);
+            color: #312617;
+            box-shadow:
+                0 14px 30px color-mix(in srgb, var(--gold) 16%, transparent),
+                inset 0 1px rgba(255,255,255,.84),
+                inset 0 -1px rgba(116, 91, 53, .08);
+        }
+        .is-public .button.primary::after,
+        .is-public button.primary::after,
+        .admin-shell .button.primary::after,
+        .admin-shell button.primary::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 6px;
+            height: 1px;
+            background: color-mix(in srgb, var(--gold) 56%, transparent);
+            opacity: .6;
+        }
+        .is-public .button.subtle,
+        .is-public button.subtle,
+        .admin-shell .button.subtle,
+        .admin-shell button.subtle,
+        .admin-shell .button.secondary {
+            color: color-mix(in srgb, var(--gold) 72%, var(--ink));
+            background: rgba(255, 251, 244, .54);
+            border-color: color-mix(in srgb, var(--gold) 24%, var(--glass-border));
+        }
+        .is-public .slot span,
+        .admin-shell .slot span,
+        .is-public .badge,
+        .admin-shell .badge,
+        .admin-nav-section summary {
+            border-color: var(--glass-border);
+            background: color-mix(in srgb, var(--glass-cream) 86%, transparent);
+            box-shadow: inset 0 1px var(--glass-highlight);
+            transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+        .is-public .slot:hover span,
+        .admin-shell .slot:hover span,
+        .admin-nav-section summary:hover {
+            transform: translateY(-1px);
+            border-color: color-mix(in srgb, var(--gold) 34%, var(--glass-border));
+            background: var(--glass-cream-strong);
+            box-shadow: 0 12px 28px rgba(40, 31, 20, .1), inset 0 1px var(--glass-highlight);
+        }
+        .is-public .slot input:checked + span,
+        .admin-shell .slot input:checked + span,
+        .admin-nav-section[open] summary,
+        .admin-shell .admin-nav a.active,
+        .settings-tab.active {
+            border-color: color-mix(in srgb, var(--gold) 46%, var(--glass-border));
+            background: color-mix(in srgb, var(--gold) 13%, var(--glass-cream-strong));
+            color: color-mix(in srgb, var(--gold) 70%, var(--ink));
+            box-shadow:
+                0 14px 30px color-mix(in srgb, var(--gold) 13%, transparent),
+                inset 0 1px var(--glass-highlight);
+        }
+        .is-public::after,
+        .admin-shell::after {
+            content: "";
+            position: fixed;
+            inset: -22% -18%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: .42;
+            background:
+                radial-gradient(42% 34% at 18% 20%, rgba(255,255,255,.68), transparent 62%),
+                radial-gradient(34% 28% at 74% 14%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 68%),
+                radial-gradient(32% 36% at 58% 76%, rgba(255,255,255,.48), transparent 66%),
+                radial-gradient(30% 26% at 16% 84%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 68%);
+            filter: blur(28px) saturate(1.05);
+            transform: translate3d(0,0,0);
+            animation: ambientGlass 28s ease-in-out infinite alternate;
+        }
+        html.dark .admin-shell::after {
+            opacity: .24;
+            background:
+                radial-gradient(42% 34% at 18% 20%, rgba(255,255,255,.08), transparent 62%),
+                radial-gradient(34% 28% at 74% 14%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 68%),
+                radial-gradient(32% 36% at 58% 76%, rgba(255,255,255,.06), transparent 66%),
+                radial-gradient(30% 26% at 16% 84%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 68%);
+        }
+        .is-public > :not(.modal-backdrop),
+        .admin-shell > * {
+            position: relative;
+            z-index: 1;
+        }
+        .is-public > .modal-backdrop {
+            z-index: 40;
+        }
+        @keyframes ambientGlass {
+            0% {
+                transform: translate3d(-1.5%, -1%, 0) rotate(-2deg) scale(1);
+            }
+            50% {
+                transform: translate3d(1.5%, 1%, 0) rotate(2deg) scale(1.025);
+            }
+            100% {
+                transform: translate3d(2.5%, -1.5%, 0) rotate(-1deg) scale(1.04);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .is-public::after,
+            .admin-shell::after {
+                animation: none;
+            }
+        }
     </style>
 </head>
-<body>
-    @php($isAdminArea = auth()->check() && request()->routeIs('admin.*'))
+@php($isAdminArea = auth()->check() && request()->routeIs('admin.*'))
+<body class="{{ $isAdminArea ? 'is-admin' : 'is-public' }}">
 
     @if ($isAdminArea)
         @include('layouts.partials.admin-shell')
@@ -1046,6 +1621,7 @@
                             <button type="submit">Log out</button>
                         </form>
                     @else
+                        <a href="{{ route('signup') }}">Start trial</a>
                         <a href="{{ route('login') }}">Staff login</a>
                     @endauth
                 </nav>
