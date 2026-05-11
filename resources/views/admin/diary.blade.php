@@ -51,7 +51,21 @@
                                 @endforeach
                             </div>
                         </div>
-                        <span class="badge">{{ str_replace('_', ' ', $booking->status) }}</span>
+                        <div>
+                            <span class="badge">{{ str_replace('_', ' ', $booking->status) }}</span>
+                            <form method="post" action="{{ route('admin.bookings.status.update', $booking) }}" style="margin-top: 10px;">
+                                @csrf
+                                @method('patch')
+                                <div class="field">
+                                    <label for="status-{{ $booking->id }}">Status</label>
+                                    <select id="status-{{ $booking->id }}" name="status" onchange="this.form.submit()">
+                                        @foreach (\App\Models\Booking::STATUSES as $status)
+                                            <option value="{{ $status }}" @selected($booking->status === $status)>{{ ucfirst(str_replace('_', ' ', $status)) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
                     </article>
                 @empty
                     <div class="notice">

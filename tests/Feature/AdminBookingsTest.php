@@ -106,4 +106,32 @@ class AdminBookingsTest extends TestCase
             ->assertOk()
             ->assertSee('Add booking');
     }
+
+    public function test_guest_cannot_update_booking_status(): void
+    {
+        $this->seed();
+        $booking = Booking::firstOrFail();
+
+        $this->patch('/admin/bookings/'.$booking->booking_reference.'/status', [
+            'status' => 'cancelled',
+        ])->assertRedirect('/staff/login');
+    }
+
+    public function test_staff_can_update_booking_status_from_diary(): void
+    {
+        $this->seed();
+        $booking = Booking::where('status', 'confirmed')->firstOrFail();
+
+        $this->actingAs(User::first())
+            ->patch('/admin/bookings/'.$booking->booking_reference.'/status', [
+                'status' => 'cancelled',
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/admin/diary?date='.$booking->starts_at->toDateString());
+
+        $booking->refresh();
+
+        $this->assertSame('cancelled', $booking->status);
+        $this->assertNotNull($booking->cancelled_at);
+    }
 }

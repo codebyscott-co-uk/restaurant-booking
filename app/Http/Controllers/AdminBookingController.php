@@ -95,6 +95,25 @@ class AdminBookingController extends Controller
             ->with('status', 'Booking created.');
     }
 
+    public function updateStatus(Request $request, Booking $booking): RedirectResponse
+    {
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(Booking::STATUSES)],
+        ]);
+
+        $booking->update([
+            'status' => $validated['status'],
+            'confirmed_at' => in_array($validated['status'], ['confirmed', 'seated', 'completed'], true)
+                ? ($booking->confirmed_at ?: now())
+                : $booking->confirmed_at,
+            'cancelled_at' => $validated['status'] === 'cancelled' ? now() : null,
+        ]);
+
+        return redirect()
+            ->route('admin.diary', ['date' => $booking->starts_at->toDateString()])
+            ->with('status', 'Booking status updated.');
+    }
+
     private function reference(): string
     {
         do {
@@ -104,4 +123,3 @@ class AdminBookingController extends Controller
         return $reference;
     }
 }
-

@@ -29,6 +29,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/diary', AdminDiaryController::class)->name('diary');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
+    Route::patch('/bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status.update');
     Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
     Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);
