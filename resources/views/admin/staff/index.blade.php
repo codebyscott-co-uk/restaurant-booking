@@ -37,7 +37,7 @@
                 </div>
                 <div class="actions">
                     <a class="button" href="{{ route('admin.staff.edit', $member) }}">Edit</a>
-                    <form method="post" action="{{ route('admin.staff.destroy', $member) }}" onsubmit="return confirm('Delete this staff user?');">
+                    <form method="post" action="{{ route('admin.staff.destroy', $member) }}" data-confirm="Delete this staff user?">
                         @csrf
                         @method('delete')
                         <button class="danger" type="submit">Delete</button>

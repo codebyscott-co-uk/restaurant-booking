@@ -41,7 +41,7 @@
                     </div>
                     <div class="actions">
                         <a class="button" href="{{ route('admin.tables.edit', $table) }}">Edit</a>
-                        <form method="post" action="{{ route('admin.tables.destroy', $table) }}" onsubmit="return confirm('Delete this table?');">
+                        <form method="post" action="{{ route('admin.tables.destroy', $table) }}" data-confirm="Delete this table?">
                             @csrf
                             @method('delete')
                             <button class="danger" type="submit">Delete</button>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="actions" style="margin-top: 12px;">
                         <a class="button" href="{{ route('admin.areas.edit', $area) }}">Edit</a>
-                        <form method="post" action="{{ route('admin.areas.destroy', $area) }}" onsubmit="return confirm('Delete this dining area?');">
+                        <form method="post" action="{{ route('admin.areas.destroy', $area) }}" data-confirm="Delete this dining area?">
                             @csrf
                             @method('delete')
                             <button class="danger" type="submit">Delete</button>

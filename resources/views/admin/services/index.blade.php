@@ -41,7 +41,7 @@
                 </div>
                 <div class="actions">
                     <a class="button" href="{{ route('admin.services.edit', $service) }}">Edit</a>
-                    <form method="post" action="{{ route('admin.services.destroy', $service) }}" onsubmit="return confirm('Delete this service?');">
+                    <form method="post" action="{{ route('admin.services.destroy', $service) }}" data-confirm="Delete this service?">
                         @csrf
                         @method('delete')
                         <button class="danger" type="submit">Delete</button>

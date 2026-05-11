@@ -107,6 +107,17 @@ class AdminManagementTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'hello@codebyscott.co.uk']);
     }
 
+    public function test_staff_pages_include_modal_confirmations_for_destructive_actions(): void
+    {
+        $this->seed();
+
+        $this->actingAs(User::first())
+            ->get('/admin/staff')
+            ->assertOk()
+            ->assertSee('data-confirm-modal', false)
+            ->assertSee('data-confirm="Delete this staff user?"', false);
+    }
+
     public function test_guest_cannot_view_settings_or_staff_pages(): void
     {
         $this->seed();

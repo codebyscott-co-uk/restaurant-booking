@@ -99,10 +99,10 @@
                     <div class="table-list">
                         <span class="badge">{{ $closure->service?->name ?: 'All services' }}</span>
                     </div>
-                    <form method="post" action="{{ route('admin.availability.closures.destroy', $closure) }}" style="margin-top: 12px;" onsubmit="return confirm('Remove this closure?');">
+                    <form method="post" action="{{ route('admin.availability.closures.destroy', $closure) }}" style="margin-top: 12px;" data-confirm="Remove this closure?">
                         @csrf
                         @method('delete')
-                        <button type="submit">Remove</button>
+                        <button class="danger" type="submit">Remove</button>
                     </form>
                 </article>
             @empty
@@ -112,4 +112,3 @@
     </aside>
 </section>
 @endsection
-

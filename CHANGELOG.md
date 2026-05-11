@@ -17,6 +17,7 @@ This project follows a simple changelog style while it is in early development.
 - Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.
 - Responsive admin navigation with active states and improved mobile behaviour.
 - Shared UI polish for admin metrics, empty states, success states and compact staff pages.
+- Premium theme styling with animated surfaces, refined controls, better focus states and modal confirmations for destructive actions.
 - Admin booking diary with daily booking overview.
 - Business settings panel for restaurant details, address, brand colours and policies.
 - Configurable booking rules for lead time, advance booking window, maximum party size, maximum slot covers and joined-table allocation.
