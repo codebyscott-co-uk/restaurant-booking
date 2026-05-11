@@ -19,9 +19,9 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - JSON API endpoints for venue details, services, availability and booking creation
 - Staff-only login area
 - Polished staff dashboard with daily metrics, quick actions and setup health
-- Responsive admin navigation with active states and mobile scrolling
-- Staff-only sidebar navigation with grouped admin workspace sections
-- Premium theme layer with animated cards, refined buttons, focus states and modal confirmations
+- Premium staff admin shell with sticky top bar, quick actions, notifications placeholder, profile menu and persistent light/dark mode
+- Responsive collapsible admin sidebar with grouped dropdown navigation sections
+- Refined hospitality SaaS admin theme with lighter typography, glass-style panels, inline icons, polished buttons and subtle focus states
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Sectioned business settings workspace
 - Restaurant logo upload and brand colour controls

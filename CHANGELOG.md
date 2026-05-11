@@ -26,6 +26,9 @@ This project follows a simple changelog style while it is in early development.
 - Polished staff dashboard with daily metrics, quick actions, upcoming bookings and setup health.
 - Responsive admin navigation with active states and improved mobile behaviour.
 - Staff-only sidebar navigation with grouped admin workspace sections and mobile menu toggle.
+- Premium staff admin shell with sticky top bar, quick action, notifications placeholder, profile menu and persistent light/dark mode.
+- Responsive collapsible admin sidebar with grouped dropdown navigation for dashboard, bookings, availability, tables, services, customers, billing, settings and staff.
+- Refined admin typography, glass-style surfaces, inline navigation icons, polished buttons, badges and top bar controls.
 - Shared UI polish for admin metrics, empty states, success states and compact staff pages.
 - Premium theme styling with animated surfaces, refined controls, better focus states and modal confirmations for destructive actions.
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards.
@@ -51,6 +54,7 @@ This project follows a simple changelog style while it is in early development.
 - Updated booking references to use the `CBR` prefix.
 - Kept the Code by Scott footer pinned to the bottom on short pages.
 - Reworked business settings into focused tabbed panels with a persistent save action.
+- Kept public booking pages on the public layout while authenticated admin routes use the new staff workspace shell.
 
 ### Security
 
