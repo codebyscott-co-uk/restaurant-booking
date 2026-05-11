@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\DiningArea;
+use App\Models\RestaurantTable;
+use App\Models\Venue;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class AdminRestaurantTableController extends Controller
+{
+    public function create(): View
+    {
+        $venue = Venue::firstOrFail();
+
+        return view('admin.tables.create', [
+            'venue' => $venue,
+            'areas' => $venue->diningAreas()->where('is_active', true)->get(),
+            'table' => new RestaurantTable([
+                'min_covers' => 1,
+                'max_covers' => 2,
+                'is_joinable' => false,
+                'is_active' => true,
+            ]),
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $venue = Venue::firstOrFail();
+        $validated = $this->validateTable($request);
+        $validated['venue_id'] = $venue->id;
+        $validated['is_joinable'] = $request->boolean('is_joinable');
+        $validated['is_active'] = $request->boolean('is_active');
+
+        RestaurantTable::create($validated);
+
+        return redirect()->route('admin.areas.index')->with('status', 'Table created.');
+    }
+
+    public function edit(RestaurantTable $table): View
+    {
+        $venue = Venue::firstOrFail();
+
+        return view('admin.tables.edit', [
+            'venue' => $venue,
+            'areas' => $venue->diningAreas()->where('is_active', true)->get(),
+            'table' => $table,
+        ]);
+    }
+
+    public function update(Request $request, RestaurantTable $table): RedirectResponse
+    {
+        $validated = $this->validateTable($request);
+        $validated['is_joinable'] = $request->boolean('is_joinable');
+        $validated['is_active'] = $request->boolean('is_active');
+
+        $table->update($validated);
+
+        return redirect()->route('admin.areas.index')->with('status', 'Table updated.');
+    }
+
+    public function destroy(RestaurantTable $table): RedirectResponse
+    {
+        if ($table->bookings()->exists()) {
+            return back()->withErrors(['table' => 'Tables with bookings cannot be deleted. Set the table inactive instead.']);
+        }
+
+        $table->delete();
+
+        return redirect()->route('admin.areas.index')->with('status', 'Table deleted.');
+    }
+
+    private function validateTable(Request $request): array
+    {
+        return $request->validate([
+            'dining_area_id' => ['required', 'exists:dining_areas,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'min_covers' => ['required', 'integer', 'min:1', 'max:99'],
+            'max_covers' => ['required', 'integer', 'min:1', 'max:99', 'gte:min_covers'],
+            'is_joinable' => ['nullable', 'boolean'],
+            'is_active' => ['nullable', 'boolean'],
+        ]);
+    }
+}
+

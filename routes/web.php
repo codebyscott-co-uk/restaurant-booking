@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminDiaryController;
+use App\Http\Controllers\AdminDiningAreaController;
+use App\Http\Controllers\AdminRestaurantTableController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\AdminServiceController;
 use App\Http\Controllers\AdminStaffController;
@@ -24,6 +26,8 @@ Route::post('/staff/logout', [AuthController::class, 'destroy'])
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/diary', AdminDiaryController::class)->name('diary');
     Route::resource('services', AdminServiceController::class)->except(['show']);
+    Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
+    Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);
     Route::get('/settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
     Route::resource('staff', AdminStaffController::class)

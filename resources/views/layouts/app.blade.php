@@ -103,6 +103,7 @@
                 @auth
                     <a href="{{ route('admin.diary') }}">Diary</a>
                     <a href="{{ route('admin.services.index') }}">Services</a>
+                    <a href="{{ route('admin.areas.index') }}">Tables</a>
                     <a href="{{ route('admin.settings.edit') }}">Settings</a>
                     <a href="{{ route('admin.staff.index') }}">Staff</a>
                     <form class="logout-form" method="post" action="{{ route('logout') }}">
