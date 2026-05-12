@@ -3681,6 +3681,458 @@
             stroke-width: 1.75 !important;
             flex: 0 0 auto;
         }
+        .admin-shell .dashboard-suite {
+            padding-bottom: 48px;
+        }
+        .admin-shell .dashboard-hero {
+            padding-bottom: 18px;
+        }
+        .admin-shell .dashboard-hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 430px);
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+        .admin-shell .dashboard-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .admin-shell .kpi-card,
+        .admin-shell .insight-card,
+        .admin-shell .dashboard-widget {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .12);
+        }
+        .admin-shell .kpi-card {
+            min-height: 150px;
+            border-radius: .75rem;
+            padding: 1.15rem;
+            color: #fff;
+            box-shadow: 0 .5rem 1.5rem rgba(47, 43, 61, .12);
+            isolation: isolate;
+        }
+        .admin-shell .kpi-card::before,
+        .admin-shell .insight-card::before {
+            content: "";
+            position: absolute;
+            inset: auto -12% -40% auto;
+            width: 9rem;
+            height: 9rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .18);
+            filter: blur(2px);
+            z-index: -1;
+            animation: dashboardFloat 7s ease-in-out infinite alternate;
+        }
+        .admin-shell .kpi-card span,
+        .admin-shell .insight-card span {
+            display: block;
+            color: rgba(255, 255, 255, .82);
+            font-size: .8125rem;
+            font-weight: 600;
+        }
+        .admin-shell .kpi-card strong,
+        .admin-shell .insight-card strong {
+            display: block;
+            margin-top: .3rem;
+            color: #fff;
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 700;
+        }
+        .admin-shell .kpi-card small,
+        .admin-shell .insight-card p {
+            display: block;
+            margin-top: .45rem;
+            color: rgba(255, 255, 255, .78);
+            font-size: .8125rem;
+        }
+        .admin-shell .kpi-card.violet,
+        .admin-shell .gradient-violet {
+            background: linear-gradient(135deg, #7367f0 0%, #8f85f4 100%) !important;
+        }
+        .admin-shell .kpi-card.cyan {
+            background: linear-gradient(135deg, #00bad1 0%, #38d4e7 100%) !important;
+        }
+        .admin-shell .kpi-card.green {
+            background: linear-gradient(135deg, #28c76f 0%, #65dc98 100%) !important;
+        }
+        .admin-shell .kpi-card.amber {
+            background: linear-gradient(135deg, #ff9f43 0%, #ffc26b 100%) !important;
+        }
+        .admin-shell .sparkline {
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            display: flex;
+            align-items: end;
+            gap: .28rem;
+            height: 2.5rem;
+        }
+        .admin-shell .sparkline i {
+            display: block;
+            width: .42rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .5);
+            animation: dashboardBars 1.8s ease-in-out infinite alternate;
+        }
+        .admin-shell .sparkline i:nth-child(1) { height: 38%; animation-delay: -.4s; }
+        .admin-shell .sparkline i:nth-child(2) { height: 68%; animation-delay: -.8s; }
+        .admin-shell .sparkline i:nth-child(3) { height: 48%; animation-delay: -.2s; }
+        .admin-shell .sparkline i:nth-child(4) { height: 82%; animation-delay: -.6s; }
+        .admin-shell .sparkline i:nth-child(5) { height: 58%; animation-delay: -1s; }
+        .admin-shell .mini-progress,
+        .admin-shell .bar-track {
+            height: .45rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(47, 43, 61, .08);
+        }
+        .admin-shell .kpi-card .mini-progress {
+            position: absolute;
+            right: 1rem;
+            bottom: 1.3rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, .24);
+        }
+        .admin-shell .mini-progress span,
+        .admin-shell .bar-track span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: #7367f0;
+            animation: dashboardGrow .8s cubic-bezier(.2,.8,.2,1) both;
+        }
+        .admin-shell .kpi-card .mini-progress span {
+            background: rgba(255, 255, 255, .78);
+        }
+        .admin-shell .insight-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 1.25rem;
+            align-items: center;
+            min-height: 190px;
+            border-radius: .875rem;
+            padding: 1.35rem;
+            color: #fff;
+            box-shadow: 0 .75rem 2rem rgba(115, 103, 240, .28);
+        }
+        .admin-shell .orbital-chart,
+        .admin-shell .experience-meter {
+            --value: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: conic-gradient(from -90deg, rgba(255,255,255,.95) calc(var(--value) * 1%), rgba(255,255,255,.22) 0);
+            animation: dashboardPulse 3.5s ease-in-out infinite;
+        }
+        .admin-shell .orbital-chart {
+            width: 7rem;
+            height: 7rem;
+        }
+        .admin-shell .orbital-chart::before,
+        .admin-shell .experience-meter::before {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: inherit;
+            opacity: .22;
+            filter: blur(12px);
+        }
+        .admin-shell .orbital-chart span,
+        .admin-shell .experience-meter span {
+            display: grid;
+            place-items: center;
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            background: rgba(115, 103, 240, .95);
+            color: #fff;
+            font-weight: 700;
+        }
+        .admin-shell .dashboard-mosaic {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr) minmax(280px, .7fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .admin-shell .dashboard-widget {
+            border-radius: .75rem;
+            padding: 1.15rem;
+        }
+        .admin-shell .widget-heading {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .admin-shell .widget-heading h2,
+        .admin-shell .dashboard-widget h2 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        .admin-shell .widget-heading p {
+            margin: .2rem 0 0;
+            font-size: .8125rem;
+        }
+        .admin-shell .service-bars,
+        .admin-shell .source-list {
+            display: grid;
+            gap: .9rem;
+        }
+        .admin-shell .service-bar,
+        .admin-shell .source-row {
+            display: grid;
+            gap: .45rem;
+        }
+        .admin-shell .service-bar > div:first-child,
+        .admin-shell .source-row {
+            align-items: center;
+            grid-template-columns: minmax(0, 1fr) auto;
+        }
+        .admin-shell .service-bar > div:first-child {
+            display: grid;
+        }
+        .admin-shell .service-bar strong,
+        .admin-shell .source-row strong {
+            color: #444050;
+            font-size: .9rem;
+            font-weight: 600;
+        }
+        html.dark .admin-shell .service-bar strong,
+        html.dark .admin-shell .source-row strong {
+            color: #d5d1ea;
+        }
+        .admin-shell .service-bar span,
+        .admin-shell .source-row span,
+        .admin-shell .upcoming-list span {
+            color: #6d6777;
+            font-size: .8125rem;
+        }
+        html.dark .admin-shell .service-bar span,
+        html.dark .admin-shell .source-row span,
+        html.dark .admin-shell .upcoming-list span {
+            color: #b6b1cb;
+        }
+        .admin-shell .service-bar:nth-child(4n+1) .bar-track span,
+        .admin-shell .source-row:nth-child(4n+1) .mini-progress span { background: #7367f0; }
+        .admin-shell .service-bar:nth-child(4n+2) .bar-track span,
+        .admin-shell .source-row:nth-child(4n+2) .mini-progress span { background: #00bad1; }
+        .admin-shell .service-bar:nth-child(4n+3) .bar-track span,
+        .admin-shell .source-row:nth-child(4n+3) .mini-progress span { background: #28c76f; }
+        .admin-shell .service-bar:nth-child(4n+4) .bar-track span,
+        .admin-shell .source-row:nth-child(4n+4) .mini-progress span { background: #ff9f43; }
+        .admin-shell .flow-chart {
+            display: flex;
+            align-items: end;
+            gap: .7rem;
+            min-height: 210px;
+            padding: .75rem .25rem 0;
+        }
+        .admin-shell .flow-column {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            align-items: end;
+            justify-items: center;
+            gap: .45rem;
+            flex: 1;
+            min-width: 2rem;
+            height: 190px;
+        }
+        .admin-shell .flow-column span,
+        .admin-shell .flow-column small {
+            color: #6d6777;
+            font-size: .75rem;
+            font-weight: 600;
+        }
+        html.dark .admin-shell .flow-column span,
+        html.dark .admin-shell .flow-column small {
+            color: #b6b1cb;
+        }
+        .admin-shell .flow-column i {
+            display: block;
+            width: 100%;
+            min-height: .75rem;
+            height: var(--height);
+            border-radius: .55rem .55rem .2rem .2rem;
+            background: linear-gradient(180deg, #7367f0, #00bad1);
+            box-shadow: 0 .5rem 1.2rem rgba(115, 103, 240, .24);
+            animation: dashboardRise .75s cubic-bezier(.2,.8,.2,1) both;
+        }
+        .admin-shell .experience-widget {
+            display: grid;
+            align-content: start;
+        }
+        .admin-shell .experience-meter {
+            position: relative;
+            width: 8rem;
+            height: 8rem;
+            margin: .5rem auto 1.2rem;
+            background: conic-gradient(from -90deg, #28c76f calc(var(--value) * 1%), rgba(47, 43, 61, .08) 0);
+        }
+        .admin-shell .experience-meter span {
+            width: 5.8rem;
+            height: 5.8rem;
+            background: #fff;
+            color: #444050;
+            font-size: 1.8rem;
+        }
+        html.dark .admin-shell .experience-meter span {
+            background: #2f3349;
+            color: #d5d1ea;
+        }
+        .admin-shell .status-grid {
+            display: grid;
+            gap: .55rem;
+        }
+        .admin-shell .status-pill {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            gap: .75rem;
+            border-radius: .55rem;
+            padding: .55rem .65rem;
+            background: rgba(47, 43, 61, .05);
+        }
+        html.dark .admin-shell .status-pill {
+            background: rgba(225, 222, 245, .08);
+        }
+        .admin-shell .status-pill span,
+        .admin-shell .status-pill strong {
+            position: relative;
+            z-index: 1;
+            font-size: .8rem;
+        }
+        .admin-shell .status-pill i {
+            position: absolute;
+            inset: 0 auto 0 0;
+            opacity: .18;
+        }
+        .admin-shell .status-pill.violet i,
+        .admin-shell .status-badge.violet { background: #7367f0; color: #fff; }
+        .admin-shell .status-pill.cyan i,
+        .admin-shell .status-badge.cyan { background: #00bad1; color: #fff; }
+        .admin-shell .status-pill.green i,
+        .admin-shell .status-badge.green { background: #28c76f; color: #fff; }
+        .admin-shell .status-pill.amber i,
+        .admin-shell .status-badge.amber { background: #ff9f43; color: #fff; }
+        .admin-shell .status-pill.red i,
+        .admin-shell .status-badge.red { background: #ea5455; color: #fff; }
+        .admin-shell .status-pill.slate i,
+        .admin-shell .status-badge.slate { background: #6d6777; color: #fff; }
+        .admin-shell .dashboard-bottom-grid {
+            align-items: start;
+        }
+        .admin-shell .dashboard-booking-card {
+            border-left-color: #7367f0;
+        }
+        .admin-shell .dashboard-actions a {
+            min-height: 4rem;
+            justify-content: start;
+            border: 0;
+            background: rgba(115, 103, 240, .08) !important;
+            color: #7367f0;
+        }
+        .admin-shell .dashboard-actions a:nth-child(2) {
+            background: rgba(0, 186, 209, .1) !important;
+            color: #00bad1;
+        }
+        .admin-shell .dashboard-actions a:nth-child(3) {
+            background: rgba(40, 199, 111, .1) !important;
+            color: #28c76f;
+        }
+        .admin-shell .dashboard-actions a:nth-child(4) {
+            background: rgba(255, 159, 67, .12) !important;
+            color: #ff9f43;
+        }
+        .admin-shell .upcoming-list article {
+            border-left: 3px solid #7367f0;
+            border-radius: .5rem;
+            padding: .65rem .75rem;
+            background: rgba(47, 43, 61, .04);
+        }
+        html.dark .admin-shell .upcoming-list article {
+            background: rgba(225, 222, 245, .06);
+        }
+        .admin-shell .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .65rem;
+            margin: 1rem 0;
+        }
+        .admin-shell .setup-grid span {
+            display: grid;
+            gap: .15rem;
+            border-radius: .55rem;
+            padding: .75rem;
+            background: rgba(47, 43, 61, .05);
+            color: #6d6777;
+            font-size: .8rem;
+        }
+        html.dark .admin-shell .setup-grid span {
+            background: rgba(225, 222, 245, .07);
+            color: #b6b1cb;
+        }
+        .admin-shell .setup-grid strong {
+            color: #444050;
+            font-size: 1.1rem;
+        }
+        html.dark .admin-shell .setup-grid strong {
+            color: #d5d1ea;
+        }
+        @keyframes dashboardFloat {
+            from { transform: translate3d(0, 0, 0) scale(1); }
+            to { transform: translate3d(-12%, -10%, 0) scale(1.12); }
+        }
+        @keyframes dashboardBars {
+            from { transform: scaleY(.72); opacity: .65; }
+            to { transform: scaleY(1.05); opacity: 1; }
+        }
+        @keyframes dashboardGrow {
+            from { width: 0; }
+        }
+        @keyframes dashboardRise {
+            from { height: 0; opacity: .4; }
+        }
+        @keyframes dashboardPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.025); }
+        }
+        @media (max-width: 1180px) {
+            .admin-shell .dashboard-kpis,
+            .admin-shell .dashboard-mosaic {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .admin-shell .experience-widget {
+                grid-column: span 2;
+            }
+        }
+        @media (max-width: 780px) {
+            .admin-shell .dashboard-hero-grid,
+            .admin-shell .dashboard-kpis,
+            .admin-shell .dashboard-mosaic {
+                grid-template-columns: 1fr;
+            }
+            .admin-shell .experience-widget {
+                grid-column: auto;
+            }
+            .admin-shell .insight-card {
+                grid-template-columns: 1fr;
+            }
+            .admin-shell .flow-chart {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+            .admin-shell .flow-column {
+                flex: 0 0 3rem;
+            }
+        }
     </style>
 </head>
 @php($isAdminArea = auth()->check() && request()->routeIs('admin.*'))

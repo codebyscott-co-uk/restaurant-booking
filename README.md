@@ -19,7 +19,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Branded staff alert emails for new online bookings
 - JSON API endpoints for venue details, services, availability and booking creation
 - Staff-only login area
-- Polished staff dashboard with daily metrics, quick actions and setup health
+- Premium staff dashboard with colourful KPI widgets, animated infographics, service mix, booking source, cover flow and setup health panels
 - Vuexy-inspired semi-dark staff admin shell with fixed sidebar, floating sticky top bar, search placeholder, quick actions, notifications placeholder, profile menu and persistent light/dark mode
 - Premium indigo/slate SaaS component system for public booking, auth, customer management and widget experiences
 - Responsive collapsible admin sidebar with grouped dropdown navigation sections, inline icons, active states and polished hover states

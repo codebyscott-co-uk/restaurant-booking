@@ -17,6 +17,7 @@ This project follows a simple changelog style while it is in early development.
 - Cleaned dark mode to remove remaining warm cream, gold and brown colour remnants from admin surfaces.
 - Staff profile page for updating personal details and avatar image.
 - Vuexy-style profile dropdown with My Profile, Settings, Billing, Help and red Logout actions.
+- Premium dashboard widget suite with colourful KPI cards, animated cover-flow infographics, service mix, source tracking, table load and guest experience panels.
 - Admin top bar search placeholder with compact action controls.
 - Premium light theme for the public booking, signup, login, booking management and embeddable widget experiences.
 - Indigo/slate SaaS interaction polish for public and admin cards, buttons, slots and active states.
