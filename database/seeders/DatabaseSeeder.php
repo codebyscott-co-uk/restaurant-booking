@@ -124,6 +124,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $customer = Customer::create([
+            'venue_id' => $venue->id,
             'first_name' => 'Amelia',
             'last_name' => 'Hart',
             'email' => 'amelia@example.test',
@@ -151,6 +152,7 @@ class DatabaseSeeder extends Seeder
         Booking::create([
             'venue_id' => $venue->id,
             'customer_id' => Customer::create([
+                'venue_id' => $venue->id,
                 'first_name' => 'Noah',
                 'last_name' => 'Singh',
                 'email' => 'noah@example.test',

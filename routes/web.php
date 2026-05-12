@@ -32,8 +32,13 @@ Route::get('/widget/embed.js', [WidgetController::class, 'script'])->name('widge
 Route::prefix('r/{venue:slug}')->name('tenant.')->group(function () {
     Route::get('/', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/book', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/booking/{booking}', [BookingController::class, 'tenantShow'])->name('bookings.show');
     Route::get('/manage-booking', [CustomerBookingController::class, 'lookup'])->name('bookings.lookup');
     Route::post('/manage-booking', [CustomerBookingController::class, 'find'])->name('bookings.lookup.find');
+    Route::get('/manage-booking/{booking}/{token}', [CustomerBookingController::class, 'tenantShow'])->name('bookings.manage.show');
+    Route::get('/manage-booking/{booking}/{token}/edit', [CustomerBookingController::class, 'tenantEdit'])->name('bookings.manage.edit');
+    Route::put('/manage-booking/{booking}/{token}', [CustomerBookingController::class, 'tenantUpdate'])->name('bookings.manage.update');
+    Route::patch('/manage-booking/{booking}/{token}/cancel', [CustomerBookingController::class, 'tenantCancel'])->name('bookings.manage.cancel');
     Route::get('/widget/bookings', [WidgetController::class, 'show'])->name('widget.bookings');
     Route::get('/widget/embed.js', [WidgetController::class, 'script'])->name('widget.script');
 });
@@ -49,7 +54,7 @@ Route::post('/staff/logout', [AuthController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');

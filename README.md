@@ -33,6 +33,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Configurable online change and cancellation notice period
 - Staff user create, edit, activate/deactivate and delete
 - Staff profile editing with avatar upload and personal contact details
+- Tenant-scoped customer records and subscription ownership preparation for Stripe billing
 - Service management for lunch, dinner and other bookable sessions
 - Dining area and table management
 - Opening hours and closure management
@@ -132,6 +133,46 @@ http://restaurant-booking.test/signup
 ```
 
 The signup flow creates a venue, owner account, default lunch and dinner services, starter tables, weekday opening hours and widget settings.
+
+## Multi-Tenant Architecture
+
+Resora OS uses the `venues` table as the tenant boundary. Staff users belong to exactly one venue through `users.venue_id`, and operational records such as bookings, customers, services, tables, dining areas, opening hours, closures and subscription records are tenant-owned.
+
+Authenticated admin routes are protected by both `auth` and `tenant.staff` middleware. The middleware blocks staff accounts that are not attached to a venue before any admin controller runs. Controllers then resolve the active tenant with `currentVenue()` and enforce ownership with tenant-scoped queries or `ensureVenue()`.
+
+Tenant-owned models use the `BelongsToVenue` concern, which provides a reusable `forVenue()` query scope and `belongsToVenue()` ownership check. This keeps recurring tenant checks consistent and gives future billing, reporting and notification code a shared pattern.
+
+Public tenant routes resolve the venue from the restaurant slug:
+
+```text
+/r/{restaurant-slug}
+/r/{restaurant-slug}/book
+/r/{restaurant-slug}/manage-booking
+/r/{restaurant-slug}/widget/bookings
+/api/v1/{restaurant-slug}/...
+```
+
+Public booking creation only accepts services from the resolved venue. Customer booking management links are token-protected and, on tenant routes, also verify that the booking belongs to the slugged venue.
+
+## Onboarding Flow
+
+Self-serve signup creates all starter data inside one transaction:
+
+- venue tenant
+- owner staff user assigned to that venue
+- starter dining area
+- starter tables
+- lunch and dinner services
+- opening hours
+- trialing tenant subscription placeholder for future Stripe billing
+
+Billing is prepared at venue level through `tenant_subscriptions`, so Stripe customers and subscriptions can be owned by the restaurant tenant rather than by an individual staff user.
+
+## Authorization Approach
+
+Admin controllers avoid global record lists and load data through the current venue wherever possible. Route-bound admin resources are checked with `ensureVenue()` before they are displayed, updated or deleted. Validation rules for tenant-owned foreign keys, such as services, dining areas and opening hours, are scoped to the active venue to avoid cross-tenant IDs being accepted.
+
+The test suite includes multi-tenant coverage for settings visibility, CRUD isolation, booking status isolation, availability isolation, public slug isolation, onboarding defaults and subscription ownership preparation.
 
 ## Useful Commands
 

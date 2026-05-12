@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToVenue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Booking extends Model
 {
+    use BelongsToVenue;
+
     public const STATUSES = ['pending', 'confirmed', 'seated', 'completed', 'cancelled', 'no_show'];
 
     protected $fillable = [

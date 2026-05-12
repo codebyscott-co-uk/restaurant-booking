@@ -7,6 +7,7 @@ use App\Models\RestaurantTable;
 use App\Models\Venue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class AdminRestaurantTableController extends Controller
@@ -82,8 +83,10 @@ class AdminRestaurantTableController extends Controller
 
     private function validateTable(Request $request): array
     {
+        $venue = $this->currentVenue($request);
+
         return $request->validate([
-            'dining_area_id' => ['required', 'exists:dining_areas,id'],
+            'dining_area_id' => ['required', Rule::exists('dining_areas', 'id')->where('venue_id', $venue->id)],
             'name' => ['required', 'string', 'max:255'],
             'min_covers' => ['required', 'integer', 'min:1', 'max:99'],
             'max_covers' => ['required', 'integer', 'min:1', 'max:99', 'gte:min_covers'],

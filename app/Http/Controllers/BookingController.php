@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class BookingController extends Controller
@@ -47,7 +48,7 @@ class BookingController extends Controller
         $venue = $venue ?: Venue::firstOrFail();
 
         $validated = $request->validate([
-            'service_id' => ['required', 'exists:services,id'],
+            'service_id' => ['required', Rule::exists('services', 'id')->where('venue_id', $venue->id)->where('is_active', true)],
             'party_size' => ['required', 'integer', 'min:1', 'max:'.$venue->maximum_party_size],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
@@ -72,6 +73,7 @@ class BookingController extends Controller
         }
 
         $customer = Customer::create([
+            'venue_id' => $venue->id,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -101,17 +103,39 @@ class BookingController extends Controller
             Mail::to($venue->contact_email)->send(new NewBookingStaffAlertMail($booking));
         }
 
-        return redirect()->route('bookings.show', [
+        $showRoute = $request->route('venue') ? 'tenant.bookings.show' : 'bookings.show';
+        $showParameters = [
             'booking' => $booking,
             'token' => $booking->customer_manage_token,
-        ])->with('status', 'Your table is booked.');
+        ];
+
+        if ($request->route('venue')) {
+            $showParameters['venue'] = $venue;
+        }
+
+        return redirect()->route($showRoute, $showParameters)->with('status', 'Your table is booked.');
     }
 
     public function show(Request $request, Booking $booking): View
     {
         abort_unless(hash_equals((string) $booking->customer_manage_token, (string) $request->query('token')), 404);
+        $this->ensurePublicVenue($request, $booking);
 
         return view('bookings.show', ['booking' => $booking->load('venue', 'customer', 'service', 'tables.diningArea')]);
+    }
+
+    public function tenantShow(Request $request, Venue $venue, Booking $booking): View
+    {
+        return $this->show($request, $booking);
+    }
+
+    protected function ensurePublicVenue(Request $request, Booking $booking): void
+    {
+        $venue = $request->route('venue');
+
+        if ($venue instanceof Venue) {
+            abort_unless((int) $booking->venue_id === (int) $venue->id, 404);
+        }
     }
 
     private function reference(): string

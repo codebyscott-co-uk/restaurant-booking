@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class BookingApiController extends Controller
 {
@@ -68,7 +69,7 @@ class BookingApiController extends Controller
     {
         $venue = $venue ?: Venue::firstOrFail();
         $validated = $request->validate([
-            'service_id' => ['required', 'exists:services,id'],
+            'service_id' => ['required', Rule::exists('services', 'id')->where('venue_id', $venue->id)->where('is_active', true)],
             'date' => ['required', 'date'],
             'party_size' => ['required', 'integer', 'min:1', 'max:'.$venue->maximum_party_size],
         ]);
@@ -96,7 +97,7 @@ class BookingApiController extends Controller
         $venue = $venue ?: Venue::firstOrFail();
 
         $validated = $request->validate([
-            'service_id' => ['required', 'exists:services,id'],
+            'service_id' => ['required', Rule::exists('services', 'id')->where('venue_id', $venue->id)->where('is_active', true)],
             'party_size' => ['required', 'integer', 'min:1', 'max:'.$venue->maximum_party_size],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
@@ -123,6 +124,7 @@ class BookingApiController extends Controller
         }
 
         $customer = Customer::create([
+            'venue_id' => $venue->id,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],

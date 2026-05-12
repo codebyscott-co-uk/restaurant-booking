@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToVenue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OpeningHour extends Model
 {
+    use BelongsToVenue;
+
     protected $fillable = [
         'venue_id',
         'service_id',
@@ -33,4 +36,3 @@ class OpeningHour extends Model
         return $this->belongsTo(Service::class);
     }
 }
-

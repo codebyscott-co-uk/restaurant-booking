@@ -42,7 +42,7 @@ class AdminBookingController extends Controller
         $venue = $this->currentVenue($request);
 
         $validated = $request->validate([
-            'service_id' => ['required', 'exists:services,id'],
+            'service_id' => ['required', Rule::exists('services', 'id')->where('venue_id', $venue->id)],
             'party_size' => ['required', 'integer', 'min:1', 'max:99'],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
@@ -68,6 +68,7 @@ class AdminBookingController extends Controller
         }
 
         $customer = Customer::create([
+            'venue_id' => $venue->id,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'] ?: 'guest+'.Str::lower(Str::random(8)).'@local.test',

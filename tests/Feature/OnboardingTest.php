@@ -6,6 +6,7 @@ use App\Models\DiningArea;
 use App\Models\OpeningHour;
 use App\Models\RestaurantTable;
 use App\Models\Service;
+use App\Models\TenantSubscription;
 use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,6 +45,7 @@ class OnboardingTest extends TestCase
         $this->assertSame(1, DiningArea::where('venue_id', $venue->id)->count());
         $this->assertSame(4, RestaurantTable::where('venue_id', $venue->id)->count());
         $this->assertSame(14, OpeningHour::where('venue_id', $venue->id)->count());
+        $this->assertTrue(TenantSubscription::where('venue_id', $venue->id)->where('provider', 'stripe')->where('status', 'trialing')->exists());
     }
 
     public function test_onboarding_creates_unique_venue_slug(): void

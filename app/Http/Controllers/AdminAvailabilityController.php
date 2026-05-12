@@ -8,6 +8,7 @@ use App\Models\Venue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class AdminAvailabilityController extends Controller
@@ -42,7 +43,7 @@ class AdminAvailabilityController extends Controller
 
         $validated = $request->validate([
             'hours' => ['required', 'array'],
-            'hours.*.*.id' => ['required', 'exists:opening_hours,id'],
+            'hours.*.*.id' => ['required', Rule::exists('opening_hours', 'id')->where('venue_id', $venue->id)],
             'hours.*.*.opens_at' => ['nullable', 'date_format:H:i'],
             'hours.*.*.closes_at' => ['nullable', 'date_format:H:i'],
             'hours.*.*.is_closed' => ['nullable', 'boolean'],
@@ -70,7 +71,7 @@ class AdminAvailabilityController extends Controller
         $venue = $this->currentVenue($request);
 
         $validated = $request->validate([
-            'service_id' => ['nullable', 'exists:services,id'],
+            'service_id' => ['nullable', Rule::exists('services', 'id')->where('venue_id', $venue->id)],
             'starts_at' => ['required', 'date_format:Y-m-d\TH:i'],
             'ends_at' => ['required', 'date_format:Y-m-d\TH:i', 'after:starts_at'],
             'reason' => ['nullable', 'string', 'max:255'],

@@ -58,7 +58,7 @@ class AdminSettingsController extends Controller
             'remove_logo' => ['nullable', 'boolean'],
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $validated['slug'] = $this->uniqueVenueSlug($validated['name'], $venue);
         $validated['allow_joined_tables'] = $request->boolean('allow_joined_tables');
         $validated['widget_enabled'] = $request->boolean('widget_enabled');
 
@@ -105,5 +105,19 @@ class AdminSettingsController extends Controller
         $html = preg_replace('/href=("|\')javascript:[^"\']*("|\')/i', 'href="#"', $html);
 
         return trim($html) ?: null;
+    }
+
+    private function uniqueVenueSlug(string $name, Venue $venue): string
+    {
+        $baseSlug = Str::slug($name) ?: 'venue';
+        $slug = $baseSlug;
+        $counter = 2;
+
+        while (Venue::where('slug', $slug)->whereKeyNot($venue->id)->exists()) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }

@@ -9,6 +9,7 @@ This project follows a simple changelog style while it is in early development.
 ### Added
 
 - Resora OS platform branding, including the supplied logo asset for the admin sidebar and public fallback brand.
+- Tenant isolation hardening with staff tenant middleware, shared tenant ownership helpers, tenant-owned customers, slug-scoped customer management routes and subscription ownership preparation.
 - Mobile-friendly public booking form.
 - Vuexy-inspired semi-dark SaaS redesign across admin, auth, public booking, customer management and widget surfaces.
 - Closer Vuexy-style admin chrome refinements for the semi-dark sidebar, floating top navbar, dropdowns, hover states and active menu treatments.

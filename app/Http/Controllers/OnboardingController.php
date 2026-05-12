@@ -6,6 +6,7 @@ use App\Models\DiningArea;
 use App\Models\OpeningHour;
 use App\Models\RestaurantTable;
 use App\Models\Service;
+use App\Models\TenantSubscription;
 use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Http\RedirectResponse;
@@ -73,6 +74,7 @@ class OnboardingController extends Controller
             ]);
 
             $this->createStarterSetup($venue);
+            $this->createStarterSubscription($venue);
 
             return [$venue, $owner];
         });
@@ -83,6 +85,17 @@ class OnboardingController extends Controller
         return redirect()
             ->route('admin.settings.edit')
             ->with('status', 'Your '.$venue->name.' workspace is ready. Review your brand, policies and widget settings next.');
+    }
+
+    private function createStarterSubscription(Venue $venue): void
+    {
+        TenantSubscription::create([
+            'venue_id' => $venue->id,
+            'provider' => 'stripe',
+            'plan' => 'starter',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addDays(14),
+        ]);
     }
 
     private function createStarterSetup(Venue $venue): void

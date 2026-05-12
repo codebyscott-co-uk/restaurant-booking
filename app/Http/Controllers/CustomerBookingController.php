@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class CustomerBookingController extends Controller
@@ -42,15 +43,23 @@ class CustomerBookingController extends Controller
                 ->withErrors(['booking_reference' => 'We could not find a booking matching those details.']);
         }
 
-        return redirect()->route('bookings.manage.show', [
+        $routeName = $venue ? 'tenant.bookings.manage.show' : 'bookings.manage.show';
+        $parameters = [
             'booking' => $booking,
             'token' => $booking->customer_manage_token,
-        ]);
+        ];
+
+        if ($venue) {
+            $parameters['venue'] = $venue;
+        }
+
+        return redirect()->route($routeName, $parameters);
     }
 
-    public function show(Booking $booking, string $token): View
+    public function show(Request $request, Booking $booking, string $token): View
     {
         $booking = $this->authorisedBooking($booking, $token);
+        $this->ensurePublicVenue($request, $booking);
 
         return view('bookings.manage', [
             'booking' => $booking,
@@ -58,9 +67,15 @@ class CustomerBookingController extends Controller
         ]);
     }
 
+    public function tenantShow(Request $request, Venue $venue, Booking $booking, string $token): View
+    {
+        return $this->show($request, $booking, $token);
+    }
+
     public function edit(Request $request, Booking $booking, string $token): View
     {
         $booking = $this->authorisedBooking($booking, $token);
+        $this->ensurePublicVenue($request, $booking);
         $venue = $booking->venue;
         $date = Carbon::parse($request->query('date', $booking->starts_at->toDateString()), $venue->timezone);
         $partySize = max(1, min($venue->maximum_party_size, (int) $request->query('party_size', $booking->party_size)));
@@ -83,9 +98,15 @@ class CustomerBookingController extends Controller
         ]);
     }
 
+    public function tenantEdit(Request $request, Venue $venue, Booking $booking, string $token): View
+    {
+        return $this->edit($request, $booking, $token);
+    }
+
     public function update(Request $request, Booking $booking, string $token): RedirectResponse
     {
         $booking = $this->authorisedBooking($booking, $token);
+        $this->ensurePublicVenue($request, $booking);
 
         if (! $booking->canCustomerCancel()) {
             return back()
@@ -96,7 +117,7 @@ class CustomerBookingController extends Controller
         $venue = $booking->venue;
 
         $validated = $request->validate([
-            'service_id' => ['required', 'exists:services,id'],
+            'service_id' => ['required', Rule::exists('services', 'id')->where('venue_id', $venue->id)->where('is_active', true)],
             'party_size' => ['required', 'integer', 'min:1', 'max:'.$venue->maximum_party_size],
             'date' => ['required', 'date'],
             'time' => ['required', 'date_format:H:i'],
@@ -153,13 +174,23 @@ class CustomerBookingController extends Controller
         Mail::to($booking->customer->email)->send(new BookingModifiedMail($booking->fresh()));
 
         return redirect()
-            ->route('bookings.manage.show', ['booking' => $booking, 'token' => $token])
+            ->route($request->route('venue') ? 'tenant.bookings.manage.show' : 'bookings.manage.show', array_filter([
+                'venue' => $request->route('venue'),
+                'booking' => $booking,
+                'token' => $token,
+            ]))
             ->with('status', 'Your booking has been updated.');
     }
 
-    public function cancel(Booking $booking, string $token): RedirectResponse
+    public function tenantUpdate(Request $request, Venue $venue, Booking $booking, string $token): RedirectResponse
+    {
+        return $this->update($request, $booking, $token);
+    }
+
+    public function cancel(Request $request, Booking $booking, string $token): RedirectResponse
     {
         $booking = $this->authorisedBooking($booking, $token);
+        $this->ensurePublicVenue($request, $booking);
 
         if (! $booking->canCustomerCancel()) {
             return back()->withErrors(['booking' => 'This booking can no longer be cancelled online. Please contact the restaurant.']);
@@ -173,8 +204,17 @@ class CustomerBookingController extends Controller
         Mail::to($booking->customer->email)->send(new BookingCancelledMail($booking->fresh()));
 
         return redirect()
-            ->route('bookings.manage.show', ['booking' => $booking, 'token' => $token])
+            ->route($request->route('venue') ? 'tenant.bookings.manage.show' : 'bookings.manage.show', array_filter([
+                'venue' => $request->route('venue'),
+                'booking' => $booking,
+                'token' => $token,
+            ]))
             ->with('status', 'Your booking has been cancelled.');
+    }
+
+    public function tenantCancel(Request $request, Venue $venue, Booking $booking, string $token): RedirectResponse
+    {
+        return $this->cancel($request, $booking, $token);
     }
 
     private function authorisedBooking(Booking $booking, string $token): Booking
@@ -182,5 +222,14 @@ class CustomerBookingController extends Controller
         abort_unless(hash_equals((string) $booking->customer_manage_token, $token), 404);
 
         return $booking->load('venue', 'customer', 'service', 'tables.diningArea');
+    }
+
+    private function ensurePublicVenue(Request $request, Booking $booking): void
+    {
+        $venue = $request->route('venue');
+
+        if ($venue instanceof Venue) {
+            abort_unless((int) $booking->venue_id === (int) $venue->id, 404);
+        }
     }
 }
