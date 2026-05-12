@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'Restaurant Booking' }}</title>
+    <title>{{ ($title ?? null) ? $title.' · Resora OS' : 'Resora OS' }}</title>
     <script>
         (() => {
             const savedTheme = localStorage.getItem('restaurant-admin-theme');
@@ -3681,6 +3681,35 @@
             stroke-width: 1.75 !important;
             flex: 0 0 auto;
         }
+        .admin-shell .admin-brand.resora-brand {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            min-height: 82px;
+            padding: .85rem .75rem !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        .admin-shell .admin-brand.resora-brand img {
+            display: block !important;
+            width: min(100%, 210px) !important;
+            height: auto !important;
+            max-height: 68px;
+            object-fit: contain !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        .is-public .brand-logo.resora-public-logo {
+            width: 116px;
+            height: auto;
+            max-height: 44px;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+        }
         .admin-shell .dashboard-suite {
             padding-bottom: 48px;
         }
@@ -4146,9 +4175,11 @@
                 <a class="brand" href="{{ route('bookings.create') }}">
                     @if (($venue ?? null)?->logo_url)
                         <img class="brand-logo" src="{{ $venue->logo_url }}" alt="{{ $venue->name }} logo">
+                    @else
+                        <img class="brand-logo resora-public-logo" src="{{ asset('images/resora-os-logo-sidebar.png') }}" alt="Resora OS">
                     @endif
                     <span class="brand-text">
-                        <strong>{{ $venue->name ?? 'Restaurant Booking' }}</strong>
+                        <strong>{{ $venue->name ?? 'Resora OS' }}</strong>
                         <span>Book a table online</span>
                     </span>
                 </a>
@@ -4177,7 +4208,7 @@
                     <span>Powered by</span>
                     <img src="{{ asset('images/code-by-scott-logo.png') }}" alt="Code by Scott">
                 </a>
-                <small>Restaurant booking software by Code by Scott.</small>
+                <small>Resora OS hospitality operations software by Code by Scott.</small>
             </div>
         </footer>
     @endif

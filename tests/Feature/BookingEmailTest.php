@@ -31,7 +31,7 @@ class BookingEmailTest extends TestCase
 
             $this->assertStringContainsString($booking->venue->name, $html);
             $this->assertStringContainsString($booking->booking_reference, $html);
-            $this->assertStringContainsString('Restaurant booking software by Code by Scott.', $html);
+            $this->assertStringContainsString('Resora OS hospitality operations software by Code by Scott.', $html);
         }
     }
 

@@ -85,13 +85,8 @@
 
 <div class="admin-shell" data-admin-shell>
     <aside class="admin-sidebar" data-admin-sidebar>
-        <a class="admin-brand" href="{{ route('admin.dashboard') }}">
-            @if ($currentVenue?->logo_url)
-                <img src="{{ $currentVenue->logo_url }}" alt="{{ $currentVenue->name }} logo">
-            @else
-                <span>{{ substr($currentVenue->name ?? 'R', 0, 1) }}</span>
-            @endif
-            <strong>{{ $currentVenue->name ?? 'Restaurant Booking' }}</strong>
+        <a class="admin-brand resora-brand" href="{{ route('admin.dashboard') }}" aria-label="Resora OS dashboard">
+            <img src="{{ asset('images/resora-os-logo-sidebar.png') }}" alt="Resora OS">
         </a>
 
         <nav class="admin-nav" aria-label="Admin navigation">
@@ -226,7 +221,7 @@
                     <span>Powered by</span>
                     <img src="{{ asset('images/code-by-scott-logo.png') }}" alt="Code by Scott">
                 </a>
-                <small>Restaurant booking software by Code by Scott.</small>
+                <small>Resora OS hospitality operations software by Code by Scott.</small>
             </div>
         </footer>
     </div>

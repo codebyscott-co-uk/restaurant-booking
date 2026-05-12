@@ -1,11 +1,11 @@
-@extends('layouts.app', ['title' => 'Start your restaurant workspace', 'venue' => $venue])
+@extends('layouts.app', ['title' => 'Start your Resora OS workspace', 'venue' => $venue])
 
 @section('content')
 <section class="hero">
     <div class="shell">
-        <div class="eyebrow">Restaurant SaaS onboarding</div>
-        <h1>Start your booking workspace</h1>
-        <p>Create a restaurant account with starter services, tables and opening hours. You can customise everything after sign up.</p>
+        <div class="eyebrow">Resora OS onboarding</div>
+        <h1>Start your hospitality workspace</h1>
+        <p>Create a venue account with starter services, tables and opening hours. You can customise everything after sign up.</p>
     </div>
 </section>
 
@@ -13,7 +13,7 @@
     <form class="panel" method="post" action="{{ route('signup.store') }}">
         @csrf
 
-        <h2>Restaurant details</h2>
+        <h2>Venue details</h2>
 
         @if ($errors->any())
             <div class="panel errors" style="margin-bottom: 14px;">
@@ -25,15 +25,15 @@
 
         <div class="form-grid">
             <div class="field full">
-                <label for="business_name">Restaurant name</label>
+                <label for="business_name">Venue name</label>
                 <input id="business_name" name="business_name" value="{{ old('business_name') }}" autocomplete="organization" required autofocus>
             </div>
             <div class="field">
-                <label for="contact_email">Restaurant email</label>
+                <label for="contact_email">Venue email</label>
                 <input id="contact_email" name="contact_email" type="email" value="{{ old('contact_email') }}" autocomplete="email" required>
             </div>
             <div class="field">
-                <label for="phone">Restaurant phone</label>
+                <label for="phone">Venue phone</label>
                 <input id="phone" name="phone" value="{{ old('phone') }}" autocomplete="tel">
             </div>
             <div class="field full">

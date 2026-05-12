@@ -43,7 +43,7 @@
                     </tr>
                     <tr>
                         <td align="center" style="padding: 16px 8px 0; color: #62706d; font-size: 12px;">
-                            Restaurant booking software by Code by Scott.
+                            Resora OS hospitality operations software by Code by Scott.
                         </td>
                     </tr>
                 </table>

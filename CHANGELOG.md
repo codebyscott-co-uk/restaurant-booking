@@ -8,6 +8,7 @@ This project follows a simple changelog style while it is in early development.
 
 ### Added
 
+- Resora OS platform branding, including the supplied logo asset for the admin sidebar and public fallback brand.
 - Mobile-friendly public booking form.
 - Vuexy-inspired semi-dark SaaS redesign across admin, auth, public booking, customer management and widget surfaces.
 - Closer Vuexy-style admin chrome refinements for the semi-dark sidebar, floating top navbar, dropdowns, hover states and active menu treatments.
@@ -49,7 +50,7 @@ This project follows a simple changelog style while it is in early development.
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards.
 - Business settings panel for restaurant details, address, brand colours and policies.
 - Configurable booking rules for lead time, advance booking window, maximum party size, maximum slot covers and joined-table allocation.
-- Restaurant logo upload and removal.
+- Venue logo upload and removal.
 - Staff user management with create, edit, activate/deactivate and delete actions.
 - Service management for bookable service windows.
 - Dining area and table management.

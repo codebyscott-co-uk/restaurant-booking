@@ -1,6 +1,6 @@
-# Restaurant Booking
+# Resora OS
 
-A Laravel multi-tenant restaurant booking system with a mobile-friendly customer booking form, staff-only booking diary, configurable availability rules, business settings, branding, logo upload, and staff user management.
+A Laravel multi-tenant hospitality operations platform with mobile-friendly booking, a staff-only diary, configurable availability rules, tenant branding, guest self-management, widgets, and staff user management.
 
 Built by [Code by Scott](https://codebyscott.co.uk).
 
@@ -8,7 +8,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 
 - Mobile-friendly public booking form with polished SaaS styling
 - Multi-tenant venue model with staff scoped to their own restaurant
-- Self-serve restaurant signup that creates a tenant workspace, owner account, starter services, tables and opening hours
+- Self-serve Resora OS signup that creates a tenant workspace, owner account, starter services, tables and opening hours
 - Tenant-specific public booking, widget and API URLs by restaurant slug
 - Live table availability checks
 - Booking confirmation page with reference number
@@ -26,7 +26,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Refined typography, cards, forms, buttons, badges, dropdowns and diary views for a commercial SaaS feel
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Sectioned business settings workspace
-- Restaurant logo upload and brand colour controls
+- Venue logo upload and brand colour controls
 - Booking terms and cancellation policy settings
 - WYSIWYG-style email template editing for branded customer and staff emails
 - Brandable public widget settings and example embed snippet
@@ -123,7 +123,7 @@ Staff login URL:
 http://restaurant-booking.test/staff/login
 ```
 
-## Restaurant Signup
+## Resora OS Signup
 
 Create a new restaurant workspace:
 

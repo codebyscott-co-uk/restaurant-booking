@@ -34,7 +34,7 @@ class WidgetController extends Controller
   if (!target) return;
   var iframe = document.createElement('iframe');
   iframe.src = '{$url}';
-  iframe.title = 'Restaurant booking widget';
+  iframe.title = 'Resora OS booking widget';
   iframe.loading = 'lazy';
   iframe.style.width = '100%';
   iframe.style.maxWidth = target.dataset.width || '520px';
