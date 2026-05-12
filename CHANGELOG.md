@@ -10,6 +10,7 @@ This project follows a simple changelog style while it is in early development.
 
 - Resora OS platform branding, including the supplied logo asset for the admin sidebar and public fallback brand.
 - Tenant isolation hardening with staff tenant middleware, shared tenant ownership helpers, tenant-owned customers, slug-scoped customer management routes and subscription ownership preparation.
+- Stripe billing with Laravel Cashier, venue-owned Checkout subscriptions, Billing Portal access, webhook route setup, plan config and plan-based feature gates.
 - Mobile-friendly public booking form.
 - Vuexy-inspired semi-dark SaaS redesign across admin, auth, public booking, customer management and widget surfaces.
 - Closer Vuexy-style admin chrome refinements for the semi-dark sidebar, floating top navbar, dropdowns, hover states and active menu treatments.
@@ -67,6 +68,8 @@ This project follows a simple changelog style while it is in early development.
 ### Changed
 
 - Replaced the default Laravel README with project documentation.
+- Fixed Cashier Checkout redirects and migrated legacy user-owned subscription tables to venue-owned subscriptions for tenant-safe billing.
+- Synced completed Stripe Checkout sessions on the billing success return so local feature gates update immediately after subscription.
 - Stabilised customer booking management tests by freezing time around policy cutoff checks.
 - Polished the demo restaurant seed data.
 - Updated booking references to use the `CBR` prefix.

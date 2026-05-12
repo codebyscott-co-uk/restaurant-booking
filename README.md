@@ -34,6 +34,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Staff user create, edit, activate/deactivate and delete
 - Staff profile editing with avatar upload and personal contact details
 - Tenant-scoped customer records and subscription ownership preparation for Stripe billing
+- Stripe billing with Laravel Cashier, venue-owned subscriptions, Checkout, Billing Portal and plan-based feature gates
 - Service management for lunch, dinner and other bookable sessions
 - Dining area and table management
 - Opening hours and closure management
@@ -199,6 +200,75 @@ Build frontend assets:
 ```bash
 npm run build
 ```
+
+## Stripe Billing
+
+Resora OS uses Laravel Cashier with `Venue` as the billable model. Stripe customers and subscriptions attach to the venue tenant, not to individual staff users.
+
+Required local `.env` values:
+
+```env
+STRIPE_KEY=your_stripe_publishable_key
+STRIPE_SECRET=your_stripe_secret_key
+STRIPE_STARTER_PRICE_ID=price_starter_monthly
+STRIPE_PROFESSIONAL_PRICE_ID=price_professional_monthly
+STRIPE_PREMIUM_PRICE_ID=price_premium_monthly
+STRIPE_TRIAL_DAYS=14
+STRIPE_WEBHOOK_SECRET=
+CASHIER_CURRENCY=gbp
+CASHIER_CURRENCY_LOCALE=en_GB
+```
+
+Do not commit your real `.env` file or real Stripe keys. `.env.example` only contains safe placeholders.
+
+In Stripe test mode, create three recurring monthly prices:
+
+- Starter
+- Professional
+- Premium
+
+Copy each Stripe Price ID into the matching `STRIPE_*_PRICE_ID` value. New subscriptions started through Checkout receive a 14-day trial when the venue has not previously completed a Cashier subscription.
+
+Billing routes:
+
+```text
+GET /admin/billing
+POST /admin/billing/checkout/{plan}
+POST /admin/billing/swap/{plan}
+POST /admin/billing/resume
+GET|POST /admin/billing/portal
+POST /stripe/webhook
+```
+
+The billing page stays accessible even if platform access expires, so venue admins can restore payment details or choose a plan.
+
+For local Checkout testing, use Stripe test card:
+
+```text
+4242 4242 4242 4242
+```
+
+Webhook setup:
+
+```bash
+stripe listen --forward-to http://restaurant-booking.test/stripe/webhook
+```
+
+Then copy the displayed webhook signing secret into `STRIPE_WEBHOOK_SECRET`. Local development can run with this value blank, but production must set it so Cashier can verify Stripe webhook signatures.
+
+Supported webhook events include checkout completion, subscription create/update/delete and invoice payment success/failure. Cashier keeps the local `subscriptions` and `subscription_items` tables in sync.
+
+## Plan Features
+
+Plan gates are defined in `config/resora_billing.php`.
+
+Starter includes online booking, the booking diary, table and area management, email confirmations, basic settings and up to 3 staff users.
+
+Professional includes everything in Starter plus customer CRM, advanced booking rules, analytics/reporting, enhanced branding and up to 10 staff users.
+
+Premium includes everything in Professional plus priority support, advanced reporting, future waitlist modules, advanced multi-service controls and unlimited staff users where practical.
+
+Locked features show a friendly upgrade screen rather than a generic error, and locked navigation items remain visible with a lock badge for upsell context.
 
 ## Admin Routes
 

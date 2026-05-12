@@ -8,6 +8,7 @@ use App\Models\DiningArea;
 use App\Models\OpeningHour;
 use App\Models\RestaurantTable;
 use App\Models\Service;
+use App\Models\TenantSubscription;
 use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -53,6 +54,14 @@ class DatabaseSeeder extends Seeder
             'phone' => '07700 900123',
             'job_title' => 'Owner',
             'is_active' => true,
+        ]);
+
+        TenantSubscription::create([
+            'venue_id' => $venue->id,
+            'provider' => 'stripe',
+            'plan' => 'starter',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addDays(14),
         ]);
 
         $main = DiningArea::create([

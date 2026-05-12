@@ -3710,6 +3710,179 @@
             background: transparent;
             box-shadow: none;
         }
+        .admin-shell .admin-nav-items a.locked {
+            color: #b6b1cb;
+        }
+        .admin-shell .admin-nav-items a.locked small {
+            margin-left: auto;
+            border-radius: 999px;
+            padding: .1rem .4rem;
+            background: rgba(115, 103, 240, .14);
+            color: #7367f0;
+            font-size: .65rem;
+            font-weight: 700;
+        }
+        .admin-shell .billing-suite,
+        .admin-shell .locked-feature-wrap {
+            display: grid;
+            gap: 1rem;
+            padding-bottom: 48px;
+        }
+        .admin-shell .billing-status-grid,
+        .admin-shell .billing-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .admin-shell .billing-status-card,
+        .admin-shell .billing-plan-card {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            gap: .85rem;
+            align-content: start;
+        }
+        .admin-shell .billing-status-card::before,
+        .admin-shell .billing-plan-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 88% 12%, var(--billing-glow, rgba(115, 103, 240, .14)), transparent 32%),
+                linear-gradient(135deg, var(--billing-wash, rgba(115, 103, 240, .06)), transparent 54%);
+            opacity: .95;
+        }
+        .admin-shell .billing-status-card::after,
+        .admin-shell .billing-plan-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--billing-accent, #7367f0);
+        }
+        .admin-shell .billing-status-card > *,
+        .admin-shell .billing-plan-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        .admin-shell .billing-status-card > span {
+            color: #6d6777;
+            font-size: .8125rem;
+            font-weight: 600;
+        }
+        html.dark .admin-shell .billing-status-card > span {
+            color: #b6b1cb;
+        }
+        .admin-shell .billing-status-card > strong {
+            color: #444050;
+            font-size: 1.45rem;
+            font-weight: 650;
+        }
+        html.dark .admin-shell .billing-status-card > strong {
+            color: #d5d1ea;
+        }
+        .admin-shell .billing-status-card.success {
+            --billing-accent: #28c76f;
+            --billing-glow: rgba(40, 199, 111, .16);
+            --billing-wash: rgba(40, 199, 111, .08);
+            border-color: rgba(40, 199, 111, .28);
+        }
+        .admin-shell .billing-status-card.info {
+            --billing-accent: #00bad1;
+            --billing-glow: rgba(0, 186, 209, .16);
+            --billing-wash: rgba(0, 186, 209, .08);
+            border-color: rgba(0, 186, 209, .28);
+        }
+        .admin-shell .billing-status-card.warning {
+            --billing-accent: #ff9f43;
+            --billing-glow: rgba(255, 159, 67, .16);
+            --billing-wash: rgba(255, 159, 67, .08);
+            border-color: rgba(255, 159, 67, .28);
+        }
+        .admin-shell .billing-status-card.danger {
+            --billing-accent: #ea5455;
+            --billing-glow: rgba(234, 84, 85, .16);
+            --billing-wash: rgba(234, 84, 85, .08);
+            border-color: rgba(234, 84, 85, .28);
+        }
+        .admin-shell .billing-plan-card.plan-starter {
+            --billing-accent: #00bad1;
+            --billing-glow: rgba(0, 186, 209, .16);
+            --billing-wash: rgba(0, 186, 209, .08);
+        }
+        .admin-shell .billing-plan-card.plan-professional {
+            --billing-accent: #7367f0;
+            --billing-glow: rgba(115, 103, 240, .18);
+            --billing-wash: rgba(115, 103, 240, .09);
+        }
+        .admin-shell .billing-plan-card.plan-premium {
+            --billing-accent: #28c76f;
+            --billing-glow: rgba(40, 199, 111, .16);
+            --billing-wash: rgba(40, 199, 111, .08);
+        }
+        .admin-shell .billing-plan-card.recommended {
+            border-color: rgba(115, 103, 240, .48);
+            box-shadow: 0 .75rem 2rem rgba(115, 103, 240, .18);
+        }
+        .admin-shell .billing-price {
+            color: #444050;
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        html.dark .admin-shell .billing-price {
+            color: #d5d1ea;
+        }
+        .admin-shell .billing-price span {
+            color: #6d6777;
+            font-size: .875rem;
+            font-weight: 500;
+        }
+        .admin-shell .billing-plan-card ul {
+            display: grid;
+            gap: .5rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .admin-shell .billing-plan-card li {
+            color: #6d6777;
+            font-size: .875rem;
+        }
+        html.dark .admin-shell .billing-plan-card li {
+            color: #b6b1cb;
+        }
+        .admin-shell .billing-plan-card li::before {
+            content: "";
+            display: inline-block;
+            width: .42rem;
+            height: .42rem;
+            margin-right: .5rem;
+            border-radius: 999px;
+            background: var(--billing-accent, #7367f0);
+            vertical-align: middle;
+        }
+        .admin-shell .locked-feature-wrap {
+            min-height: calc(100vh - 180px);
+            align-items: center;
+        }
+        .admin-shell .locked-feature-card {
+            max-width: 680px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .admin-shell .locked-feature-card h1 {
+            max-width: none;
+        }
+        @media (max-width: 1080px) {
+            .admin-shell .billing-status-grid,
+            .admin-shell .billing-plan-grid {
+                grid-template-columns: 1fr;
+            }
+        }
         .admin-shell .dashboard-suite {
             padding-bottom: 48px;
         }

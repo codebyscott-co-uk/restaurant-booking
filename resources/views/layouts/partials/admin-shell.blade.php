@@ -1,6 +1,7 @@
 @php
     $currentUser = auth()->user();
     $currentVenue = $venue ?? $currentUser?->venue;
+    $featureGate = app(\App\Services\Billing\FeatureGate::class);
 
     $navSections = [
         [
@@ -50,17 +51,19 @@
         [
             'label' => 'Customers',
             'icon' => 'customers',
-            'active' => false,
+            'active' => request()->routeIs('admin.customers.*') || request()->routeIs('admin.features.locked'),
             'items' => [
-                ['label' => 'Guest CRM', 'disabled' => true, 'meta' => 'Coming soon'],
+                ['label' => 'Guest CRM', 'href' => route('admin.customers.index'), 'active' => request()->routeIs('admin.customers.*'), 'feature' => 'customer_crm'],
+                ['label' => 'Reports', 'href' => route('admin.reports.index'), 'active' => request()->routeIs('admin.reports.*'), 'feature' => 'analytics'],
+                ['label' => 'Waitlist', 'href' => route('admin.waitlist.index'), 'active' => request()->routeIs('admin.waitlist.*'), 'feature' => 'waitlist'],
             ],
         ],
         [
             'label' => 'Billing',
             'icon' => 'billing',
-            'active' => false,
+            'active' => request()->routeIs('admin.billing.*'),
             'items' => [
-                ['label' => 'Subscription', 'disabled' => true, 'meta' => 'Coming soon'],
+                ['label' => 'Subscription', 'href' => route('admin.billing.index'), 'active' => request()->routeIs('admin.billing.*')],
             ],
         ],
         [
@@ -136,7 +139,13 @@
                                     <small>{{ $item['meta'] ?? '' }}</small>
                                 </span>
                             @else
-                                <a class="{{ ($item['active'] ?? false) ? 'active' : '' }}" href="{{ $item['href'] }}">{{ $item['label'] }}</a>
+                                @php($isLocked = isset($item['feature']) && ! $featureGate->canUse($currentVenue, $item['feature']))
+                                <a class="{{ ($item['active'] ?? false) ? 'active' : '' }} {{ $isLocked ? 'locked' : '' }}" href="{{ $item['href'] }}">
+                                    {{ $item['label'] }}
+                                    @if ($isLocked)
+                                        <small>Lock</small>
+                                    @endif
+                                </a>
                             @endif
                         @endforeach
                     </div>
@@ -200,7 +209,7 @@
                         </div>
                         <a href="{{ route('admin.profile.edit') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM5 21a7 7 0 0 1 14 0"/></svg> My Profile</a>
                         <a href="{{ route('admin.settings.edit') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0-5v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg> Settings</a>
-                        <a href="{{ route('admin.settings.edit') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4V7Zm0 3h16M7 15h4"/></svg> Billing</a>
+                        <a href="{{ route('admin.billing.index') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4V7Zm0 3h16M7 15h4"/></svg> Billing</a>
                         <a href="mailto:hello@codebyscott.co.uk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9a3 3 0 1 1 5.2 2c-.9.8-2.2 1.4-2.2 3M12 18h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> Help</a>
                         <form class="logout-form" method="post" action="{{ route('logout') }}">
                             @csrf

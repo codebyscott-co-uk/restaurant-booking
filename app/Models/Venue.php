@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Cashier\Billable;
 use Illuminate\Support\Facades\Storage;
 
 class Venue extends Model
 {
+    use Billable;
+
     protected $fillable = [
         'name',
         'slug',
@@ -98,7 +101,7 @@ class Venue extends Model
         return $this->hasMany(Customer::class);
     }
 
-    public function subscriptions(): HasMany
+    public function tenantSubscriptions(): HasMany
     {
         return $this->hasMany(TenantSubscription::class);
     }
@@ -106,5 +109,22 @@ class Venue extends Model
     public function activeSubscription(): HasOne
     {
         return $this->hasOne(TenantSubscription::class)->latestOfMany();
+    }
+
+    public function hasPlatformAccess(): bool
+    {
+        $subscription = $this->subscription('default');
+
+        if ($subscription && ($subscription->valid() || $subscription->onGracePeriod())) {
+            return true;
+        }
+
+        return (bool) $this->activeSubscription?->trial_ends_at?->isFuture()
+            || $this->activeSubscription?->status === 'active';
+    }
+
+    public function canUseFeature(string $feature): bool
+    {
+        return app(\App\Services\Billing\FeatureGate::class)->canUse($this, $feature);
     }
 }

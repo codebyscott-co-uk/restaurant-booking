@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\EnsureFeatureAccess;
 use App\Http\Middleware\EnsureUserHasVenue;
+use App\Http\Middleware\EnsureVenueHasPlatformAccess;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,7 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
+            'feature' => EnsureFeatureAccess::class,
             'tenant.staff' => EnsureUserHasVenue::class,
+            'tenant.access' => EnsureVenueHasPlatformAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

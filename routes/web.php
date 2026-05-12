@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminAvailabilityController;
 use App\Http\Controllers\AdminBookingController;
+use App\Http\Controllers\AdminBillingController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDiaryController;
 use App\Http\Controllers\AdminDiningAreaController;
+use App\Http\Controllers\AdminFeatureController;
 use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\AdminRestaurantTableController;
 use App\Http\Controllers\AdminSettingsController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerBookingController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\WidgetController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,10 +57,22 @@ Route::post('/staff/logout', [AuthController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
+Route::get('/stripe/payment/{id}', [\Laravel\Cashier\Http\Controllers\PaymentController::class, 'show'])->name('cashier.payment');
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])->name('cashier.webhook');
+
 Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+    Route::get('/billing', [AdminBillingController::class, 'index'])->name('billing.index');
+    Route::post('/billing/checkout/{plan}', [AdminBillingController::class, 'checkout'])->name('billing.checkout');
+    Route::post('/billing/swap/{plan}', [AdminBillingController::class, 'swap'])->name('billing.swap');
+    Route::post('/billing/resume', [AdminBillingController::class, 'resume'])->name('billing.resume');
+    Route::match(['get', 'post'], '/billing/portal', [AdminBillingController::class, 'portal'])->name('billing.portal');
+    Route::get('/upgrade/{feature}', [AdminFeatureController::class, 'locked'])->name('features.locked');
+    Route::get('/customers', [AdminFeatureController::class, 'customers'])->middleware('feature:customer_crm')->name('customers.index');
+    Route::get('/reports', [AdminFeatureController::class, 'reports'])->middleware('feature:analytics')->name('reports.index');
+    Route::get('/waitlist', [AdminFeatureController::class, 'waitlist'])->middleware('feature:waitlist')->name('waitlist.index');
     Route::get('/diary', AdminDiaryController::class)->name('diary');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');

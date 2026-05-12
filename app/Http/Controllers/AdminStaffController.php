@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\Billing\FeatureGate;
 use App\Models\Venue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,8 +33,20 @@ class AdminStaffController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $venue = $this->currentVenue($request);
+        $staffLimit = app(FeatureGate::class)->staffLimit($venue);
+
+        if ($staffLimit !== null && $venue->users()->count() >= $staffLimit) {
+            $currentPlan = app(FeatureGate::class)->currentPlan($venue);
+            $feature = ($currentPlan['slug'] ?? 'starter') === 'professional' ? 'unlimited_staff' : 'staff_limit_professional';
+
+            return redirect()
+                ->route('admin.features.locked', ['feature' => $feature])
+                ->with('status', 'Upgrade to add more staff users.');
+        }
+
         $validated = $this->validateUser($request);
-        $validated['venue_id'] = $this->currentVenue($request)->id;
+        $validated['venue_id'] = $venue->id;
         $validated['password'] = Hash::make($validated['password']);
         $validated['is_active'] = $request->boolean('is_active');
 
