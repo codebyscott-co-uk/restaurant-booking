@@ -35,6 +35,8 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Staff profile editing with avatar upload and personal contact details
 - Tenant-scoped customer records and subscription ownership preparation for Stripe billing
 - Stripe billing with Laravel Cashier, venue-owned subscriptions, Checkout, Billing Portal and plan-based feature gates
+- Feature-gated analytics and reports with tenant-scoped booking, cover, service, cancellation and customer repeat-visit insights
+- Premium-only advanced reports with CSV exports for bookings, covers, services, customer activity and operational performance
 - Service management for lunch, dinner and other bookable sessions
 - Dining area and table management
 - Opening hours and closure management
@@ -270,12 +272,46 @@ Premium includes everything in Professional plus priority support, advanced repo
 
 Locked features show a friendly upgrade screen rather than a generic error, and locked navigation items remain visible with a lock badge for upsell context.
 
+## Analytics & Reports
+
+Analytics and reports live at:
+
+```text
+GET /admin/reports
+GET /admin/reports/export/{report}
+```
+
+The section uses the existing plan gates:
+
+- Starter venues cannot access analytics and are sent to the upgrade screen.
+- Professional venues can access standard analytics and standard report tables.
+- Premium venues can access all standard analytics plus advanced panels and CSV exports.
+
+Every analytics query is scoped to the authenticated staff user's current venue. Reports never load bookings, services, customers or table allocations from another tenant.
+
+Standard analytics include total bookings, confirmed bookings, cancellations, no-shows, covers booked, average party size, bookings by day, service performance, status mix, busiest days/times and upcoming booking count.
+
+Standard report tables include bookings, covers, service/session performance, cancellation/no-show summary and repeat customer summary where customer history exists.
+
+Premium advanced analytics include booking trends against the previous period, forecast covers where enough history exists, cancellation/no-show rates, average covers per service, top service performance, table utilisation, repeat-visit rate and previous-period comparison.
+
+Premium CSV exports are available for:
+
+- bookings
+- covers
+- service performance
+- customer activity
+- operational performance
+
+Date filters support today, last 7 days, last 30 days, this month, last month and custom ranges. The analytics UI uses lightweight Blade/CSS chart components so no extra browser chart dependency is required.
+
 ## Admin Routes
 
 ```text
 /admin
 /admin/diary
 /admin/bookings/create
+/admin/reports
 /admin/services
 /admin/availability
 /admin/areas

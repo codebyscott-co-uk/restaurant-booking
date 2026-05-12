@@ -3956,7 +3956,8 @@
         .admin-shell .gradient-violet {
             background: linear-gradient(135deg, #7367f0 0%, #8f85f4 100%) !important;
         }
-        .admin-shell .kpi-card.cyan {
+        .admin-shell .kpi-card.cyan,
+        .admin-shell .gradient-cyan {
             background: linear-gradient(135deg, #00bad1 0%, #38d4e7 100%) !important;
         }
         .admin-shell .kpi-card.green {
@@ -3964,6 +3965,9 @@
         }
         .admin-shell .kpi-card.amber {
             background: linear-gradient(135deg, #ff9f43 0%, #ffc26b 100%) !important;
+        }
+        .admin-shell .kpi-card.red {
+            background: linear-gradient(135deg, #ea5455 0%, #ff7f80 100%) !important;
         }
         .admin-shell .sparkline {
             position: absolute;
@@ -4231,6 +4235,152 @@
         .admin-shell .dashboard-bottom-grid {
             align-items: start;
         }
+        .admin-shell .reports-suite {
+            display: grid;
+            gap: 1rem;
+            padding-bottom: 48px;
+        }
+        .admin-shell .report-filters {
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) repeat(2, minmax(150px, .75fr)) auto;
+            align-items: end;
+            gap: .85rem;
+        }
+        .admin-shell .reports-kpis {
+            margin-top: 0;
+        }
+        .admin-shell .reports-kpis .kpi-card,
+        .admin-shell .reports-suite .insight-card {
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 .75rem 2rem rgba(47, 43, 61, .16);
+        }
+        .admin-shell .reports-suite .gradient-cyan {
+            background:
+                radial-gradient(circle at 86% 20%, rgba(255,255,255,.22), transparent 28%),
+                linear-gradient(135deg, #00bad1 0%, #7367f0 100%) !important;
+        }
+        .admin-shell .reports-suite .gradient-cyan .orbital-chart span {
+            background: rgba(115, 103, 240, .98);
+        }
+        .admin-shell .reports-mosaic {
+            grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+        }
+        .admin-shell .report-flow-chart {
+            min-height: 260px;
+            overflow-x: auto;
+            padding-bottom: .25rem;
+        }
+        .admin-shell .report-flow-chart .flow-column {
+            min-width: 58px;
+        }
+        .admin-shell .reports-grid {
+            align-items: start;
+        }
+        .admin-shell .advanced-reports {
+            overflow: hidden;
+            position: relative;
+        }
+        .admin-shell .advanced-reports::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 88% 10%, rgba(115, 103, 240, .16), transparent 30%),
+                radial-gradient(circle at 12% 80%, rgba(0, 186, 209, .12), transparent 28%);
+        }
+        .admin-shell .advanced-reports > * {
+            position: relative;
+            z-index: 1;
+        }
+        .admin-shell .advanced-report-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .85rem;
+        }
+        .admin-shell .advanced-card {
+            border: 1px solid rgba(47, 43, 61, .12);
+            border-radius: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,.72);
+            box-shadow: 0 .45rem 1rem rgba(47, 43, 61, .06);
+        }
+        html.dark .admin-shell .advanced-card {
+            border-color: rgba(225,222,245,.12);
+            background: rgba(47,51,73,.72);
+        }
+        .admin-shell .advanced-card span {
+            color: #6d6777;
+            font-size: .78rem;
+            font-weight: 700;
+        }
+        html.dark .admin-shell .advanced-card span {
+            color: #b6b1cb;
+        }
+        .admin-shell .advanced-card strong {
+            display: block;
+            margin-top: .4rem;
+            color: #444050;
+            font-size: 1.35rem;
+        }
+        html.dark .admin-shell .advanced-card strong {
+            color: #d5d1ea;
+        }
+        .admin-shell .advanced-card p {
+            margin: .35rem 0 0;
+            color: #6d6777;
+            font-size: .85rem;
+        }
+        html.dark .admin-shell .advanced-card p {
+            color: #b6b1cb;
+        }
+        .admin-shell .advanced-card.violet { border-top: 3px solid #7367f0; }
+        .admin-shell .advanced-card.cyan { border-top: 3px solid #00bad1; }
+        .admin-shell .advanced-card.green { border-top: 3px solid #28c76f; }
+        .admin-shell .advanced-card.amber { border-top: 3px solid #ff9f43; }
+        .admin-shell .advanced-card.locked {
+            border-top: 3px solid #6d6777;
+            opacity: .72;
+        }
+        .admin-shell .export-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .65rem;
+        }
+        .admin-shell .table-wrap {
+            overflow-x: auto;
+        }
+        .admin-shell table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin-shell th,
+        .admin-shell td {
+            border-bottom: 1px solid rgba(47, 43, 61, .1);
+            padding: .8rem .7rem;
+            text-align: left;
+            vertical-align: middle;
+            font-size: .875rem;
+        }
+        html.dark .admin-shell th,
+        html.dark .admin-shell td {
+            border-bottom-color: rgba(225,222,245,.1);
+        }
+        .admin-shell th {
+            color: #6d6777;
+            font-size: .75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        html.dark .admin-shell th {
+            color: #b6b1cb;
+        }
+        .admin-shell td {
+            color: #444050;
+        }
+        html.dark .admin-shell td {
+            color: #d5d1ea;
+        }
         .admin-shell .dashboard-booking-card {
             border-left-color: #7367f0;
         }
@@ -4308,8 +4458,13 @@
         }
         @media (max-width: 1180px) {
             .admin-shell .dashboard-kpis,
-            .admin-shell .dashboard-mosaic {
+            .admin-shell .dashboard-mosaic,
+            .admin-shell .advanced-report-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .admin-shell .report-filters,
+            .admin-shell .reports-mosaic {
+                grid-template-columns: 1fr;
             }
             .admin-shell .experience-widget {
                 grid-column: span 2;
@@ -4318,7 +4473,8 @@
         @media (max-width: 780px) {
             .admin-shell .dashboard-hero-grid,
             .admin-shell .dashboard-kpis,
-            .admin-shell .dashboard-mosaic {
+            .admin-shell .dashboard-mosaic,
+            .admin-shell .advanced-report-grid {
                 grid-template-columns: 1fr;
             }
             .admin-shell .experience-widget {

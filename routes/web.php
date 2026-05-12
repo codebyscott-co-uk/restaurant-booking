@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminDiaryController;
 use App\Http\Controllers\AdminDiningAreaController;
 use App\Http\Controllers\AdminFeatureController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\AdminReportsController;
 use App\Http\Controllers\AdminRestaurantTableController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\AdminServiceController;
@@ -71,7 +72,8 @@ Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->gr
     Route::match(['get', 'post'], '/billing/portal', [AdminBillingController::class, 'portal'])->name('billing.portal');
     Route::get('/upgrade/{feature}', [AdminFeatureController::class, 'locked'])->name('features.locked');
     Route::get('/customers', [AdminFeatureController::class, 'customers'])->middleware('feature:customer_crm')->name('customers.index');
-    Route::get('/reports', [AdminFeatureController::class, 'reports'])->middleware('feature:analytics')->name('reports.index');
+    Route::get('/reports', [AdminReportsController::class, 'index'])->middleware('feature:analytics')->name('reports.index');
+    Route::get('/reports/export/{report}', [AdminReportsController::class, 'export'])->middleware('feature:advanced_reporting')->name('reports.export');
     Route::get('/waitlist', [AdminFeatureController::class, 'waitlist'])->middleware('feature:waitlist')->name('waitlist.index');
     Route::get('/diary', AdminDiaryController::class)->name('diary');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');

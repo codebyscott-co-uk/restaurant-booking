@@ -54,7 +54,7 @@
             'active' => request()->routeIs('admin.customers.*') || request()->routeIs('admin.features.locked'),
             'items' => [
                 ['label' => 'Guest CRM', 'href' => route('admin.customers.index'), 'active' => request()->routeIs('admin.customers.*'), 'feature' => 'customer_crm'],
-                ['label' => 'Reports', 'href' => route('admin.reports.index'), 'active' => request()->routeIs('admin.reports.*'), 'feature' => 'analytics'],
+                ['label' => 'Analytics & Reports', 'href' => route('admin.reports.index'), 'active' => request()->routeIs('admin.reports.*'), 'feature' => 'analytics'],
                 ['label' => 'Waitlist', 'href' => route('admin.waitlist.index'), 'active' => request()->routeIs('admin.waitlist.*'), 'feature' => 'waitlist'],
             ],
         ],
