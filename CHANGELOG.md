@@ -9,9 +9,18 @@ This project follows a simple changelog style while it is in early development.
 ### Added
 
 - Mobile-friendly public booking form.
+- Vuexy-inspired semi-dark SaaS redesign across admin, auth, public booking, customer management and widget surfaces.
+- Closer Vuexy-style admin chrome refinements for the semi-dark sidebar, floating top navbar, dropdowns, hover states and active menu treatments.
+- Vuexy-style topbar refinement with left search placement, transparent icon controls, avatar-only profile trigger and neutral dropdown menus.
+- Theme toggle icon now switches between moon and sun, sits before notifications, and matches the notification icon size.
+- Removed the inactive top-left admin menu button from the desktop topbar.
+- Cleaned dark mode to remove remaining warm cream, gold and brown colour remnants from admin surfaces.
+- Staff profile page for updating personal details and avatar image.
+- Vuexy-style profile dropdown with My Profile, Settings, Billing, Help and red Logout actions.
+- Admin top bar search placeholder with compact action controls.
 - Premium light theme for the public booking, signup, login, booking management and embeddable widget experiences.
-- Cream-and-gold liquid-glass interaction polish for public and admin cards, buttons, slots and active states.
-- Animated cream-and-gold abstract ribbon backgrounds for public, widget and admin surfaces, with reduced-motion support.
+- Indigo/slate SaaS interaction polish for public and admin cards, buttons, slots and active states.
+- Removed legacy cream/gold visual accents from the current UI theme.
 - Floating admin notification and profile dropdown panels that no longer stretch the top bar.
 - Multi-tenant venue ownership for staff accounts and admin data isolation.
 - Self-serve restaurant signup for creating a tenant venue, owner account, starter services, tables and opening hours.

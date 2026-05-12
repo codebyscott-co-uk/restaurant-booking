@@ -6,7 +6,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 
 ## Current Features
 
-- Mobile-friendly light themed public booking form
+- Mobile-friendly public booking form with polished SaaS styling
 - Multi-tenant venue model with staff scoped to their own restaurant
 - Self-serve restaurant signup that creates a tenant workspace, owner account, starter services, tables and opening hours
 - Tenant-specific public booking, widget and API URLs by restaurant slug
@@ -20,10 +20,10 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - JSON API endpoints for venue details, services, availability and booking creation
 - Staff-only login area
 - Polished staff dashboard with daily metrics, quick actions and setup health
-- Premium staff admin shell with sticky top bar, quick actions, notifications placeholder, profile menu and persistent light/dark mode
-- Premium cream-and-gold customer experience with liquid-glass cards, buttons, booking controls and animated abstract ribbon backgrounds
-- Responsive collapsible admin sidebar with grouped dropdown navigation sections
-- Refined hospitality SaaS admin theme with lighter typography, cream-and-gold accents, liquid-glass panels, polished buttons, subtle focus states and soft animated ribbon backgrounds
+- Vuexy-inspired semi-dark staff admin shell with fixed sidebar, floating sticky top bar, search placeholder, quick actions, notifications placeholder, profile menu and persistent light/dark mode
+- Premium indigo/slate SaaS component system for public booking, auth, customer management and widget experiences
+- Responsive collapsible admin sidebar with grouped dropdown navigation sections, inline icons, active states and polished hover states
+- Refined typography, cards, forms, buttons, badges, dropdowns and diary views for a commercial SaaS feel
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Sectioned business settings workspace
 - Restaurant logo upload and brand colour controls
@@ -32,6 +32,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Brandable public widget settings and example embed snippet
 - Configurable online change and cancellation notice period
 - Staff user create, edit, activate/deactivate and delete
+- Staff profile editing with avatar upload and personal contact details
 - Service management for lunch, dinner and other bookable sessions
 - Dining area and table management
 - Opening hours and closure management

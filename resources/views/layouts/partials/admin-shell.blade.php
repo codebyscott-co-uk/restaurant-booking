@@ -155,13 +155,10 @@
     <div class="admin-main">
         <header class="admin-topbar">
             <div class="admin-topbar-left">
-                <button class="admin-icon-button admin-menu-button" type="button" data-admin-menu aria-label="Open admin navigation" aria-expanded="false">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-                </button>
-                <div>
-                    <span class="admin-kicker">Staff workspace</span>
-                    <strong>{{ $currentVenue->name ?? 'Restaurant Booking' }}</strong>
-                </div>
+                <label class="admin-search" aria-label="Search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"/></svg>
+                    <input type="search" placeholder="Search..." disabled>
+                </label>
             </div>
 
             <div class="admin-topbar-actions">
@@ -169,6 +166,11 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                     New booking
                 </a>
+
+                <button class="admin-icon-button" type="button" data-theme-toggle aria-label="Toggle light and dark mode">
+                    <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"/></svg>
+                    <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V2M12 22v-2M4.93 4.93 3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l-1.42 1.42M20.49 3.51l-1.42 1.42M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/></svg>
+                </button>
 
                 <details class="admin-dropdown">
                     <summary class="admin-icon-button" aria-label="Notifications">
@@ -180,22 +182,34 @@
                     </div>
                 </details>
 
-                <button class="admin-icon-button" type="button" data-theme-toggle aria-label="Toggle light and dark mode">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8Z"/></svg>
-                </button>
-
                 <details class="admin-dropdown">
                     <summary class="admin-profile-summary">
-                        <span>{{ strtoupper(substr($currentUser->name ?? 'S', 0, 1)) }}</span>
+                        @if ($currentUser->avatar_url)
+                            <img src="{{ $currentUser->avatar_url }}" alt="{{ $currentUser->name }}">
+                        @else
+                            <span>{{ strtoupper(substr($currentUser->name ?? 'S', 0, 1)) }}</span>
+                        @endif
                         <strong>{{ $currentUser->name }}</strong>
                     </summary>
                     <div class="admin-dropdown-panel profile">
-                        <strong>{{ $currentUser->name }}</strong>
-                        <p>{{ $currentUser->email }} &middot; {{ ucfirst($currentUser->role) }}</p>
-                        <a href="{{ route('admin.settings.edit') }}">Business settings</a>
+                        <div class="admin-profile-card">
+                            @if ($currentUser->avatar_url)
+                                <img src="{{ $currentUser->avatar_url }}" alt="{{ $currentUser->name }}">
+                            @else
+                                <span>{{ strtoupper(substr($currentUser->name ?? 'S', 0, 1)) }}</span>
+                            @endif
+                            <div>
+                                <strong>{{ $currentUser->name }}</strong>
+                                <p>{{ ucfirst($currentUser->role) }}</p>
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.profile.edit') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM5 21a7 7 0 0 1 14 0"/></svg> My Profile</a>
+                        <a href="{{ route('admin.settings.edit') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0-5v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg> Settings</a>
+                        <a href="{{ route('admin.settings.edit') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4V7Zm0 3h16M7 15h4"/></svg> Billing</a>
+                        <a href="mailto:hello@codebyscott.co.uk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9a3 3 0 1 1 5.2 2c-.9.8-2.2 1.4-2.2 3M12 18h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> Help</a>
                         <form class="logout-form" method="post" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit">Log out</button>
+                            <button class="dropdown-logout" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17 15 12l-5-5M15 12H3M21 3v18"/></svg> Logout</button>
                         </form>
                     </div>
                 </details>

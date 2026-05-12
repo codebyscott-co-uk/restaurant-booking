@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminManagementTest extends TestCase
@@ -150,11 +152,44 @@ class AdminManagementTest extends TestCase
             ->assertSee('data-confirm="Delete this staff user?"', false);
     }
 
+    public function test_staff_can_update_their_profile_and_avatar(): void
+    {
+        $this->seed();
+        Storage::fake('public');
+        $admin = User::first();
+
+        $this->actingAs($admin)
+            ->get('/admin/profile')
+            ->assertOk()
+            ->assertSee('My Profile')
+            ->assertSee('Profile preview');
+
+        $this->actingAs($admin)
+            ->put('/admin/profile', [
+                'name' => 'Scott Profile',
+                'email' => 'profile@example.test',
+                'phone' => '07000 333444',
+                'job_title' => 'Director',
+                'avatar' => UploadedFile::fake()->image('avatar.jpg', 200, 200),
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/admin/profile');
+
+        $admin->refresh();
+
+        $this->assertSame('Scott Profile', $admin->name);
+        $this->assertSame('profile@example.test', $admin->email);
+        $this->assertSame('Director', $admin->job_title);
+        $this->assertNotNull($admin->avatar_path);
+        Storage::disk('public')->assertExists($admin->avatar_path);
+    }
+
     public function test_guest_cannot_view_settings_or_staff_pages(): void
     {
         $this->seed();
 
         $this->get('/admin/settings')->assertRedirect('/staff/login');
         $this->get('/admin/staff')->assertRedirect('/staff/login');
+        $this->get('/admin/profile')->assertRedirect('/staff/login');
     }
 }

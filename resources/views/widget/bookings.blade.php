@@ -55,6 +55,172 @@
             50% { background-position: 28% 4%, 72% 18%, 44% 78%, 0 0, 0 0, 0 0; transform: translate3d(2.5%, 2%, 0) rotate(3deg) scale(1.07); }
             100% { background-position: 46% 18%, 48% 34%, 72% 58%, 0 0, 0 0, 0 0; transform: translate3d(4%, -2.5%, 0) rotate(-2deg) scale(1.1); }
         }
+        :root {
+            --ink: #2f3349;
+            --muted: #6f7285;
+            --line: rgba(47, 51, 73, .12);
+            --paper: #f5f6fb;
+            --panel: #ffffff;
+            --primary: color-mix(in srgb, {{ $venue->primary_colour }} 35%, #7367f0);
+            --accent: color-mix(in srgb, {{ $venue->accent_colour }} 35%, #00bad1);
+            --shadow: 0 10px 30px rgba(47, 51, 73, .12);
+        }
+        body {
+            color: var(--ink);
+            background: var(--paper);
+        }
+        .widget {
+            background:
+                radial-gradient(circle at 12% 4%, rgba(115, 103, 240, .14), transparent 28%),
+                radial-gradient(circle at 88% 12%, rgba(0, 186, 209, .1), transparent 26%),
+                linear-gradient(180deg, #f5f6fb 0%, #eef0f8 100%);
+        }
+        .widget::before,
+        .card::before,
+        button::before {
+            display: none;
+        }
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            backdrop-filter: none;
+        }
+        .head {
+            padding: 22px;
+            border-bottom-color: var(--line);
+            background: linear-gradient(135deg, rgba(115, 103, 240, .08), transparent);
+        }
+        .head img {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+        }
+        .eyebrow {
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: .08em;
+        }
+        h1 {
+            font-size: 28px;
+            line-height: 1.08;
+            color: var(--ink);
+        }
+        p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+        form, .result {
+            padding: 22px;
+        }
+        label {
+            color: var(--ink);
+            font-size: 12.5px;
+            font-weight: 650;
+        }
+        input, select, textarea, button {
+            min-height: 40px;
+            border-color: var(--line);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 13px;
+        }
+        input, select, textarea {
+            background: #fff;
+            color: var(--ink);
+            box-shadow: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: 0;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+        }
+        button {
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--primary), #5e50ee);
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 32%, transparent);
+        }
+        button:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #8378f3, var(--primary));
+            box-shadow: 0 10px 28px color-mix(in srgb, var(--primary) 38%, transparent);
+        }
+        .slot span {
+            min-height: 38px;
+            border-color: var(--line);
+            border-radius: 8px;
+            background: #f8f8fc;
+            color: var(--ink);
+            font-size: 12.5px;
+            font-weight: 650;
+            box-shadow: none;
+        }
+        .slot:hover span {
+            border-color: color-mix(in srgb, var(--primary) 28%, var(--line));
+            background: color-mix(in srgb, var(--primary) 12%, white);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        .slot input:checked + span {
+            border-color: transparent;
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 30%, transparent);
+        }
+        .notice {
+            border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+            background: color-mix(in srgb, var(--accent) 12%, white);
+            color: color-mix(in srgb, var(--accent) 70%, var(--ink));
+        }
+        .error {
+            border-color: rgba(234, 84, 85, .2);
+            background: rgba(234, 84, 85, .12);
+            color: #ea5455;
+        }
+        :root {
+            --gold: #7367f0;
+            --gold-soft: rgba(115, 103, 240, .14);
+            --glass-border: rgba(47, 43, 61, .12);
+            --glass-highlight: transparent;
+        }
+        .widget::before,
+        .card::before,
+        button::before {
+            display: none !important;
+            content: none !important;
+        }
+        .widget {
+            background:
+                radial-gradient(circle at 12% 4%, rgba(115, 103, 240, .14), transparent 28%),
+                radial-gradient(circle at 88% 12%, rgba(0, 186, 209, .1), transparent 26%),
+                linear-gradient(180deg, #f8f7fa 0%, #f1f0f6 100%);
+        }
+        button,
+        button:hover {
+            border-color: transparent;
+            background: #7367f0;
+            color: #fff;
+            box-shadow: 0 .125rem .375rem rgba(115, 103, 240, .35);
+        }
+        button:hover {
+            background: #685dd8;
+        }
+        .slot:hover span {
+            border-color: transparent;
+            background: rgba(115, 103, 240, .12);
+            color: #7367f0;
+            box-shadow: none;
+        }
+        .slot input:checked + span {
+            border-color: transparent;
+            background: #7367f0;
+            color: #fff;
+            box-shadow: 0 .125rem .375rem rgba(115, 103, 240, .28);
+        }
         @media (prefers-reduced-motion: reduce) { .widget::before { animation: none; } }
         @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .widget { padding: 10px; } }
     </style>

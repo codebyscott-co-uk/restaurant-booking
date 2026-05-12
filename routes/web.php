@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDiaryController;
 use App\Http\Controllers\AdminDiningAreaController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\AdminRestaurantTableController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\AdminServiceController;
@@ -50,6 +51,8 @@ Route::post('/staff/logout', [AuthController::class, 'destroy'])
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
+    Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::get('/diary', AdminDiaryController::class)->name('diary');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');

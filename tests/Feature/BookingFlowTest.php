@@ -68,12 +68,12 @@ class BookingFlowTest extends TestCase
             ->assertOk()
             ->assertSee('Staff dashboard')
             ->assertSee('Today bookings')
-            ->assertSee('Log out');
+            ->assertSee('Logout');
 
         $this->get('/admin/diary')
             ->assertOk()
             ->assertSee('Admin diary')
-            ->assertSee('Log out');
+            ->assertSee('Logout');
     }
 
     public function test_authenticated_staff_can_view_admin_diary(): void
