@@ -17,6 +17,7 @@ class BookingRulesTest extends TestCase
 
     public function test_public_booking_respects_minimum_lead_time(): void
     {
+        Carbon::setTestNow(Carbon::parse('2026-05-13 10:30', 'Europe/London'));
         $this->seed();
         $venue = Venue::firstOrFail();
         $venue->update(['minimum_lead_time_minutes' => 240]);
@@ -26,6 +27,8 @@ class BookingRulesTest extends TestCase
         $this->get('/?date='.$date.'&party_size=2&service_id='.$service->id)
             ->assertOk()
             ->assertSee('No available times');
+
+        Carbon::setTestNow();
     }
 
     public function test_public_booking_respects_maximum_party_size(): void

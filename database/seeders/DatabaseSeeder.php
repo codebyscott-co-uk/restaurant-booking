@@ -177,5 +177,36 @@ class DatabaseSeeder extends Seeder
             'source' => 'web',
             'confirmed_at' => now(),
         ])->tables()->attach(RestaurantTable::where('name', 'T1')->first());
+
+        foreach ([
+            ['Sofia', 'Reed', 'sofia@example.test', 'completed', 'staff', $lunch, 3, 13, 30, 'Prefers sparkling water.'],
+            ['Ethan', 'Cole', 'ethan@example.test', 'cancelled', 'phone', $dinner, 2, 18, 30, null],
+            ['Maya', 'Brooks', 'maya@example.test', 'no_show', 'web', $dinner, 2, 20, 0, null],
+        ] as [$first, $last, $email, $status, $source, $service, $partySize, $hour, $minute, $notes]) {
+            $seedBooking = Booking::create([
+                'venue_id' => $venue->id,
+                'customer_id' => Customer::create([
+                    'venue_id' => $venue->id,
+                    'first_name' => $first,
+                    'last_name' => $last,
+                    'email' => $email,
+                    'phone' => '07700 '.fake()->numerify('######'),
+                    'notes' => $notes,
+                ])->id,
+                'service_id' => $service->id,
+                'booking_reference' => 'CBR'.strtoupper(fake()->bothify('####??')),
+                'customer_manage_token' => fake()->sha256(),
+                'party_size' => $partySize,
+                'starts_at' => Carbon::today('Europe/London')->setTime($hour, $minute),
+                'ends_at' => Carbon::today('Europe/London')->setTime($hour, $minute)->addMinutes($service->default_duration_minutes),
+                'status' => $status,
+                'source' => $source,
+                'internal_notes' => $status === 'cancelled' ? 'Cancelled by phone.' : null,
+                'confirmed_at' => in_array($status, ['confirmed', 'seated', 'completed'], true) ? now() : null,
+                'cancelled_at' => $status === 'cancelled' ? now() : null,
+            ]);
+
+            $seedBooking->tables()->attach(RestaurantTable::whereIn('name', $partySize > 2 ? ['T3'] : ['O1'])->first());
+        }
     }
 }

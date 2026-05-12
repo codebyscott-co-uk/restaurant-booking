@@ -168,7 +168,7 @@ class BookingAvailability
         return $startsAt->lessThanOrEqualTo(now($venue->timezone)->addDays($venue->maximum_advance_booking_days));
     }
 
-    private function exceedsSlotCapacity(Venue $venue, Carbon $startsAt, Carbon $endsAt, int $partySize, ?int $excludeBookingId = null): bool
+    public function exceedsSlotCapacity(Venue $venue, Carbon $startsAt, Carbon $endsAt, int $partySize, ?int $excludeBookingId = null): bool
     {
         if (! $venue->maximum_covers_per_slot) {
             return false;

@@ -4384,6 +4384,230 @@
         .admin-shell .dashboard-booking-card {
             border-left-color: #7367f0;
         }
+        .admin-shell .bookings-suite,
+        .admin-shell .booking-form-suite {
+            display: grid;
+            gap: 1rem;
+            padding-bottom: 48px;
+        }
+        .admin-shell .bookings-hero-actions {
+            margin-top: 1rem;
+        }
+        .admin-shell .booking-filter-panel {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+            align-items: end;
+            gap: .85rem;
+        }
+        .admin-shell .booking-view-switch {
+            justify-content: flex-end;
+        }
+        .admin-shell .booking-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: .85rem;
+        }
+        .admin-shell .booking-summary-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 118px;
+            border-radius: .8rem;
+            padding: 1rem;
+            color: #fff;
+            box-shadow: 0 .65rem 1.6rem rgba(47, 43, 61, .12);
+        }
+        .admin-shell .booking-summary-card::after {
+            content: "";
+            position: absolute;
+            right: -2.4rem;
+            bottom: -2.7rem;
+            width: 7rem;
+            height: 7rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,.18);
+        }
+        .admin-shell .booking-summary-card span,
+        .admin-shell .booking-summary-card small,
+        .admin-shell .booking-summary-card strong {
+            position: relative;
+            z-index: 1;
+        }
+        .admin-shell .booking-summary-card span {
+            display: block;
+            color: rgba(255,255,255,.82);
+            font-size: .78rem;
+            font-weight: 700;
+        }
+        .admin-shell .booking-summary-card strong {
+            display: block;
+            margin-top: .35rem;
+            font-size: 1.85rem;
+            line-height: 1;
+        }
+        .admin-shell .booking-summary-card small {
+            display: block;
+            margin-top: .45rem;
+            color: rgba(255,255,255,.76);
+            font-size: .78rem;
+        }
+        .admin-shell .booking-summary-card.violet { background: linear-gradient(135deg, #7367f0, #8f85f4); }
+        .admin-shell .booking-summary-card.cyan { background: linear-gradient(135deg, #00bad1, #38d4e7); }
+        .admin-shell .booking-summary-card.green { background: linear-gradient(135deg, #28c76f, #65dc98); }
+        .admin-shell .booking-summary-card.red { background: linear-gradient(135deg, #ea5455, #ff7f80); }
+        .admin-shell .booking-summary-card.slate { background: linear-gradient(135deg, #6d6777, #8e879d); }
+        .admin-shell .booking-service-timeline {
+            display: grid;
+            gap: 1rem;
+        }
+        .admin-shell .premium-booking-card {
+            grid-template-columns: 112px minmax(0, 1fr) auto;
+            border-left-color: #7367f0;
+        }
+        .admin-shell .booking-note {
+            margin: .6rem 0 0;
+            color: #6d6777;
+            font-size: .9rem;
+        }
+        html.dark .admin-shell .booking-note {
+            color: #b6b1cb;
+        }
+        .admin-shell .request-badge {
+            color: #7367f0;
+            border-color: rgba(115, 103, 240, .28);
+            background: rgba(115, 103, 240, .1);
+        }
+        .admin-shell .booking-actions {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .admin-shell .booking-drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .18s ease;
+        }
+        .admin-shell .booking-drawer:target {
+            pointer-events: auto;
+            opacity: 1;
+        }
+        .admin-shell .booking-drawer-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(47, 43, 61, .36);
+            backdrop-filter: blur(6px);
+        }
+        .admin-shell .booking-drawer-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: grid;
+            gap: 1rem;
+            width: min(520px, 100%);
+            height: 100%;
+            overflow-y: auto;
+            padding: 1.25rem;
+            background: #fff;
+            box-shadow: -1rem 0 3rem rgba(47, 43, 61, .18);
+            transform: translateX(100%);
+            transition: transform .22s ease;
+        }
+        html.dark .admin-shell .booking-drawer-panel {
+            background: #2f3349;
+        }
+        .admin-shell .booking-drawer:target .booking-drawer-panel {
+            transform: translateX(0);
+        }
+        .admin-shell .booking-drawer-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .admin-shell .booking-detail-grid,
+        .admin-shell .status-action-grid,
+        .admin-shell .table-assignment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .75rem;
+        }
+        .admin-shell .booking-detail-grid span,
+        .admin-shell .booking-drawer-section,
+        .admin-shell .table-assignment-area {
+            border: 1px solid rgba(47, 43, 61, .1);
+            border-radius: .8rem;
+            padding: .85rem;
+            background: rgba(246,246,249,.74);
+        }
+        html.dark .admin-shell .booking-detail-grid span,
+        html.dark .admin-shell .booking-drawer-section,
+        html.dark .admin-shell .table-assignment-area {
+            border-color: rgba(225,222,245,.1);
+            background: rgba(52,56,79,.72);
+        }
+        .admin-shell .booking-detail-grid strong {
+            display: block;
+            color: #6d6777;
+            font-size: .75rem;
+            margin-bottom: .25rem;
+        }
+        .admin-shell .booking-detail-grid .full {
+            grid-column: 1 / -1;
+        }
+        .admin-shell .status-action-grid form,
+        .admin-shell .status-action-grid button {
+            width: 100%;
+        }
+        .admin-shell .booking-availability-card,
+        .admin-shell .booking-edit-card,
+        .admin-shell .booking-form-section,
+        .admin-shell .table-assignment-area {
+            display: grid;
+            gap: 1rem;
+        }
+        .admin-shell .booking-form-section {
+            border-top: 1px solid rgba(47, 43, 61, .1);
+            padding-top: 1rem;
+        }
+        html.dark .admin-shell .booking-form-section {
+            border-top-color: rgba(225,222,245,.1);
+        }
+        .admin-shell .table-choice {
+            display: flex;
+            gap: .65rem;
+            align-items: center;
+            border: 1px solid rgba(47, 43, 61, .1);
+            border-radius: .7rem;
+            padding: .7rem;
+            background: rgba(255,255,255,.72);
+        }
+        html.dark .admin-shell .table-choice {
+            border-color: rgba(225,222,245,.1);
+            background: rgba(47,51,73,.72);
+        }
+        .admin-shell .table-choice input {
+            width: 1rem;
+            min-height: 1rem;
+        }
+        .admin-shell .table-choice small {
+            display: block;
+            color: #6d6777;
+            font-weight: 500;
+        }
+        html.dark .admin-shell .table-choice small {
+            color: #b6b1cb;
+        }
+        .admin-shell .table-choice.warning {
+            border-color: rgba(255, 159, 67, .38);
+            background: rgba(255, 159, 67, .1);
+        }
+        .admin-shell .empty-state.compact {
+            padding: 1rem;
+        }
         .admin-shell .dashboard-actions a {
             min-height: 4rem;
             justify-content: start;
@@ -4459,11 +4683,14 @@
         @media (max-width: 1180px) {
             .admin-shell .dashboard-kpis,
             .admin-shell .dashboard-mosaic,
-            .admin-shell .advanced-report-grid {
+            .admin-shell .advanced-report-grid,
+            .admin-shell .booking-summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
             .admin-shell .report-filters,
-            .admin-shell .reports-mosaic {
+            .admin-shell .reports-mosaic,
+            .admin-shell .booking-filter-panel,
+            .admin-shell .table-assignment-grid {
                 grid-template-columns: 1fr;
             }
             .admin-shell .experience-widget {
@@ -4474,7 +4701,8 @@
             .admin-shell .dashboard-hero-grid,
             .admin-shell .dashboard-kpis,
             .admin-shell .dashboard-mosaic,
-            .admin-shell .advanced-report-grid {
+            .admin-shell .advanced-report-grid,
+            .admin-shell .booking-summary-grid {
                 grid-template-columns: 1fr;
             }
             .admin-shell .experience-widget {
@@ -4489,6 +4717,14 @@
             }
             .admin-shell .flow-column {
                 flex: 0 0 3rem;
+            }
+            .admin-shell .premium-booking-card,
+            .admin-shell .booking-detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .admin-shell .booking-actions,
+            .admin-shell .booking-view-switch {
+                justify-content: flex-start;
             }
         }
     </style>

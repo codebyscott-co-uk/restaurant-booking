@@ -25,6 +25,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Responsive collapsible admin sidebar with grouped dropdown navigation sections, inline icons, active states and polished hover states
 - Refined typography, cards, forms, buttons, badges, dropdowns and diary views for a commercial SaaS feel
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
+- Premium bookings diary with status/search/service filters, timeline and list views, detail drawer, quick status actions and table assignment
 - Sectioned business settings workspace
 - Venue logo upload and brand colour controls
 - Booking terms and cancellation policy settings
@@ -311,6 +312,7 @@ Date filters support today, last 7 days, last 30 days, this month, last month an
 /admin
 /admin/diary
 /admin/bookings/create
+/admin/bookings/{booking_reference}/edit
 /admin/reports
 /admin/services
 /admin/availability
@@ -320,6 +322,38 @@ Date filters support today, last 7 days, last 30 days, this month, last month an
 ```
 
 All admin routes require staff login.
+
+## Bookings Diary
+
+The staff bookings diary is available to every active or trial venue plan because bookings are core Resora OS functionality.
+
+Diary features include:
+
+- today, tomorrow and previous/next day navigation
+- day and week modes
+- timeline and compact list views
+- service/session filter
+- status filter
+- search by guest name, email, phone or booking reference
+- summary cards for bookings, covers, confirmed, seated, completed, cancelled and no-shows
+- service-grouped timeline for configured venue services such as lunch, dinner or custom sessions
+- slide-over booking detail panels with guest, contact, table, request, note and timeline information
+- quick status actions and internal note updates
+
+Booking statuses currently used by the system are:
+
+```text
+pending
+confirmed
+seated
+completed
+cancelled
+no_show
+```
+
+Staff-created bookings support phone, walk-in, staff and online/source values. Table assignment is scoped to the current venue and can use one or multiple tables where the venue supports joined-table workflows. The app rejects cross-tenant table IDs and prevents table conflicts, under-capacity assignments, closures, closed service windows and slot capacity breaches.
+
+Advanced booking rules remain a Professional+ billing feature. Core diary, booking creation, booking editing and booking status management remain available to Starter, Professional and Premium venues.
 
 ## Public Customer Routes
 

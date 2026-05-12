@@ -4,8 +4,11 @@ namespace Tests\Feature;
 
 use App\Mail\BookingConfirmationMail;
 use App\Models\Booking;
+use App\Models\DiningArea;
+use App\Models\RestaurantTable;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -111,8 +114,8 @@ class AdminBookingsTest extends TestCase
             ->get('/admin/diary')
             ->assertOk()
             ->assertSee('Add booking')
-            ->assertSee('Day timeline')
-            ->assertSee('All services');
+            ->assertSee('Total bookings')
+            ->assertSee('Lunch');
     }
 
     public function test_staff_can_view_week_diary_and_filter_by_service(): void
@@ -123,9 +126,9 @@ class AdminBookingsTest extends TestCase
         $this->actingAs(User::first())
             ->get('/admin/diary?view=week&service_id='.$service->id)
             ->assertOk()
-            ->assertSee('Week timeline')
+            ->assertSee('Selected period')
             ->assertSee('Lunch')
-            ->assertDontSee('Dinner ·');
+            ->assertSee('No dinner bookings.');
     }
 
     public function test_guest_cannot_update_booking_status(): void
@@ -154,5 +157,106 @@ class AdminBookingsTest extends TestCase
 
         $this->assertSame('cancelled', $booking->status);
         $this->assertNotNull($booking->cancelled_at);
+    }
+
+    public function test_diary_filters_by_status_search_and_list_view(): void
+    {
+        $this->seed();
+
+        $booking = Booking::where('status', 'confirmed')->firstOrFail();
+
+        $this->actingAs(User::first())
+            ->get('/admin/diary?display=list&status=confirmed&search='.$booking->customer->last_name)
+            ->assertOk()
+            ->assertSee('Booking list')
+            ->assertSee($booking->booking_reference)
+            ->assertSee($booking->customer->full_name);
+
+        $this->actingAs(User::first())
+            ->get('/admin/diary?status=no_show&search=not-a-real-guest')
+            ->assertOk()
+            ->assertSee('No bookings match these filters.');
+    }
+
+    public function test_staff_can_edit_booking_notes_and_table_assignment(): void
+    {
+        $this->seed();
+        $booking = Booking::where('status', 'confirmed')->firstOrFail();
+        $service = $booking->service;
+        $table = $booking->venue->tables()
+            ->where('id', '!=', $booking->tables->first()->id)
+            ->where('max_covers', '>=', $booking->party_size)
+            ->firstOrFail();
+
+        $this->actingAs(User::first())
+            ->put('/admin/bookings/'.$booking->booking_reference, [
+                'service_id' => $service->id,
+                'party_size' => $booking->party_size,
+                'date' => $booking->starts_at->toDateString(),
+                'time' => $booking->starts_at->format('H:i'),
+                'first_name' => $booking->customer->first_name,
+                'last_name' => $booking->customer->last_name,
+                'email' => $booking->customer->email,
+                'phone' => $booking->customer->phone,
+                'source' => 'staff',
+                'status' => 'seated',
+                'special_requests' => 'Near the window.',
+                'internal_notes' => 'VIP guest.',
+                'customer_notes' => 'Likes booth seating.',
+                'table_ids' => [$table->id],
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/admin/diary?date='.$booking->starts_at->toDateString());
+
+        $booking->refresh();
+
+        $this->assertSame('seated', $booking->status);
+        $this->assertSame('staff', $booking->source);
+        $this->assertSame('VIP guest.', $booking->internal_notes);
+        $this->assertTrue($booking->tables->contains($table));
+    }
+
+    public function test_table_assignment_rejects_another_venues_table(): void
+    {
+        $this->seed();
+        $booking = Booking::where('status', 'confirmed')->firstOrFail();
+        $otherVenue = Venue::create(['name' => 'Other Venue', 'slug' => 'other-venue', 'timezone' => 'Europe/London']);
+        $otherArea = DiningArea::create(['venue_id' => $otherVenue->id, 'name' => 'Other Room']);
+        $otherTable = RestaurantTable::create([
+            'venue_id' => $otherVenue->id,
+            'dining_area_id' => $otherArea->id,
+            'name' => 'OT1',
+            'min_covers' => 1,
+            'max_covers' => 8,
+        ]);
+
+        $this->actingAs(User::first())
+            ->put('/admin/bookings/'.$booking->booking_reference, [
+                'service_id' => $booking->service_id,
+                'party_size' => $booking->party_size,
+                'date' => $booking->starts_at->toDateString(),
+                'time' => $booking->starts_at->format('H:i'),
+                'first_name' => $booking->customer->first_name,
+                'last_name' => $booking->customer->last_name,
+                'email' => $booking->customer->email,
+                'phone' => $booking->customer->phone,
+                'source' => $booking->source,
+                'status' => $booking->status,
+                'table_ids' => [$otherTable->id],
+            ])
+            ->assertSessionHasErrors('table_ids.0');
+    }
+
+    public function test_starter_can_access_core_bookings_but_not_advanced_reports(): void
+    {
+        $this->seed();
+
+        $this->actingAs(User::first())
+            ->get('/admin/diary')
+            ->assertOk();
+
+        $this->actingAs(User::first())
+            ->get('/admin/reports')
+            ->assertRedirect('/admin/upgrade/analytics');
     }
 }

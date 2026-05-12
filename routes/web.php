@@ -78,7 +78,10 @@ Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->gr
     Route::get('/diary', AdminDiaryController::class)->name('diary');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{booking}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
+    Route::put('/bookings/{booking}', [AdminBookingController::class, 'update'])->name('bookings.update');
     Route::patch('/bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status.update');
+    Route::patch('/bookings/{booking}/notes', [AdminBookingController::class, 'updateNotes'])->name('bookings.notes.update');
     Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
     Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);

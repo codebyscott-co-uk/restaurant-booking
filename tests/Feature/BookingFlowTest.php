@@ -72,7 +72,7 @@ class BookingFlowTest extends TestCase
 
         $this->get('/admin/diary')
             ->assertOk()
-            ->assertSee('Admin diary')
+            ->assertSee('Bookings diary')
             ->assertSee('Logout');
     }
 
@@ -83,6 +83,6 @@ class BookingFlowTest extends TestCase
         $this->actingAs(User::first())
             ->get('/admin/diary')
             ->assertOk()
-            ->assertSee('Admin diary');
+            ->assertSee('Bookings diary');
     }
 }

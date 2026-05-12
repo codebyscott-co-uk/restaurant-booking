@@ -12,6 +12,7 @@ This project follows a simple changelog style while it is in early development.
 - Tenant isolation hardening with staff tenant middleware, shared tenant ownership helpers, tenant-owned customers, slug-scoped customer management routes and subscription ownership preparation.
 - Stripe billing with Laravel Cashier, venue-owned Checkout subscriptions, Billing Portal access, webhook route setup, plan config and plan-based feature gates.
 - Feature-gated Analytics & Reports section with tenant-scoped metrics, report tables, date filters, Premium advanced analytics and CSV exports.
+- Premium staff bookings diary with richer filters, timeline/list views, detail drawer, quick actions, edit flow and tenant-safe table assignment.
 - Mobile-friendly public booking form.
 - Vuexy-inspired semi-dark SaaS redesign across admin, auth, public booking, customer management and widget surfaces.
 - Closer Vuexy-style admin chrome refinements for the semi-dark sidebar, floating top navbar, dropdowns, hover states and active menu treatments.
