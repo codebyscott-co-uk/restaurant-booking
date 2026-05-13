@@ -36,6 +36,13 @@ class MultiTenancyTest extends TestCase
             'role' => 'owner',
             'is_active' => true,
         ]);
+        TenantSubscription::create([
+            'venue_id' => $secondVenue->id,
+            'provider' => 'stripe',
+            'plan' => 'starter',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addDays(14),
+        ]);
 
         $this->actingAs($secondUser)
             ->get('/admin/settings')
@@ -58,6 +65,13 @@ class MultiTenancyTest extends TestCase
             'password' => 'password',
             'role' => 'owner',
             'is_active' => true,
+        ]);
+        TenantSubscription::create([
+            'venue_id' => $secondVenue->id,
+            'provider' => 'stripe',
+            'plan' => 'starter',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addDays(14),
         ]);
         $firstVenueService = Service::where('name', 'Lunch')->firstOrFail();
 
@@ -199,6 +213,14 @@ class MultiTenancyTest extends TestCase
             'password' => 'password',
             'role' => 'owner',
             'is_active' => true,
+        ]);
+
+        TenantSubscription::create([
+            'venue_id' => $venue->id,
+            'provider' => 'stripe',
+            'plan' => 'starter',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addDays(14),
         ]);
 
         $area = DiningArea::create([

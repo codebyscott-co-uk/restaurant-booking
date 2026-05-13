@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\DiningArea;
 use App\Models\RestaurantTable;
 use App\Models\Service;
+use App\Models\TenantSubscription;
 use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -152,6 +153,14 @@ class AnalyticsReportsTest extends TestCase
             'password' => 'password',
             'role' => 'owner',
             'is_active' => true,
+        ]);
+
+        TenantSubscription::create([
+            'venue_id' => $venue->id,
+            'provider' => 'stripe',
+            'plan' => 'starter',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addDays(14),
         ]);
 
         return [$venue, $user];

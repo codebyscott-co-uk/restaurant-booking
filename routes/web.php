@@ -63,40 +63,43 @@ Route::get('/stripe/payment/{id}', [\Laravel\Cashier\Http\Controllers\PaymentCon
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])->name('cashier.webhook');
 
 Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', AdminDashboardController::class)->name('dashboard');
-    Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::get('/billing', [AdminBillingController::class, 'index'])->name('billing.index');
     Route::post('/billing/checkout/{plan}', [AdminBillingController::class, 'checkout'])->name('billing.checkout');
     Route::post('/billing/swap/{plan}', [AdminBillingController::class, 'swap'])->name('billing.swap');
     Route::post('/billing/resume', [AdminBillingController::class, 'resume'])->name('billing.resume');
     Route::match(['get', 'post'], '/billing/portal', [AdminBillingController::class, 'portal'])->name('billing.portal');
     Route::get('/upgrade/{feature}', [AdminFeatureController::class, 'locked'])->name('features.locked');
-    Route::resource('customers', AdminCustomerController::class)
-        ->middleware('feature:customer_crm')
-        ->except(['destroy']);
-    Route::get('/reports', [AdminReportsController::class, 'index'])->middleware('feature:analytics')->name('reports.index');
-    Route::get('/reports/export/{report}', [AdminReportsController::class, 'export'])->middleware('feature:advanced_reporting')->name('reports.export');
-    Route::get('/waitlist', [AdminFeatureController::class, 'waitlist'])->middleware('feature:waitlist')->name('waitlist.index');
-    Route::get('/diary', AdminDiaryController::class)->name('diary');
-    Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
-    Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
-    Route::get('/bookings/{booking}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
-    Route::put('/bookings/{booking}', [AdminBookingController::class, 'update'])->name('bookings.update');
-    Route::patch('/bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status.update');
-    Route::patch('/bookings/{booking}/notes', [AdminBookingController::class, 'updateNotes'])->name('bookings.notes.update');
-    Route::resource('services', AdminServiceController::class)->except(['show']);
-    Route::patch('/areas/{area}/toggle', [AdminDiningAreaController::class, 'toggle'])->name('areas.toggle');
-    Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
-    Route::patch('/tables/{table}/toggle', [AdminRestaurantTableController::class, 'toggle'])->name('tables.toggle');
-    Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);
-    Route::get('/availability', [AdminAvailabilityController::class, 'index'])->name('availability.index');
-    Route::put('/availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');
-    Route::post('/availability/closures', [AdminAvailabilityController::class, 'storeClosure'])->name('availability.closures.store');
-    Route::delete('/availability/closures/{closure}', [AdminAvailabilityController::class, 'destroyClosure'])->name('availability.closures.destroy');
-    Route::get('/settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
-    Route::put('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
-    Route::resource('staff', AdminStaffController::class)
-        ->parameters(['staff' => 'user'])
-        ->except(['show']);
+
+    Route::middleware('tenant.access')->group(function () {
+        Route::get('/', AdminDashboardController::class)->name('dashboard');
+        Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+        Route::resource('customers', AdminCustomerController::class)
+            ->middleware('feature:customer_crm')
+            ->except(['destroy']);
+        Route::get('/reports', [AdminReportsController::class, 'index'])->middleware('feature:analytics')->name('reports.index');
+        Route::get('/reports/export/{report}', [AdminReportsController::class, 'export'])->middleware('feature:advanced_reporting')->name('reports.export');
+        Route::get('/waitlist', [AdminFeatureController::class, 'waitlist'])->middleware('feature:waitlist')->name('waitlist.index');
+        Route::get('/diary', AdminDiaryController::class)->name('diary');
+        Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
+        Route::post('/bookings', [AdminBookingController::class, 'store'])->name('bookings.store');
+        Route::get('/bookings/{booking}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
+        Route::put('/bookings/{booking}', [AdminBookingController::class, 'update'])->name('bookings.update');
+        Route::patch('/bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status.update');
+        Route::patch('/bookings/{booking}/notes', [AdminBookingController::class, 'updateNotes'])->name('bookings.notes.update');
+        Route::resource('services', AdminServiceController::class)->except(['show']);
+        Route::patch('/areas/{area}/toggle', [AdminDiningAreaController::class, 'toggle'])->name('areas.toggle');
+        Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
+        Route::patch('/tables/{table}/toggle', [AdminRestaurantTableController::class, 'toggle'])->name('tables.toggle');
+        Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);
+        Route::get('/availability', [AdminAvailabilityController::class, 'index'])->name('availability.index');
+        Route::put('/availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');
+        Route::post('/availability/closures', [AdminAvailabilityController::class, 'storeClosure'])->name('availability.closures.store');
+        Route::delete('/availability/closures/{closure}', [AdminAvailabilityController::class, 'destroyClosure'])->name('availability.closures.destroy');
+        Route::get('/settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
+        Route::put('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
+        Route::resource('staff', AdminStaffController::class)
+            ->parameters(['staff' => 'user'])
+            ->except(['show']);
+    });
 });

@@ -6,6 +6,7 @@ use App\Models\TenantSubscription;
 use App\Models\User;
 use App\Models\Venue;
 use App\Services\Billing\BillingPlans;
+use App\Services\Billing\FeatureGate;
 use App\Services\Billing\StripeBillingGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
@@ -181,6 +182,67 @@ class BillingTest extends TestCase
             ->get('/admin/billing')
             ->assertOk()
             ->assertSee('Resume subscription');
+    }
+
+    public function test_expired_or_unpaid_venue_is_blocked_from_protected_admin_but_can_access_billing(): void
+    {
+        $this->seed();
+        $venue = Venue::firstOrFail();
+
+        TenantSubscription::where('venue_id', $venue->id)->update([
+            'plan' => 'professional',
+            'status' => 'unpaid',
+            'trial_ends_at' => now()->subDay(),
+        ]);
+
+        $this->actingAs(User::first())
+            ->get('/admin/diary')
+            ->assertRedirect('/admin/billing?access=expired');
+
+        $this->actingAs(User::first())
+            ->get('/admin/billing')
+            ->assertOk()
+            ->assertSee('Subscription');
+    }
+
+    public function test_expired_local_trial_does_not_unlock_paid_features(): void
+    {
+        $this->seed();
+        $venue = Venue::firstOrFail();
+
+        TenantSubscription::where('venue_id', $venue->id)->update([
+            'plan' => 'professional',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->subDay(),
+        ]);
+
+        $this->assertFalse(app(FeatureGate::class)->canUse($venue->fresh(), 'customer_crm'));
+    }
+
+    public function test_active_local_trial_unlocks_its_plan_features(): void
+    {
+        $this->seed();
+        $venue = Venue::firstOrFail();
+
+        TenantSubscription::where('venue_id', $venue->id)->update([
+            'plan' => 'professional',
+            'status' => 'trialing',
+            'trial_ends_at' => now()->addWeek(),
+        ]);
+
+        $this->assertTrue(app(FeatureGate::class)->canUse($venue->fresh(), 'customer_crm'));
+        $this->assertFalse(app(FeatureGate::class)->canUse($venue->fresh(), 'advanced_reporting'));
+    }
+
+    public function test_active_subscription_unlocks_its_plan_features(): void
+    {
+        $this->seed();
+        $venue = Venue::firstOrFail();
+        TenantSubscription::where('venue_id', $venue->id)->delete();
+        $this->cashierSubscription($venue, 'price_premium_test');
+
+        $this->assertTrue(app(FeatureGate::class)->canUse($venue->fresh(), 'customer_crm'));
+        $this->assertTrue(app(FeatureGate::class)->canUse($venue->fresh(), 'advanced_reporting'));
     }
 
     public function test_starter_cannot_access_professional_features(): void

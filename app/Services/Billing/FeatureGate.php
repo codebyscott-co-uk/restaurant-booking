@@ -27,7 +27,12 @@ class FeatureGate
 
         $localSubscription = $venue->activeSubscription;
 
-        if ($localSubscription && in_array($localSubscription->status, ['trialing', 'active'], true)) {
+        if ($localSubscription?->status === 'active') {
+            return $this->plans->get($localSubscription->plan);
+        }
+
+        if ($localSubscription?->status === 'trialing'
+            && (! $localSubscription->trial_ends_at || $localSubscription->trial_ends_at->isFuture())) {
             return $this->plans->get($localSubscription->plan);
         }
 
