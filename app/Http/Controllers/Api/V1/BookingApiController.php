@@ -123,14 +123,23 @@ class BookingApiController extends Controller
             ], 422);
         }
 
-        $customer = Customer::create([
+        $customer = Customer::query()
+            ->where('venue_id', $venue->id)
+            ->where(function ($query) use ($validated) {
+                $query->where('email', $validated['email'])
+                    ->orWhere('phone', $validated['phone']);
+            })
+            ->orderByDesc('updated_at')
+            ->first() ?: new Customer(['venue_id' => $venue->id]);
+
+        $customer->fill([
             'venue_id' => $venue->id,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'],
-            'marketing_opt_in' => (bool) ($validated['marketing_opt_in'] ?? false),
-        ]);
+            'marketing_opt_in' => $customer->marketing_opt_in || (bool) ($validated['marketing_opt_in'] ?? false),
+        ])->save();
 
         $booking = Booking::create([
             'venue_id' => $venue->id,

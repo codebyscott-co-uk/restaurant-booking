@@ -26,6 +26,7 @@ Built by [Code by Scott](https://codebyscott.co.uk).
 - Refined typography, cards, forms, buttons, badges, dropdowns and diary views for a commercial SaaS feel
 - Modern staff diary with day/week views, service filters and mobile-friendly booking cards
 - Premium bookings diary with status/search/service filters, timeline and list views, detail drawer, quick status actions and table assignment
+- Professional+ customer CRM with VIP flags, allergy/dietary notes, preferences, booking history and repeat-guest indicators
 - Sectioned business settings workspace
 - Venue logo upload and brand colour controls
 - Booking terms and cancellation policy settings
@@ -306,6 +307,31 @@ Premium CSV exports are available for:
 
 Date filters support today, last 7 days, last 30 days, this month, last month and custom ranges. The analytics UI uses lightweight Blade/CSS chart components so no extra browser chart dependency is required.
 
+## Customer CRM
+
+The Customers / CRM section lives at:
+
+```text
+GET /admin/customers
+GET /admin/customers/create
+POST /admin/customers
+GET /admin/customers/{customer}
+GET /admin/customers/{customer}/edit
+PUT /admin/customers/{customer}
+```
+
+Customer CRM is controlled by the `customer_crm` feature gate:
+
+- Starter venues see the polished upgrade screen and cannot access CRM routes.
+- Professional venues can manage customer profiles, notes and visit history.
+- Premium venues get the full Professional CRM experience alongside premium reporting modules.
+
+Customer records are venue-scoped. Staff users only search, view, edit and attach customers from their authenticated venue. Cross-tenant customer IDs return a not found response.
+
+CRM profiles include contact details, VIP status, marketing opt-in, allergies, dietary requirements, preferences, favourite area/table and private internal notes. These internal CRM notes are for staff only and are not shown on public booking pages.
+
+Bookings link to customers automatically where safe. Public, API and staff-created bookings reuse an existing customer from the same venue when the email or phone matches; otherwise a new tenant-scoped customer is created. Staff booking drawers show VIP, repeat-guest and CRM note indicators only when the venue has CRM access.
+
 ## Admin Routes
 
 ```text
@@ -313,6 +339,7 @@ Date filters support today, last 7 days, last 30 days, this month, last month an
 /admin/diary
 /admin/bookings/create
 /admin/bookings/{booking_reference}/edit
+/admin/customers
 /admin/reports
 /admin/services
 /admin/availability

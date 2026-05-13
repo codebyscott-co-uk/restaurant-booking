@@ -150,7 +150,15 @@
                         @foreach ($bookings as $booking)
                             <tr>
                                 <td>{{ $booking->starts_at->format('D H:i') }}</td>
-                                <td>{{ $booking->customer->full_name }}</td>
+                                <td>
+                                    {{ $booking->customer->full_name }}
+                                    @if ($canUseCrm && $booking->customer->is_vip)
+                                        <br><span class="badge status-badge amber">VIP</span>
+                                    @endif
+                                    @if ($canUseCrm && ($booking->customer->bookings_count ?? 0) > 1)
+                                        <span class="badge status-badge violet">Repeat</span>
+                                    @endif
+                                </td>
                                 <td>{{ $booking->customer->phone }}<br><small>{{ $booking->customer->email }}</small></td>
                                 <td>{{ $booking->party_size }}</td>
                                 <td>{{ $booking->service->name }}</td>

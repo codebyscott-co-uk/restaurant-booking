@@ -17,7 +17,16 @@
             @if ($booking->special_requests)
                 <span class="badge request-badge">Special request</span>
             @endif
+            @if (($canUseCrm ?? false) && $booking->customer->is_vip)
+                <span class="badge status-badge amber">VIP</span>
+            @endif
+            @if (($canUseCrm ?? false) && ($booking->customer->bookings_count ?? 0) > 1)
+                <span class="badge status-badge violet">Repeat guest</span>
+            @endif
         </div>
+        @if (($canUseCrm ?? false) && ($booking->customer->allergies || $booking->customer->dietary_requirements || $booking->customer->preferences))
+            <p class="booking-note">CRM: {{ collect([$booking->customer->allergies, $booking->customer->dietary_requirements, $booking->customer->preferences])->filter()->join(' · ') }}</p>
+        @endif
         @if ($booking->special_requests)
             <p class="booking-note">{{ $booking->special_requests }}</p>
         @endif

@@ -72,14 +72,7 @@ class BookingController extends Controller
                 ->withErrors(['time' => 'That time has just been taken. Please choose another available slot.']);
         }
 
-        $customer = Customer::create([
-            'venue_id' => $venue->id,
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'marketing_opt_in' => (bool) ($validated['marketing_opt_in'] ?? false),
-        ]);
+        $customer = $this->findOrPersistCustomer($venue, $validated);
 
         $booking = Booking::create([
             'venue_id' => $venue->id,
@@ -145,5 +138,28 @@ class BookingController extends Controller
         } while (Booking::where('booking_reference', $reference)->exists());
 
         return $reference;
+    }
+
+    private function findOrPersistCustomer(Venue $venue, array $validated): Customer
+    {
+        $customer = Customer::query()
+            ->where('venue_id', $venue->id)
+            ->where(function ($query) use ($validated) {
+                $query->where('email', $validated['email'])
+                    ->orWhere('phone', $validated['phone']);
+            })
+            ->orderByDesc('updated_at')
+            ->first() ?: new Customer(['venue_id' => $venue->id]);
+
+        $customer->fill([
+            'venue_id' => $venue->id,
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'marketing_opt_in' => $customer->marketing_opt_in || (bool) ($validated['marketing_opt_in'] ?? false),
+        ])->save();
+
+        return $customer;
     }
 }

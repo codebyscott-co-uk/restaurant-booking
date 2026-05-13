@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminAvailabilityController;
 use App\Http\Controllers\AdminBookingController;
+use App\Http\Controllers\AdminCustomerController;
 use App\Http\Controllers\AdminBillingController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminDiaryController;
@@ -71,7 +72,9 @@ Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->gr
     Route::post('/billing/resume', [AdminBillingController::class, 'resume'])->name('billing.resume');
     Route::match(['get', 'post'], '/billing/portal', [AdminBillingController::class, 'portal'])->name('billing.portal');
     Route::get('/upgrade/{feature}', [AdminFeatureController::class, 'locked'])->name('features.locked');
-    Route::get('/customers', [AdminFeatureController::class, 'customers'])->middleware('feature:customer_crm')->name('customers.index');
+    Route::resource('customers', AdminCustomerController::class)
+        ->middleware('feature:customer_crm')
+        ->except(['destroy']);
     Route::get('/reports', [AdminReportsController::class, 'index'])->middleware('feature:analytics')->name('reports.index');
     Route::get('/reports/export/{report}', [AdminReportsController::class, 'export'])->middleware('feature:advanced_reporting')->name('reports.export');
     Route::get('/waitlist', [AdminFeatureController::class, 'waitlist'])->middleware('feature:waitlist')->name('waitlist.index');

@@ -139,6 +139,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'amelia@example.test',
             'phone' => '07123 456789',
             'notes' => 'Prefers a quieter table.',
+            'is_vip' => true,
+            'allergies' => 'Shellfish allergy.',
+            'dietary_requirements' => 'Prefers gluten-free options when available.',
+            'preferences' => 'Likes a quiet corner table and still water on arrival.',
+            'favourite_dining_area_id' => $main->id,
+            'favourite_restaurant_table_id' => RestaurantTable::where('name', 'T2')->value('id'),
         ]);
 
         $booking = Booking::create([
@@ -166,6 +172,9 @@ class DatabaseSeeder extends Seeder
                 'last_name' => 'Singh',
                 'email' => 'noah@example.test',
                 'phone' => '07999 111222',
+                'dietary_requirements' => 'Vegetarian.',
+                'preferences' => 'Enjoys terrace seating when weather allows.',
+                'favourite_dining_area_id' => $terrace->id,
             ])->id,
             'service_id' => $lunch->id,
             'booking_reference' => 'CBR'.strtoupper(fake()->bothify('####??')),
@@ -190,9 +199,11 @@ class DatabaseSeeder extends Seeder
                     'first_name' => $first,
                     'last_name' => $last,
                     'email' => $email,
-                    'phone' => '07700 '.fake()->numerify('######'),
-                    'notes' => $notes,
-                ])->id,
+                'phone' => '07700 '.fake()->numerify('######'),
+                'notes' => $notes,
+                'preferences' => $notes,
+                'is_vip' => $first === 'Sofia',
+            ])->id,
                 'service_id' => $service->id,
                 'booking_reference' => 'CBR'.strtoupper(fake()->bothify('####??')),
                 'customer_manage_token' => fake()->sha256(),
@@ -208,5 +219,20 @@ class DatabaseSeeder extends Seeder
 
             $seedBooking->tables()->attach(RestaurantTable::whereIn('name', $partySize > 2 ? ['T3'] : ['O1'])->first());
         }
+
+        Booking::create([
+            'venue_id' => $venue->id,
+            'customer_id' => $customer->id,
+            'service_id' => $lunch->id,
+            'booking_reference' => 'CBR'.strtoupper(fake()->bothify('####??')),
+            'customer_manage_token' => fake()->sha256(),
+            'party_size' => 2,
+            'starts_at' => Carbon::today('Europe/London')->subDays(18)->setTime(13, 0),
+            'ends_at' => Carbon::today('Europe/London')->subDays(18)->setTime(14, 45),
+            'status' => 'completed',
+            'source' => 'web',
+            'special_requests' => 'Window table if available.',
+            'confirmed_at' => now()->subDays(18),
+        ])->tables()->attach(RestaurantTable::where('name', 'T2')->first());
     }
 }

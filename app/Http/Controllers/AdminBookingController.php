@@ -37,6 +37,7 @@ class AdminBookingController extends Controller
             'slots' => $service ? $availability->slots($venue, $service, $date, $partySize, true) : collect(),
             'booking' => new Booking(['status' => 'confirmed', 'source' => 'phone']),
             'availableTables' => $service ? $this->availableTablesForRequest($venue, $service, $date, $request->query('time'), $partySize, $availability) : collect(),
+            'canUseCrm' => $venue->canUseFeature('customer_crm'),
         ]);
     }
 
@@ -57,6 +58,7 @@ class AdminBookingController extends Controller
             'status' => ['required', Rule::in(Booking::STATUSES)],
             'special_requests' => ['nullable', 'string', 'max:2000'],
             'internal_notes' => ['nullable', 'string', 'max:2000'],
+            'customer_notes' => ['nullable', 'string', 'max:2000'],
             'table_ids' => ['nullable', 'array'],
             'table_ids.*' => ['integer', Rule::exists('restaurant_tables', 'id')->where('venue_id', $venue->id)],
         ]);
@@ -72,14 +74,7 @@ class AdminBookingController extends Controller
                 ->withErrors(['time' => 'No table is available for that date, time and party size.']);
         }
 
-        $customer = Customer::create([
-            'venue_id' => $venue->id,
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'] ?: 'guest+'.Str::lower(Str::random(8)).'@local.test',
-            'phone' => $validated['phone'],
-            'notes' => $validated['internal_notes'] ?? null,
-        ]);
+        $customer = $this->findOrPersistCustomer($venue, $validated);
 
         $booking = Booking::create([
             'venue_id' => $venue->id,
@@ -144,6 +139,7 @@ class AdminBookingController extends Controller
             'partySize' => $booking->party_size,
             'slots' => $availability->slots($venue, $booking->service, $booking->starts_at->copy(), $booking->party_size, true, $booking->id),
             'availableTables' => $this->availableTablesForRequest($venue, $booking->service, $booking->starts_at->copy(), $booking->starts_at->format('H:i'), $booking->party_size, $availability, $booking->id),
+            'canUseCrm' => $venue->canUseFeature('customer_crm'),
         ]);
     }
 
@@ -179,15 +175,10 @@ class AdminBookingController extends Controller
             return back()->withInput()->withErrors(['table_ids' => 'No suitable table is available for this booking.']);
         }
 
-        $booking->customer->update([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'] ?: $booking->customer->email,
-            'phone' => $validated['phone'],
-            'notes' => $validated['customer_notes'] ?? null,
-        ]);
+        $customer = $this->findOrPersistCustomer($venue, $validated, $booking->customer);
 
         $booking->update([
+            'customer_id' => $customer->id,
             'service_id' => $service->id,
             'party_size' => $validated['party_size'],
             'starts_at' => $startsAt,
@@ -283,5 +274,39 @@ class AdminBookingController extends Controller
         } while (Booking::where('booking_reference', $reference)->exists());
 
         return $reference;
+    }
+
+    private function findOrPersistCustomer(Venue $venue, array $validated, ?Customer $currentCustomer = null): Customer
+    {
+        $email = $validated['email'] ?: null;
+        $phone = $validated['phone'];
+        $canUseCrm = $venue->canUseFeature('customer_crm');
+
+        $matchedCustomer = Customer::query()
+            ->where('venue_id', $venue->id)
+            ->where(function ($query) use ($email, $phone) {
+                $query->when($email, fn ($query) => $query->where('email', $email))
+                    ->orWhere('phone', $phone);
+            })
+            ->orderByDesc('updated_at')
+            ->first();
+
+        $customer = $matchedCustomer ?: $currentCustomer ?: new Customer(['venue_id' => $venue->id]);
+
+        $customer->fill([
+            'venue_id' => $venue->id,
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $email ?: ($currentCustomer?->email ?: 'guest+'.Str::lower(Str::random(8)).'@local.test'),
+            'phone' => $phone,
+        ]);
+
+        if ($canUseCrm && array_key_exists('customer_notes', $validated)) {
+            $customer->notes = $validated['customer_notes'];
+        }
+
+        $customer->save();
+
+        return $customer;
     }
 }

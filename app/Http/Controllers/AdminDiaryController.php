@@ -23,7 +23,7 @@ class AdminDiaryController extends Controller
         $periodStart = $view === 'week' ? $date->copy()->startOfWeek() : $date->copy()->startOfDay();
         $periodEnd = $view === 'week' ? $date->copy()->endOfWeek() : $date->copy()->endOfDay();
 
-        $bookings = Booking::with(['customer', 'service', 'tables.diningArea'])
+        $bookings = Booking::with(['customer' => fn ($query) => $query->withCount('bookings'), 'service', 'tables.diningArea'])
             ->where('venue_id', $venue->id)
             ->whereBetween('starts_at', [$periodStart, $periodEnd])
             ->when($serviceId, fn ($query) => $query->where('service_id', $serviceId))
@@ -61,6 +61,7 @@ class AdminDiaryController extends Controller
             'bookingsByService' => $bookings->groupBy('service_id'),
             'services' => $services,
             'statusCounts' => $bookings->countBy('status'),
+            'canUseCrm' => $venue->canUseFeature('customer_crm'),
         ]);
     }
 }

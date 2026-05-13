@@ -4453,6 +4453,7 @@
         .admin-shell .booking-summary-card.violet { background: linear-gradient(135deg, #7367f0, #8f85f4); }
         .admin-shell .booking-summary-card.cyan { background: linear-gradient(135deg, #00bad1, #38d4e7); }
         .admin-shell .booking-summary-card.green { background: linear-gradient(135deg, #28c76f, #65dc98); }
+        .admin-shell .booking-summary-card.amber { background: linear-gradient(135deg, #ff9f43, #ffb976); }
         .admin-shell .booking-summary-card.red { background: linear-gradient(135deg, #ea5455, #ff7f80); }
         .admin-shell .booking-summary-card.slate { background: linear-gradient(135deg, #6d6777, #8e879d); }
         .admin-shell .booking-service-timeline {
@@ -4608,6 +4609,142 @@
         .admin-shell .empty-state.compact {
             padding: 1rem;
         }
+        .admin-shell .customer-crm-suite {
+            display: grid;
+            gap: 1rem;
+            padding-bottom: 48px;
+        }
+        .admin-shell .crm-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .85rem;
+        }
+        .admin-shell .customer-table-wrap th a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .admin-shell .crm-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+        }
+        .admin-shell .hero-badges {
+            margin-top: .85rem;
+        }
+        .admin-shell .customer-form-card,
+        .admin-shell .customer-form-section,
+        .admin-shell .customer-intel-card {
+            display: grid;
+            gap: 1rem;
+        }
+        .admin-shell .customer-form-section {
+            border-top: 1px solid rgba(47, 43, 61, .1);
+            padding-top: 1rem;
+        }
+        html.dark .admin-shell .customer-form-section {
+            border-top-color: rgba(225,222,245,.1);
+        }
+        .admin-shell .crm-check {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            min-height: 44px;
+            border: 1px solid rgba(47, 43, 61, .1);
+            border-radius: .7rem;
+            padding: .65rem .75rem;
+            background: rgba(255,255,255,.72);
+            color: #444050;
+            font-weight: 700;
+        }
+        html.dark .admin-shell .crm-check {
+            border-color: rgba(225,222,245,.1);
+            background: rgba(47,51,73,.72);
+            color: #d5d1ea;
+        }
+        .admin-shell .crm-check input {
+            width: 1rem;
+            min-height: 1rem;
+        }
+        .admin-shell .customer-profile-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+            gap: 1rem;
+            align-items: start;
+        }
+        .admin-shell .crm-detail-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .75rem;
+            margin: 0;
+        }
+        .admin-shell .crm-detail-list.compact {
+            grid-template-columns: 1fr;
+        }
+        .admin-shell .crm-detail-list div {
+            border: 1px solid rgba(47, 43, 61, .1);
+            border-radius: .8rem;
+            padding: .85rem;
+            background: rgba(246,246,249,.74);
+        }
+        html.dark .admin-shell .crm-detail-list div {
+            border-color: rgba(225,222,245,.1);
+            background: rgba(52,56,79,.72);
+        }
+        .admin-shell .crm-detail-list .full {
+            grid-column: 1 / -1;
+        }
+        .admin-shell .crm-detail-list dt {
+            color: #6d6777;
+            font-size: .75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        html.dark .admin-shell .crm-detail-list dt {
+            color: #b6b1cb;
+        }
+        .admin-shell .crm-detail-list dd {
+            margin: .35rem 0 0;
+            color: #444050;
+            line-height: 1.55;
+        }
+        html.dark .admin-shell .crm-detail-list dd {
+            color: #d5d1ea;
+        }
+        .admin-shell .booking-mini-list {
+            display: grid;
+            gap: .65rem;
+        }
+        .admin-shell .booking-mini-list a {
+            display: grid;
+            grid-template-columns: minmax(150px, .4fr) minmax(0, 1fr) auto;
+            gap: .85rem;
+            align-items: center;
+            border: 1px solid rgba(47, 43, 61, .1);
+            border-radius: .8rem;
+            padding: .85rem;
+            background: rgba(255,255,255,.72);
+            color: inherit;
+            text-decoration: none;
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        }
+        html.dark .admin-shell .booking-mini-list a {
+            border-color: rgba(225,222,245,.1);
+            background: rgba(47,51,73,.72);
+        }
+        .admin-shell .booking-mini-list a:hover {
+            transform: translateY(-2px);
+            border-color: rgba(115, 103, 240, .28);
+            box-shadow: 0 .65rem 1.3rem rgba(47, 43, 61, .1);
+        }
+        .admin-shell .pagination-wrap nav {
+            margin-top: 1rem;
+        }
+        .admin-shell .pagination-wrap p {
+            color: #6d6777;
+        }
+        html.dark .admin-shell .pagination-wrap p {
+            color: #b6b1cb;
+        }
         .admin-shell .dashboard-actions a {
             min-height: 4rem;
             justify-content: start;
@@ -4684,7 +4821,8 @@
             .admin-shell .dashboard-kpis,
             .admin-shell .dashboard-mosaic,
             .admin-shell .advanced-report-grid,
-            .admin-shell .booking-summary-grid {
+            .admin-shell .booking-summary-grid,
+            .admin-shell .crm-summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
             .admin-shell .report-filters,
@@ -4702,7 +4840,11 @@
             .admin-shell .dashboard-kpis,
             .admin-shell .dashboard-mosaic,
             .admin-shell .advanced-report-grid,
-            .admin-shell .booking-summary-grid {
+            .admin-shell .booking-summary-grid,
+            .admin-shell .crm-summary-grid,
+            .admin-shell .customer-profile-grid,
+            .admin-shell .crm-detail-list,
+            .admin-shell .booking-mini-list a {
                 grid-template-columns: 1fr;
             }
             .admin-shell .experience-widget {

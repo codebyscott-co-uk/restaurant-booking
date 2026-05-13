@@ -24,10 +24,30 @@
             <h3>Guest request</h3>
             <p>{{ $booking->special_requests ?: 'No special requests recorded.' }}</p>
         </div>
-        <div class="booking-drawer-section">
-            <h3>Customer notes</h3>
-            <p>{{ $booking->customer->notes ?: 'No customer notes recorded.' }}</p>
-        </div>
+        @if ($canUseCrm ?? false)
+            <div class="booking-drawer-section">
+                <h3>CRM profile</h3>
+                <p>
+                    {{ $booking->customer->is_vip ? 'VIP guest. ' : '' }}
+                    {{ $booking->customer->notes ?: 'No customer notes recorded.' }}
+                </p>
+                @if ($booking->customer->allergies || $booking->customer->dietary_requirements || $booking->customer->preferences)
+                    <div class="crm-badge-row">
+                        @if ($booking->customer->allergies)
+                            <span class="badge status-badge red">Allergies</span>
+                        @endif
+                        @if ($booking->customer->dietary_requirements)
+                            <span class="badge status-badge green">Dietary</span>
+                        @endif
+                        @if ($booking->customer->preferences)
+                            <span class="badge status-badge cyan">Preferences</span>
+                        @endif
+                    </div>
+                    <p>{{ collect([$booking->customer->allergies, $booking->customer->dietary_requirements, $booking->customer->preferences])->filter()->join(' · ') }}</p>
+                @endif
+                <a class="button subtle" href="{{ route('admin.customers.show', $booking->customer) }}">Open customer profile</a>
+            </div>
+        @endif
         <form class="booking-drawer-section" method="post" action="{{ route('admin.bookings.notes.update', $booking) }}">
             @csrf
             @method('patch')

@@ -105,10 +105,12 @@
                     <label for="phone">Phone</label>
                     <input id="phone" name="phone" value="{{ old('phone', $booking->customer->phone ?? '') }}" required>
                 </div>
-                <div class="field full">
-                    <label for="customer_notes">Customer notes</label>
-                    <textarea id="customer_notes" name="customer_notes">{{ old('customer_notes', $booking->customer->notes ?? '') }}</textarea>
-                </div>
+                @if ($canUseCrm ?? false)
+                    <div class="field full">
+                        <label for="customer_notes">Customer CRM notes</label>
+                        <textarea id="customer_notes" name="customer_notes">{{ old('customer_notes', $booking->customer->notes ?? '') }}</textarea>
+                    </div>
+                @endif
             </div>
         </div>
 
