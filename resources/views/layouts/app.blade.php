@@ -3963,7 +3963,8 @@
         .admin-shell .kpi-card.green {
             background: linear-gradient(135deg, #28c76f 0%, #65dc98 100%) !important;
         }
-        .admin-shell .kpi-card.amber {
+        .admin-shell .kpi-card.amber,
+        .admin-shell .gradient-amber {
             background: linear-gradient(135deg, #ff9f43 0%, #ffc26b 100%) !important;
         }
         .admin-shell .kpi-card.red {
@@ -4025,6 +4026,13 @@
             padding: 1.35rem;
             color: #fff;
             box-shadow: 0 .75rem 2rem rgba(115, 103, 240, .28);
+        }
+        .admin-shell .customer-profile-hero .insight-card {
+            border-color: rgba(255,255,255,.22);
+            box-shadow: 0 .9rem 2.2rem rgba(255, 159, 67, .22);
+        }
+        .admin-shell .customer-profile-hero .gradient-amber .orbital-chart span {
+            background: rgba(255, 159, 67, .98);
         }
         .admin-shell .orbital-chart,
         .admin-shell .experience-meter {
