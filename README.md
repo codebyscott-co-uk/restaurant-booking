@@ -332,6 +332,38 @@ CRM profiles include contact details, VIP status, marketing opt-in, allergies, d
 
 Bookings link to customers automatically where safe. Public, API and staff-created bookings reuse an existing customer from the same venue when the email or phone matches; otherwise a new tenant-scoped customer is created. Staff booking drawers show VIP, repeat-guest and CRM note indicators only when the venue has CRM access.
 
+## Tables & Areas
+
+Tables & Areas is core Resora OS functionality and is available to Starter, Professional and Premium venues.
+
+The section lives at:
+
+```text
+GET /admin/areas
+GET /admin/areas/create
+POST /admin/areas
+GET /admin/areas/{area}/edit
+PUT /admin/areas/{area}
+PATCH /admin/areas/{area}/toggle
+DELETE /admin/areas/{area}
+GET /admin/tables/create
+POST /admin/tables
+GET /admin/tables/{table}/edit
+PUT /admin/tables/{table}
+PATCH /admin/tables/{table}/toggle
+DELETE /admin/tables/{table}
+```
+
+Dining areas represent operational sections such as Main Restaurant, Bar, Garden, Private Dining and Terrace. Areas can be active or inactive, sorted, described and deleted only when no tables depend on them.
+
+Tables belong to one venue and one dining area. Each table has a name, minimum covers, maximum capacity, active status, joinable flag and internal notes. Active capacity is calculated from active tables only.
+
+The overview includes visual table cards grouped by area, a compact list view, area capacity guidance, inactive-table warnings, future booking counts and safe quick actions. Tables with future bookings cannot be hard deleted; deactivate them instead so existing bookings remain intact.
+
+Booking create/edit and availability only use active tables from active areas in the authenticated staff user’s current venue. Cross-tenant table and area IDs are rejected.
+
+Joined-table allocation is already supported by the availability engine using joinable tables. Saved table-combination management is presented as a Professional-ready future workflow, while the drag-and-drop Visual Floorplan panel is a Premium-only future module.
+
 ## Admin Routes
 
 ```text

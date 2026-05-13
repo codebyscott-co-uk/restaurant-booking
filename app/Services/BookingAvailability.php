@@ -77,6 +77,7 @@ class BookingAvailability
         $tables = RestaurantTable::query()
             ->where('venue_id', $venue->id)
             ->where('is_active', true)
+            ->whereHas('diningArea', fn ($query) => $query->where('is_active', true))
             ->whereDoesntHave('bookings', function ($query) use ($startsAt, $endsAt, $excludeBookingId) {
                 $query->whereNotIn('status', ['cancelled', 'no_show'])
                     ->when($excludeBookingId, fn ($query) => $query->whereKeyNot($excludeBookingId))

@@ -232,6 +232,8 @@ class AdminBookingController extends Controller
 
         $tables = RestaurantTable::with('diningArea')
             ->where('venue_id', $venue->id)
+            ->where('is_active', true)
+            ->whereHas('diningArea', fn ($query) => $query->where('is_active', true))
             ->whereIn('id', $selectedIds)
             ->get();
 

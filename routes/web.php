@@ -86,7 +86,9 @@ Route::middleware(['auth', 'tenant.staff'])->prefix('admin')->name('admin.')->gr
     Route::patch('/bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.status.update');
     Route::patch('/bookings/{booking}/notes', [AdminBookingController::class, 'updateNotes'])->name('bookings.notes.update');
     Route::resource('services', AdminServiceController::class)->except(['show']);
+    Route::patch('/areas/{area}/toggle', [AdminDiningAreaController::class, 'toggle'])->name('areas.toggle');
     Route::resource('areas', AdminDiningAreaController::class)->except(['show']);
+    Route::patch('/tables/{table}/toggle', [AdminRestaurantTableController::class, 'toggle'])->name('tables.toggle');
     Route::resource('tables', AdminRestaurantTableController::class)->except(['index', 'show']);
     Route::get('/availability', [AdminAvailabilityController::class, 'index'])->name('availability.index');
     Route::put('/availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');

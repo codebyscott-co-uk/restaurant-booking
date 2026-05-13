@@ -72,13 +72,22 @@ class AdminRestaurantTableController extends Controller
     {
         $this->ensureVenue($table, $this->currentVenue());
 
-        if ($table->bookings()->exists()) {
-            return back()->withErrors(['table' => 'Tables with bookings cannot be deleted. Set the table inactive instead.']);
+        if ($table->bookings()->where('starts_at', '>=', now())->whereNotIn('status', ['cancelled', 'no_show'])->exists()) {
+            return back()->withErrors(['table' => 'This table has future bookings. Deactivate it instead so existing bookings stay intact.']);
         }
 
         $table->delete();
 
         return redirect()->route('admin.areas.index')->with('status', 'Table deleted.');
+    }
+
+    public function toggle(Request $request, RestaurantTable $table): RedirectResponse
+    {
+        $this->ensureVenue($table, $this->currentVenue($request));
+
+        $table->update(['is_active' => ! $table->is_active]);
+
+        return back()->with('status', $table->is_active ? 'Table activated.' : 'Table deactivated.');
     }
 
     private function validateTable(Request $request): array
@@ -90,6 +99,7 @@ class AdminRestaurantTableController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'min_covers' => ['required', 'integer', 'min:1', 'max:99'],
             'max_covers' => ['required', 'integer', 'min:1', 'max:99', 'gte:min_covers'],
+            'internal_notes' => ['nullable', 'string', 'max:1000'],
             'is_joinable' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
         ]);

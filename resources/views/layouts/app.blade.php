@@ -4753,6 +4753,135 @@
         html.dark .admin-shell .pagination-wrap p {
             color: #b6b1cb;
         }
+        .admin-shell .tables-areas-suite {
+            display: grid;
+            gap: 1rem;
+            padding-bottom: 48px;
+        }
+        .admin-shell .floorplan-prompt {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            background:
+                radial-gradient(circle at 86% 18%, rgba(115,103,240,.16), transparent 30%),
+                rgba(255,255,255,.82);
+        }
+        html.dark .admin-shell .floorplan-prompt {
+            background:
+                radial-gradient(circle at 86% 18%, rgba(115,103,240,.24), transparent 30%),
+                rgba(47,51,73,.82);
+        }
+        .admin-shell .floorplan-prompt h2,
+        .admin-shell .table-combinations-panel h2 {
+            margin: .5rem 0 .25rem;
+        }
+        .admin-shell .combination-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+        }
+        .admin-shell .combination-preview span,
+        .admin-shell .area-capacity-row span,
+        .admin-shell .muted-action {
+            border: 1px solid rgba(47,43,61,.1);
+            border-radius: .6rem;
+            padding: .45rem .65rem;
+            background: rgba(47,43,61,.04);
+            color: #6d6777;
+            font-size: .8rem;
+            font-weight: 700;
+        }
+        html.dark .admin-shell .combination-preview span,
+        html.dark .admin-shell .area-capacity-row span,
+        html.dark .admin-shell .muted-action {
+            border-color: rgba(225,222,245,.1);
+            background: rgba(225,222,245,.06);
+            color: #b6b1cb;
+        }
+        .admin-shell .areas-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .admin-shell .area-section-card {
+            display: grid;
+            gap: 1rem;
+        }
+        .admin-shell .area-section-card.inactive {
+            opacity: .78;
+        }
+        .admin-shell .area-capacity-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+        .admin-shell .visual-table-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: .85rem;
+        }
+        .admin-shell .visual-table-card {
+            display: grid;
+            gap: .7rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(47,43,61,.1);
+            border-radius: .9rem;
+            padding: .95rem;
+            background:
+                radial-gradient(circle at 92% 18%, rgba(115,103,240,.13), transparent 28%),
+                rgba(255,255,255,.78);
+            box-shadow: 0 .45rem 1rem rgba(47,43,61,.06);
+        }
+        html.dark .admin-shell .visual-table-card {
+            border-color: rgba(225,222,245,.1);
+            background:
+                radial-gradient(circle at 92% 18%, rgba(115,103,240,.22), transparent 28%),
+                rgba(47,51,73,.72);
+        }
+        .admin-shell .visual-table-card.inactive {
+            opacity: .66;
+            filter: grayscale(.15);
+        }
+        .admin-shell .visual-table-card.has-bookings {
+            border-color: rgba(255,159,67,.42);
+        }
+        .admin-shell .visual-table-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+        }
+        .admin-shell .visual-table-top strong {
+            color: #444050;
+            font-size: 1.15rem;
+        }
+        html.dark .admin-shell .visual-table-top strong {
+            color: #d5d1ea;
+        }
+        .admin-shell .visual-table-card p,
+        .admin-shell .visual-table-card small {
+            margin: 0;
+            color: #6d6777;
+        }
+        html.dark .admin-shell .visual-table-card p,
+        html.dark .admin-shell .visual-table-card small {
+            color: #b6b1cb;
+        }
+        .admin-shell .table-warning {
+            border-radius: .65rem;
+            padding: .6rem .7rem;
+            background: rgba(255,159,67,.12);
+            color: #a85512;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+        html.dark .admin-shell .table-warning {
+            color: #ffc26b;
+        }
+        .admin-shell .table-actions {
+            justify-content: flex-start;
+        }
         .admin-shell .dashboard-actions a {
             min-height: 4rem;
             justify-content: start;
@@ -4836,7 +4965,8 @@
             .admin-shell .report-filters,
             .admin-shell .reports-mosaic,
             .admin-shell .booking-filter-panel,
-            .admin-shell .table-assignment-grid {
+            .admin-shell .table-assignment-grid,
+            .admin-shell .visual-table-grid {
                 grid-template-columns: 1fr;
             }
             .admin-shell .experience-widget {
@@ -4875,6 +5005,10 @@
             .admin-shell .booking-actions,
             .admin-shell .booking-view-switch {
                 justify-content: flex-start;
+            }
+            .admin-shell .floorplan-prompt {
+                align-items: flex-start;
+                flex-direction: column;
             }
         }
     </style>

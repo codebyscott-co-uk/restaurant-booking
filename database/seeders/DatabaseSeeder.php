@@ -78,6 +78,13 @@ class DatabaseSeeder extends Seeder
             'sort_order' => 2,
         ]);
 
+        $bar = DiningArea::create([
+            'venue_id' => $venue->id,
+            'name' => 'Bar',
+            'description' => 'Casual counter and high-top tables for drinks and walk-ins.',
+            'sort_order' => 3,
+        ]);
+
         foreach ([
             [$main, 'T1', 1, 2],
             [$main, 'T2', 2, 4],
@@ -86,6 +93,8 @@ class DatabaseSeeder extends Seeder
             [$main, 'T5', 6, 8],
             [$terrace, 'O1', 2, 4],
             [$terrace, 'O2', 2, 4],
+            [$bar, 'B1', 1, 2],
+            [$bar, 'B2', 2, 4],
         ] as [$area, $name, $min, $max]) {
             RestaurantTable::create([
                 'venue_id' => $venue->id,
@@ -93,9 +102,21 @@ class DatabaseSeeder extends Seeder
                 'name' => $name,
                 'min_covers' => $min,
                 'max_covers' => $max,
+                'internal_notes' => $name === 'B1' ? 'High-top table close to the bar.' : null,
                 'is_joinable' => $max <= 4,
             ]);
         }
+
+        RestaurantTable::create([
+            'venue_id' => $venue->id,
+            'dining_area_id' => $terrace->id,
+            'name' => 'O3',
+            'min_covers' => 2,
+            'max_covers' => 4,
+            'internal_notes' => 'Seasonal table currently held inactive.',
+            'is_joinable' => true,
+            'is_active' => false,
+        ]);
 
         $lunch = Service::create([
             'venue_id' => $venue->id,

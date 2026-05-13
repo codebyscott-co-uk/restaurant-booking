@@ -17,6 +17,7 @@ class RestaurantTable extends Model
         'name',
         'min_covers',
         'max_covers',
+        'internal_notes',
         'is_joinable',
         'is_active',
     ];

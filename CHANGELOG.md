@@ -14,6 +14,7 @@ This project follows a simple changelog style while it is in early development.
 - Feature-gated Analytics & Reports section with tenant-scoped metrics, report tables, date filters, Premium advanced analytics and CSV exports.
 - Premium staff bookings diary with richer filters, timeline/list views, detail drawer, quick actions, edit flow and tenant-safe table assignment.
 - Professional+ Customers / CRM section with tenant-scoped guest profiles, VIP flags, allergies, dietary notes, preferences, internal notes, booking history and repeat-guest signals.
+- Polished Tables & Areas workspace with summary cards, visual table grid, list view, activate/deactivate actions, booking-safe deletes, capacity guidance and future floorplan/table-combination placeholders.
 - Mobile-friendly public booking form.
 - Vuexy-inspired semi-dark SaaS redesign across admin, auth, public booking, customer management and widget surfaces.
 - Closer Vuexy-style admin chrome refinements for the semi-dark sidebar, floating top navbar, dropdowns, hover states and active menu treatments.

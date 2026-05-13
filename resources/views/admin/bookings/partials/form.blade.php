@@ -153,10 +153,10 @@
                 </div>
             @else
                 <div class="table-assignment-grid">
-                    @foreach ($venue->diningAreas as $area)
+                    @foreach ($venue->diningAreas->where('is_active', true) as $area)
                         <div class="table-assignment-area">
                             <strong>{{ $area->name }}</strong>
-                            @forelse ($area->tables as $table)
+                            @forelse ($area->tables->where('is_active', true) as $table)
                                 @php($capacityWarning = $table->max_covers < old('party_size', $partySize))
                                 <label class="table-choice {{ $capacityWarning ? 'warning' : '' }}">
                                     <input type="checkbox" name="table_ids[]" value="{{ $table->id }}" @checked($selectedTableIds->contains($table->id))>
